@@ -22,20 +22,20 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </a>
-                    <a class="brand" href="test.html">Western List</a>
+                    <a class="brand" href="test.php">Western List</a>
                     <div class="nav-collapse collapse navbar-responsive-collapse">
                         <ul class="nav">
-                            <li><a href="test.html">Home</a></li>
+                            <li><a href="test.php">Home</a></li>
                             <li class="dropdown">
                             	<a class="dropdown-toggle" href="" role="button" data-toggle="dropdown">Reviews<b class="caret"></b></a>
                             	<ul class="dropdown-menu" role="menu" aria-labelledby="dropl">
-                            		<li><a tabindex="-1" href="courses.html">Courses</a></li>
-                            		<li><a tabindex="-1" href="textbooks.html">Textbooks</a></li>
-                            		<li><a tabindex="-1" href="professors.html">Professors</a></li>
+                            		<li><a tabindex="-1" href="courses.php">Courses</a></li>
+                            		<li><a tabindex="-1" href="textbooks.php">Textbooks</a></li>
+                            		<li><a tabindex="-1" href="professors.php">Professors</a></li>
                             	</ul>
                             </li>
-                            <li><a href="rideshare.html">Rides</a></li>
-                            <li class="active"><a href="buysell.html">Buy / Sell</a></li>
+                            <li><a href="rideshare.php">Rides</a></li>
+                            <li class="active"><a href="buysell.php">Buy / Sell</a></li>
                         </ul>
                         
                         <p class="navbar-text pull-right">Logged in as <a href="#" class="navbar-link">Username</a></p>
