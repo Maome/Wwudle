@@ -1,2 +1,2 @@
-cs492
+cs492 WesternList Project
 =====
