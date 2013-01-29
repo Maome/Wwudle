@@ -1,6 +1,8 @@
 cs492 WesternList Project
 =====
 
+I didn't edit this for markdown, you should probably just read the README if this is online
+
 How to use
 Create a repo:
     set up your keys (below)
