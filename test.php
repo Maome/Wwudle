@@ -1,3 +1,16 @@
+<?php
+include_once('CAS.php');
+phpCAS::setDebug();
+phpCAS::client(CAS_VERSION_2_0, 'websso.wwu.edu', 443, '/cas');
+phpCAS::setCasServerCACert("CA_FILE.pem");
+phpCAS::setNoCasServerValidation();
+#phpCAS::forceAuthentication();
+#$auth = phpCAS::isAuthenticated();
+#if ($auth) {
+#	$user = phpCAS::getUser();
+#	echo $user;
+#}
+?>
 <html>
     <head>
         <title>Wlist</title>

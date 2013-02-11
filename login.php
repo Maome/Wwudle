@@ -1,3 +1,13 @@
+<?php
+include_once('CAS.php');
+phpCAS::client(CAS_VERSION_2_0, 'websso.wwu.edu', 443, '/cas');
+phpCAS::setCasServerCACert("CA_FILE.pem");
+phpCAS::setFixedServiceURL($url='http://sw.cs.wwu.edu/~ritterb2/CSCI492git/cs492/test.php');
+phpCAS::forceAuthentication();
+if (isset($_REQUEST['logout'])) {
+        phpCAS::logout();
+}
+?>
 <head>
     <link rel="stylesheet" type="text/css"  href="https://www.wwu.edu/wwucommon/passwordchange/stylesheets/basic.css" media="screen"/>
     <link rel="stylesheet" type="text/css"  media="screen" href="https://www.wwu.edu/wwucommon/passwordchange/stylesheets/layout-tab-sm.css"  />
