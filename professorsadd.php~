@@ -18,7 +18,7 @@
         </div>
 
 		<!-- Navbar -->
-		<?php DisplayNavbar(basename(__FILE__)); ?>
+		<?php DisplayNavbar(); ?>
         
         <div class="container">
             <div class="row-fluid">
