@@ -1,7 +1,7 @@
 # Create table scripts for Western List website
 
-CREATE TABLE WesternList.SideBarLink (
-	SideBarLinkID INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+CREATE TABLE WesternList.HyperLink (
+	HyperlinkID INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
 	URL VARCHAR(200),
 	Text VARCHAR(100),
 	ChangeSource VARCHAR(50),

@@ -1,3 +1,8 @@
+<?php
+	require_once('includes/navbar.php');
+	require_once('includes/sidebar.php');
+	include_once("../../../private_html/connect.php");
+?>
 <html>
     <head>
         <title>Wlist</title>
@@ -14,59 +19,123 @@
         </div>
 
 
-        <div class="navbar navbar-fixed-top">
-            <div class="navbar-inner">
-                <div class="container">
-                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-responsive-collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </a>
-                    <a class="brand" href="test.php">Western List</a>
-                    <div class="nav-collapse collapse navbar-responsive-collapse">
-                        <ul class="nav">
-                            <li><a href="test.php">Home</a></li>
-                            <li class="dropdown">
-                            	<a class="dropdown-toggle" href="" role="button" data-toggle="dropdown">Reviews<b class="caret"></b></a>
-                            	<ul class="dropdown-menu" role="menu" aria-labelledby="dropl">
-                            		<li><a tabindex="-1" href="courses.php">Courses</a></li>
-                            		<li><a tabindex="-1" href="textbooks.php">Textbooks</a></li>
-                            		<li><a tabindex="-1" href="professors.php">Professors</a></li>
-                            	</ul>
-                            </li>
-                            <li class="active"><a href="rideshare.php">Rides</a></li>
-                            <li><a href="buysell.php">Buy / Sell</a></li>
-                        </ul>
-                        
-                        <p class="navbar-text pull-right">Logged in as <a href="#" class="navbar-link">Username</a></p>
-                        <ul class="nav pull-right"><li class="divider-vertical"></li></ul>
-                        <form class="navbar-search pull-right">
-                            <input type="text" class="navbar-search search-query" placeholder="search">
-                        </form>
-                    </div><!--/.nav-collapse -->
-                </div>
-            </div>
-        </div>
-
-
+		<!-- Navbar -->
+		<?php DisplayNavbar(basename(__FILE__)); ?>
         
         <div class="container">
             <div class="row-fluid">
-                <div class="span3">
-                        <ul class="nav nav-tabs nav-stacked">
-                            <li class="active"><a href="">Western Links</a></li>
-                            <li><a href="http://www.wwu.edu">WWU Homepage</a></li>
-                            <li><a href="http://www.mywestern.wwu.edu">My Western</a></li>
-                            <li><a href="http://www.wwu.edu/depts/registrar/important_dates_index.shtml">Registration Calendar</a></li>
-                            <li><a href="http://www.wwu.edu/classfinder">Classfinder</a></li>
-                            <li><a href="http://www.bookstore.wwu.edu">Western Bookstore</a></li>
-                            <li><a href="http://www.finaid.wwu.edu">Financial Aid</a></li>
-                        </ul>
-                </div>
+				<!-- Sidebar -->
+				<?php DisplaySidebar(); ?>
                 <div class="span9">
                     <div class="row-fluid">
                         <div class="span4">
-                            <h2>Rideshare</h2>
+
+                            <!-- MAIN CONTENT FOR RIDESHARES -->
+							<h2>Rideshare</h2>
+							<form class="form-horizontal" name="addRideShare" action="rideshareaddRCV.php" method="post">
+								<div class="control-group">
+									<label class="control-label" for="departureDate">Departure Date</label>
+									    <div class="controls input-prepend">
+									    	<span class="add-on">Month</span>
+											<?php
+											    $months = array("", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
+											    echo "<select id='departureMonth' name='departureMonth' style='width:115px'>";
+											    for ($month = 1; $month <= 12; $month++) {
+												echo "<option value='$month'>$months[$month]</option>";
+											    }
+											    echo "</select>";
+											?>
+									    	<span class="add-on">Day</span>
+											<?php
+											    echo "<select id='departureDay' name='departureDay' style='width:60px'>";
+											    for ($day = 1; $day <= 31; $day++) {
+												echo "<option value='$day'>$day</option>";
+											    }
+											    echo "</select>";
+											?>
+									    	<span class="add-on">Year</span>
+											<?php
+											    echo "<select id='departureYear' name='departureYear' style='width:75px'>";
+											    for ($year = 2013; $year <= 2015; $year++) {
+												echo "<option value='$year'>$year</option>";
+											    }
+											    echo "</select>";
+											?>
+									    </div>
+									</div>
+									<div class="control-group">    
+									<label class="control-label" for="departureLocation">Departure Location</label>
+										<div class="controls">
+											<input id="departureLocation" name="departureLocation" type="text">
+										</div>
+									</div>
+									<div class="control-group"> 
+									<label class="control-label" for="departureThreshold">Departure Threshold</label>
+										<div class="controls">
+											<input id="departureThreshold" name="departureThreshold" type="text">
+										</div>
+									</div>
+									<div class="control-group"> 		
+									<label class="control-label" for="returnDate">Return Date</label>
+									    <div class="controls input-prepend">
+									    	<span class="add-on">Month</span>
+										<?php
+										    $months = array("", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
+										    echo "<select id='returnMonth' name='returnMonth' style='width:115px'>";
+										    for ($month = 1; $month <= 12; $month++) {
+											echo "<option value='$month'>$months[$month]</option>";
+										    }
+										    echo "</select>";
+										?>
+									    	<span class="add-on">Day</span>
+										<?php
+										    echo "<select id='returnDay' name='returnDay' style='width:60px'>";
+										    for ($day = 1; $day <= 31; $day++) {
+											echo "<option value='$day'>$day</option>";
+										    }
+										    echo "</select>";
+										?>
+									    	<span class="add-on">Year</span>
+										<?php
+										    echo "<select id='returnYear' name='returnYear' style='width:75px'>";
+										    for ($year = 2013; $year <= 2015; $year++) {
+											echo "<option value='$year'>$year</option>";
+										    }
+										    echo "</select>";
+										?>
+									    </div>    							
+									</div>
+									<div class="control-group"> 		
+									<label class="control-label" for="destinationLocation">Destination Location</label>
+									<div class="controls">
+										<input id="destinationLocation" name="destinationLocation" type="text">
+									</div>
+									</div>
+									<div class="control-group"> 		
+									<label class="control-label" for="destinationThreshold">Destination Threshold</label>
+									<div class="controls">
+										<input id="destinationThreshold" name="destinationThreshold" type="text">
+									</div>
+									</div>
+									<div class="control-group"> 								
+									<label class="control-label" for="numSeats">Number of Seats</label>
+									<div class="controls">
+										<input id="numSeats" name="numSeats" type="text">
+									</div>
+									</div>
+									<div class="control-group"> 		
+									<label class="control-label" for="price">Price</label>
+									<div class="controls">
+										<input id="price" name="price" type="text">
+									</div>
+									</div>
+									<div class="control-group"> 		
+									<div class="controls">
+										<button class="btn" type="submit">Submit
+										</button></div>
+								</div>
+							</form>
+
                         </div>
                     </div>
                 </div>

@@ -1,3 +1,8 @@
+<?php
+	require_once('includes/navbar.php');
+	require_once('includes/sidebar.php');
+	include_once("../../../private_html/connect.php");
+?>
 <html>
     <head>
         <title>Wlist</title>
@@ -13,56 +18,13 @@
             </div>
         </div>
 
-
-        <div class="navbar navbar-fixed-top">
-            <div class="navbar-inner">
-                <div class="container">
-                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-responsive-collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </a>
-                    <a class="brand" href="#">Western List</a>
-                    <div class="nav-collapse collapse navbar-responsive-collapse">
-                        <ul class="nav">
-                            <li><a href="test.php">Home</a></li>
-                            <li class="dropdown">
-                            	<a class="dropdown-toggle" href="" role="button" data-toggle="dropdown">Reviews<b class="caret"></b></a>
-                            	<ul class="dropdown-menu" role="menu" aria-labelledby="dropl">
-                            		<li><a tabindex="-1" href="courses.php">Courses</a></li>
-                            		<li><a tabindex="-1" href="textbooks.php">Textbooks</a></li>
-                            		<li class="active"><a tabindex="-1" href="professors.php">Professors</a></li>
-                            	</ul>
-                            </li>
-                            <li><a href="rideshare.php">Rides</a></li>
-                            <li><a href="buysell.php">Buy / Sell</a></li>
-                        </ul>
-                        
-                        <p class="navbar-text pull-right">Logged in as <a href="#" class="navbar-link">Username</a></p>
-                        <ul class="nav pull-right"><li class="divider-vertical"></li></ul>
-                        <form class="navbar-search pull-right">
-                            <input type="text" class="navbar-search search-query" placeholder="search">
-                        </form>
-                    </div><!--/.nav-collapse -->
-                </div>
-            </div>
-        </div>
-
-
+		<!-- Navbar -->
+		<?php DisplayNavbar(basename(__FILE__)); ?>
         
         <div class="container">
             <div class="row-fluid">
-                <div class="span3">
-                        <ul class="nav nav-tabs nav-stacked">
-                            <li class="active"><a href="">Western Links</a></li>
-                            <li><a href="http://www.wwu.edu">WWU Homepage</a></li>
-                            <li><a href="http://www.mywestern.wwu.edu">My Western</a></li>
-                            <li><a href="http://www.wwu.edu/depts/registrar/important_dates_index.shtml">Registration Calendar</a></li>
-                            <li><a href="http://www.wwu.edu/classfinder">Classfinder</a></li>
-                            <li><a href="http://www.bookstore.wwu.edu">Western Bookstore</a></li>
-                            <li><a href="http://www.finaid.wwu.edu">Financial Aid</a></li>
-                        </ul>
-                </div>
+				<!-- Sidebar -->
+				<?php DisplaySidebar(); ?>
                 <div class="span9">
                     <div class="row-fluid">
                         <div class="span6">

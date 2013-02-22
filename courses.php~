@@ -1,7 +1,6 @@
 <?php
 	require_once('includes/navbar.php');
 	require_once('includes/sidebar.php');
-	include_once("../../../private_html/connect.php");
 ?>
 <html>
     <head>
@@ -28,16 +27,16 @@
                 <div class="span9">
                     <div class="row-fluid">
                         <div class="span6">
-                            <h2>Textbook Reviews</h2>
+                            <h2>Course Reviews</h2>
                         </div>
                         <div class="span4 offset2">
-                            <a class="btn btn-success" type="button" href="textbooksadd.php">Review a textbook</a>
+                            <a class="btn btn-success" type="button" href="coursesadd.php">Review a course</a>
                         </div>
                     </div>
                     <div class="row-fluid">
                         <div class="span6 offset1">
                             <form class="form-inline">
-                                <input class="input-medium" type="text" placeholder="textbook">
+                                <input class="input-medium" type="text" placeholder="course">
                                 <button type="submit" class="btn">Search</button>
                             </form>
                         </div>

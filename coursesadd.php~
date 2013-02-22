@@ -1,7 +1,6 @@
 <?php
 	require_once('includes/navbar.php');
 	require_once('includes/sidebar.php');
-	include_once("../../../private_html/connect.php");
 ?>
 <html>
     <head>
@@ -28,7 +27,7 @@
                 <div class="span9">
                     <div class="row-fluid">
                         <div class="span6">
-                            <h2>Textbook Reviews</h2>
+                            <h2>Course Reviews</h2>
                         </div>
                     </div>
                 </div>
