@@ -19,7 +19,7 @@
 
 
 		<!-- Navbar -->
-		<?php DisplayNavbar(); ?>
+		<?php DisplayNavbar(basename(__FILE__)); ?>
         
         <div class="container">
             <div class="row-fluid">
