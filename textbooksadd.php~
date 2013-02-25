@@ -1,8 +1,12 @@
 <?php
 	require_once('includes/navbar.php');
 	require_once('includes/sidebar.php');
+<<<<<<< HEAD
 	require_once('cassettings.php');
 	include_once("../../../private_html/connect.php");
+=======
+	include_once("../..private_html/connect.php");
+>>>>>>> 25fdf9121cc9c6bf053b7d83ea31360041f8e8bf
 ?>
 <html>
     <head>

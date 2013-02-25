@@ -2,7 +2,7 @@
 	require_once('cassettings.php');
 	require_once('includes/navbar.php');
 	require_once('includes/sidebar.php');
-	include_once("../../../private_html/connect.php");
+	include_once("../../private_html/connect.php");
 ?>
 <html>
     <head>
