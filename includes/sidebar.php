@@ -1,6 +1,6 @@
 <?php
 	function DisplaySidebar() {
-		require_once('../../../private_html/connect.php');
+		require_once('../../private_html/connect.php');
 		echo '
 		<div class="span3">
 				<ul class="nav nav-tabs nav-stacked">
