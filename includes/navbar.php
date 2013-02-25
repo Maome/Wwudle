@@ -1,5 +1,7 @@
  <?php
+ 	require_once('cassettings.php');
 	function DisplayNavbar($filename) {
+	echo $user;
 	echo '
 		<div class="navbar navbar-fixed-top">
 			<div class="navbar-inner">
@@ -25,7 +27,7 @@
 							' .li_type($filename,"buysell.php") .'<a href="buysell.php">Buy / Sell</a></li>
 						</ul>
 						
-						<p class="navbar-text pull-right">Logged in as <a href="#" class="navbar-link">Username</a></p>
+						<p class="navbar-text pull-right">Logged in as <a href="#" class="navbar-link">' .phpCAS::getUser() .'</a></p>
 						<ul class="nav pull-right"><li class="divider-vertical"></li></ul>
 						<form class="navbar-search pull-right">
 							<input type="text" class="navbar-search search-query" placeholder="search">

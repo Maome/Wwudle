@@ -1,6 +1,6 @@
 <?php
-	require_once('includes/navbar.php');
-	require_once('includes/sidebar.php');
+	require_once('cassettings.php');
+	phpCAS::forceAuthentication();
 ?>
 <head>
     <link rel="stylesheet" type="text/css"  href="https://www.wwu.edu/wwucommon/passwordchange/stylesheets/basic.css" media="screen"/>
