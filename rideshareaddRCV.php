@@ -58,6 +58,7 @@
 								// Write the information to the database
 								// NEED TO GET THE ACTUAL POSTID, USERID, SOURCE/DEST LAT/LONG
 								$sql = "INSERT INTO RideShare (PostID, PostDate, UserID, DepartureDate, ReturnDate, SourceLatitude, SourceLongitude, DestLatitude, DestLongitude, SourceThresholdMiles, DestThresholdMiles, SeatsRemaining, MaxSeats, Price,  ViewCount, ChangeSource, RecordStatus, RecordStatusDate) VALUES (1, CURDATE(), 1, '$departureDate', '$returnDate', 0.0, 0.0, 0.0, 0.0, $departureThreshold, $destinationThreshold, $numSeats, $numSeats, $price, 0, 0, 1, CURDATE());"; 
+echo $sql;
 //VALUES ('1', CURDATE(), 'username', '$departureDate', '$returnDate', '0.0', '0.0', '0.0', '0.0', '$departureThreshold', '$destinationThreshold', '$numSeats', '$numSeats', '$price', '0', '0', '1', CURDATE());";
 								//echo $sql;
 								$connection->real_query($sql);																   								
