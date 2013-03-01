@@ -1,3 +1,6 @@
+<?php
+	require_once('cassettings.php');
+?>
 <head>
     <link rel="stylesheet" type="text/css"  href="https://www.wwu.edu/wwucommon/passwordchange/stylesheets/basic.css" media="screen"/>
     <link rel="stylesheet" type="text/css"  media="screen" href="https://www.wwu.edu/wwucommon/passwordchange/stylesheets/layout-tab-sm.css"  />

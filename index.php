@@ -1,4 +1,5 @@
 <?php
+	require_once('cassettings.php');
 	require_once('includes/navbar.php');
 	require_once('includes/sidebar.php');
 	include_once("../../private_html/connect.php");
@@ -25,8 +26,7 @@
             <div class="row">
                 <div class="hero-unit">
                     <h1>Welcome</h1>
-                    <p>Lorem ipsom alo dolar amet!</p>
-                    <p><a href="login.php" role="button" class="btn btn-primary btn-large" data-target="#loginModal" data-toggle="modal">Log In</a></p>
+                    <p><a href="login.php" role="button" class="btn btn-primary btn-large">Log In</a></p>
                 </div>
             </div>
             <div class="row-fluid">
