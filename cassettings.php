@@ -4,7 +4,7 @@
 	phpCAS::setDebug();
 	phpCAS::client(CAS_VERSION_2_0, 'websso.wwu.edu', 443, '/cas');
 	phpCAS::setNoCasServerValidation();
-	phpCAS::setFixedServiceURL($url='http://sw.cs.wwu.edu/~ritterb2/CSCI492git/cs492/index.php');
+	phpCAS::setFixedServiceURL($url='http://sw.cs.wwu.edu/~ritterb2/cs492/index.php');
    phpCAS::forceAuthentication();
 
 	if (isset($_REQUEST['logout'])) {
