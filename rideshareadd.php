@@ -64,6 +64,36 @@
 											?>
 									    </div>
 									</div>
+								<div class="control-group">
+									<label class="control-label" for="departureDate">Departure Time</label>
+									    <div class="controls input-prepend">
+											<?php	
+												// Hour										    
+											    echo "<select id='departureHour' name='departureHour' style='width:60px'>";
+											    for ($h = 1; $h <= 12; $h++) {
+												echo "<option value='$h'>$h</option>";
+											    }
+											    echo "</select> : ";											    
+											    
+											    // Minute
+											    echo "<select id='departureMinute' name='departureMinute' style='width:60px'>";
+											    for ($m = 00; $m <= 59; $m++) {
+											    	// Add the leading 0
+											    	if ($m < 10){
+											    		$m = '0' . $m;
+											    	}											    
+													echo "<option value='$m'>$m</option>";
+											    }
+											    echo "</select>";
+											    
+											    // AM/PM
+												echo "<select id='departureAMPM' name='departureAMPM' style='width:75px'>";
+												echo "<option value='AM'>AM</option>";
+												echo "<option value='PM'>PM</option>";
+											    echo "</select>";
+											?>
+									    </div>
+									</div>
 									<div class="control-group">    
 									<label class="control-label" for="departureLocation">Departure Location</label>
 										<div class="controls">
@@ -106,6 +136,36 @@
 										?>
 									    </div>    							
 									</div>
+								<div class="control-group">
+									<label class="control-label" for="destinationDate">Return Time</label>
+									    <div class="controls input-prepend">
+											<?php	
+												// Hour										    
+											    echo "<select id='returnHour' name='returnHour' style='width:60px'>";
+											    for ($h = 1; $h <= 12; $h++) {
+													echo "<option value='$h'>$h</option>";
+											    }
+											    echo "</select> : ";											    
+											    
+											    // Minute
+											    echo "<select id='returnMinute' name='returnMinute' style='width:60px'>";
+											    for ($m = 00; $m <= 59; $m++) {
+											    	// Add the leading 0
+											    	if ($m < 10){
+											    		$m = '0' . $m;
+											    	}
+													echo "<option value='$m'>$m</option>";
+											    }
+											    echo "</select>";
+											    
+											    // AM/PM
+												echo "<select id='returnAMPM' name='returnAMPM' style='width:75px'>";
+												echo "<option value='AM'>AM</option>";
+												echo "<option value='PM'>PM</option>";
+											    echo "</select>";
+											?>
+									    </div>
+									</div>									
 									<div class="control-group"> 		
 									<label class="control-label" for="destinationLocation">Destination Location</label>
 									<div class="controls">
