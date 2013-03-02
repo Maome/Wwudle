@@ -11,7 +11,7 @@
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</a>
-					<a class="brand" href="#">Western List</a>
+					<a class="brand" href="index.php">Western List</a>
 					<div class="nav-collapse collapse navbar-responsive-collapse">
 						<ul class="nav">
 							' .li_type($filename,"index.php") .'<a href="index.php">Home</a></li>

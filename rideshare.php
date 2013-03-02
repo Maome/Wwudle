@@ -38,8 +38,8 @@
                     <div class="row-fluid">
                         <div class="span8 offset1">
                             <form class="form-inline" action="ridesharesearch.php" method="get">
-                                <input class="input-medium" type="text" placeholder="From:">
-                                <input class="input-medium" type="text" placeholder="To:">
+                                <input class="input-medium" type="text" placeholder="From:" name="from">
+                                <input class="input-medium" type="text" placeholder="To:" name="to">
                                 <button type="submit" class="btn">Search</button>
                             </form>
                         </div>
@@ -54,6 +54,16 @@
                     
                     	// Display the 10 most recent rideshare posts
                     	for($i=0; $i<5; $i++){
+			                if ($row == NULL){
+			                	break;
+			                }
+                    	
+                    		// Convert the date/time info
+                    		$departDate = getDateFunc($row[0]);
+                    		$departTime = getTime($row[0]);
+                    		$returnDate = getDateFunc($row[3]);
+                    		$returnTime = getTime($row[3]);
+                    		
 		                    echo "
 			                    <div class='row-fluid'>	                    
 			                        <div class='span6'>
@@ -62,15 +72,26 @@
 			                                    <a class='pull-left' href='#'><img class='media-object' data-src='holder.js/64x64'></a>
 			                                    <div class='media-body'>
 			                                        <a href ='rideinfo?PostID=$row[6]'><h4 class='media-heading'>$row[1] <i class='icon-arrow-right'></i> $row[2]</h4></a>
-			                                        <p><b>Depart:</b> $row[0]</p>
-			                                        <p><b>Return:</b> $row[3]</p>
+			                                        <p><b>Depart:</b> $departTime on $departDate</p>
+			                                        <p><b>Return:</b> $returnTime on $returnDate</p>
 			                                        <p><b>Price:</b> $$row[4]</p>
 			                                    </div>
 			                                </div>
 			                            </div>
 			                        </div>
 			                ";        
+			                
+			                // Get the next row 
 			                $row = $result->fetch_row();
+			                if ($row == NULL){
+			                	break;
+			                }			                			                
+                    		// Convert the date/time info
+                    		$departDate = getDateFunc($row[0]);
+                    		$departTime = getTime($row[0]);
+                    		$returnDate = getDateFunc($row[3]);
+                    		$returnTime = getTime($row[3]);
+			                
 			                echo "        
 			                        <div class='span6'>
 			                            <div class='well well-small'>
@@ -78,8 +99,8 @@
 			                                    <a class='pull-left' href='#'><img class='media-object' data-src='holder.js/64x64'></a>
 			                                    <div class='media-body'>
 			                                        <a href ='rideinfo?PostID=$row[6]'><h4 class='media-heading'>$row[1] <i class='icon-arrow-right'></i> $row[2]</h4></a>
-			                                        <p><b>Depart:</b> $row[0]</p>
-			                                        <p><b>Return:</b> $row[3]</p>
+			                                        <p><b>Depart:</b> $departTime on $departDate</p>
+			                                        <p><b>Return:</b> $returnTime on $returnDate</p>
 			                                        <p><b>Price:</b> $$row[4]</p>
 			                                    </div>
 			                                </div>
@@ -89,6 +110,17 @@
 		                    ";
 		                    $row = $result->fetch_row();  
 	                    }
+	                    
+                		// Function to get the date from DATETIME
+						function getDateFunc($fromMYSQL){
+							return date("F jS, Y", strtotime($fromMYSQL));
+						}
+						
+						// Function to get the time from DATETIME
+						function getTime($fromMYSQL){									
+							return date("g:i A", strtotime($fromMYSQL));
+						}
+
                     ?>
                     <!--
                     <div class="row-fluid">

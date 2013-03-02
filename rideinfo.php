@@ -91,8 +91,7 @@
 								// Function to get the time from DATETIME
 								function getTime($fromMYSQL){									
 									return date("g:i A", strtotime($fromMYSQL));
-								}
-								
+								}								
 													
 							?>
 							
