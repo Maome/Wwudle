@@ -37,13 +37,60 @@
                     </div>
                     <div class="row-fluid">
                         <div class="span8 offset1">
-                            <form class="form-inline">
+                            <form class="form-inline" action="ridesharesearch.php" method="get">
                                 <input class="input-medium" type="text" placeholder="From:">
                                 <input class="input-medium" type="text" placeholder="To:">
                                 <button type="submit" class="btn">Search</button>
                             </form>
                         </div>
                     </div>
+                    
+                    <?php
+                    	// Show the most resent ride shares posted 
+                    	$sql = "SELECT DepartureDate, SourceCity, DestCity, ReturnDate, SeatsRemaining, Price, PostID FROM RideShare ORDER BY PostID DESC;";
+                    	$connection->multi_query($sql);
+                    	$result = $connection->store_result();
+                    	$row = $result->fetch_row();                    								                   
+                    
+                    	// Display the 10 most recent rideshare posts
+                    	for($i=0; $i<5; $i++){
+		                    echo "
+			                    <div class='row-fluid'>	                    
+			                        <div class='span6'>
+			                            <div class='well well-small'>
+			                                <div class='media'>                                	
+			                                    <a class='pull-left' href='#'><img class='media-object' data-src='holder.js/64x64'></a>
+			                                    <div class='media-body'>
+			                                        <a href ='rideinfo?PostID=$row[6]'><h4 class='media-heading'>$row[1] <i class='icon-arrow-right'></i> $row[2]</h4></a>
+			                                        <p><b>Depart:</b> $row[0]</p>
+			                                        <p><b>Return:</b> $row[3]</p>
+			                                        <p><b>Price:</b> $$row[4]</p>
+			                                    </div>
+			                                </div>
+			                            </div>
+			                        </div>
+			                ";        
+			                $row = $result->fetch_row();
+			                echo "        
+			                        <div class='span6'>
+			                            <div class='well well-small'>
+			                                <div class='media'>
+			                                    <a class='pull-left' href='#'><img class='media-object' data-src='holder.js/64x64'></a>
+			                                    <div class='media-body'>
+			                                        <a href ='rideinfo?PostID=$row[6]'><h4 class='media-heading'>$row[1] <i class='icon-arrow-right'></i> $row[2]</h4></a>
+			                                        <p><b>Depart:</b> $row[0]</p>
+			                                        <p><b>Return:</b> $row[3]</p>
+			                                        <p><b>Price:</b> $$row[4]</p>
+			                                    </div>
+			                                </div>
+			                            </div>
+			                        </div>
+			                    </div>
+		                    ";
+		                    $row = $result->fetch_row();  
+	                    }
+                    ?>
+                    <!--
                     <div class="row-fluid">
                         <div class="span6">
                             <div class="well well-small">
@@ -140,30 +187,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row-fluid">
-                        <div class="span6">
-                            <div class="well well-small">
-                                <div class="media">
-                                    <a class="pull-left" href="#"><img class="media-object" data-src="holder.js/64x64"></a>
-                                    <div class="media-body">
-                                        <h4 class="media-heading">Heading</h4>
-                                        <p>A product description in project management...</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="span6">
-                            <div class="well well-small">
-                                <div class="media">
-                                    <a class="pull-left" href="#"><img class="media-object" data-src="holder.js/64x64"></a>
-                                    <div class="media-body">
-                                        <h4 class="media-heading">Heading</h4>
-                                        <p>A product description in project management...</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    -->
                 </div>
             </div>
         </div>

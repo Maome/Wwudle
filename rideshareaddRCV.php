@@ -83,12 +83,25 @@
 									
 									// Write the information to the database
 									// NEED TO GET THE ACTUAL USERID, SOURCE/DEST LAT/LONG
-									$sql = "INSERT INTO RideShare (PostDate, UserID, DepartureDate, ReturnDate, SourceLatitude, SourceLongitude, DestLatitude, DestLongitude, SourceThresholdMiles, DestThresholdMiles, SeatsRemaining, MaxSeats, Price,  ViewCount, ChangeSource, RecordStatus, RecordStatusDate) VALUES (CURDATE(), 1, '$departureDate', '$returnDate', 0.0, 0.0, 0.0, 0.0, $departureThreshold, $destinationThreshold, $numSeats, $numSeats, $price, 0, 0, 1, CURDATE());"; 
-	
-									//echo $sql;
+									$sql = "INSERT INTO RideShare (PostDate, UserID, DepartureDate, ReturnDate, SourceLatitude, SourceLongitude, SourceCity, DestLatitude, DestLongitude, DestCity, SourceThresholdMiles, DestThresholdMiles, SeatsRemaining, MaxSeats, Price,  ViewCount, ChangeSource, RecordStatus, RecordStatusDate) VALUES (CURDATE(), 1, '$departureDate', '$returnDate', 0.0, 0.0, '$departureLocation', 0.0, 0.0, '$destinationLocation', $departureThreshold, $destinationThreshold, $numSeats, $numSeats, $price, 0, 0, 1, CURDATE());"; 
 									$connection->real_query($sql);
 
-									echo "<h2>Your information has been submitted</h2>";									
+									echo "<h3>Your information has been submitted</h3>";
+									
+									// Show the user all of the info that has been recieved 
+									echo "
+										<p><b>Departure Date:</b> $departureMonth/$departureDay/$departureYear</p>
+										<p><b>Departure Time:</b> $departureHour:$departureMinute $departureAMPM</p>
+										<p><b>Departure Location:</b> $departureLocation</p>
+										
+										<p><b>Return Date:</b> $returnMonth/$returnDay/$returnYear</p>
+										<p><b>Return Time:</b> $returnHour:$returnMinute $returnAMPM</p>
+										<p><b>Destination Location:</b> $destinationLocation</p>
+										
+										<p><b>Seats:</b> $numSeats</p>
+										<p><b>Price:</b> $price</p>																			
+									";
+																		
 								}																   								
 								
 								// Function to format date information into mysql DATETIME format
