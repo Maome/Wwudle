@@ -29,10 +29,61 @@
                 <div class="span9">
                     <div class="row-fluid">
                         <div class="span4">
-                            <h2>Buy / Sell</h2>
+                            <h2>Sell a Book</h2>
                         </div>
                     </div>
                 </div>
+                 <div class="row-fluid">
+							<!-- Search box for book lookup -->
+                     <div class="span6 offset1"w>				
+                         <form class="form-inline" id="bookLookup" action="buyselladd.php">
+                             <input class="input-xlarge" type="text" placeholder="Enter 10 - 13 digit ISBN" name="searchText" style="height:30px;">
+                             <button type="submit" class="btn">Search</button>
+                         </form>
+                     </div>
+							<?php
+								require_once 'src/Google_Client.php';
+								require_once 'src/contrib/Google_BooksService.php';
+
+								$client = new Google_Client();
+								$client->setDeveloperKey('AIzaSyCUXX2Wi9fKlaw2HTpgQnsFxG-0YTTIeW0');
+								$client->setApplicationName("Books_Example_App");
+								$service = new Google_BooksService($client);
+
+								function echoBookList($results) {
+								  foreach ($results['items'] as $result) {
+									 $volumeInfo = $result['volumeInfo'];
+									 $title = $volumeInfo['title'];
+									 if (isset($volumeInfo['imageLinks']['thumbnail'])) {
+										$thumbnail = $volumeInfo['imageLinks']['thumbnail'];
+									 } else {
+										$thumbnail = null;
+									 }
+									 if (isset($volumeInfo['authors'])) {
+										$creators = implode(" / ", $volumeInfo['authors']);
+									 }
+
+									 echo '<div class="span6">';
+									 $thumbnailImg = ($thumbnail) ? "<a href='${preview}'><img alt='$title' src='${thumbnail}' style='border:1px solid black' /></a>" : '';
+										echo '<br />' .$thumbnailImg;
+										echo '<br /><b>' .$title .'</b>';
+										echo '<br />' .$creators;
+									echo '</div>';
+								  }
+								}
+
+							  $volumes = $service->volumes;
+							  $optParams = array();
+
+							  /* display a list of volumes */
+							  if (isset($_GET['searchText'])) {
+								 $searchText =  'isbn:' .$_GET['searchText'];
+							  	 $results = $volumes->listVolumes($searchText, $optParams);
+								 echoBookList($results);
+							  }
+
+							?>
+                 </div>
             </div>
         </div>
         
