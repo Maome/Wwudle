@@ -40,7 +40,7 @@
                         <div class="span6 offset1">
                             <form class="form-inline">
                                 <input class="input-medium" type="text" placeholder="textbook">
-                                <button type="submit" class="btn">Search</button>
+                                <button type="submit" class="btn btn-primary">Search</button>
                             </form>
                         </div>
                     </div>

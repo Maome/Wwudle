@@ -41,7 +41,7 @@
                             <form class="form-inline" action="ridesharesearch.php" method="get">
                                 <input class="input-medium" type="text" placeholder="From:" name="from">
                                 <input class="input-medium" type="text" placeholder="To:" name="to">
-                                <button type="submit" class="btn">Search</button>
+                                <button type="submit" class="btn btn-primary">Search</button>
                             </form>
                         </div>
                     </div>
