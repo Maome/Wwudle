@@ -26,17 +26,19 @@
 								' .li_type($filename,"rideshare.php") .'<a href="rideshare.php">Rides</a></li>
 								' .li_type($filename,"buysell.php") .'<a href="buysell.php">Buy / Sell</a></li>
 							</ul>
-						
-							<p class="navbar-text pull-right">Logged in as <a href="#" class="navbar-link">' .phpCAS::getUser() .'</a></p>
-							<ul class="nav pull-right"><li class="divider-vertical"></li></ul>
-							<form class="navbar-search pull-right">
-								<input type="text" class="navbar-search search-query" placeholder="search">
-							</form>
+							<div class="pull-right">
+								<form class="navbar-search">
+									<input type="text" class="search-query" placeholder="search">
+								</form>
+								<ul class="nav"><li class="divider-vertical"></li></ul>
+								<p class="nav coloring">Logged in as <a href="#" class="navbar-link">' .phpCAS::getUser() .'</a></p>
+								<a href="?logout" role="button" class="btn btn-primary btn-medium">Log Out</a>
+							</div>
 						</div><!--/.nav-collapse -->
 					</div>
 				</div>
 			</div>
-			<div class="bottompading">
+			<div class="bottompadding">
 			</div>
 		';
 	}

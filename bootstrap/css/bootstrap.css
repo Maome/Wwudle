@@ -10,8 +10,14 @@
  * Designed and built with all the love in the world @twitter by @mdo and @fat.
  */
  
- .bottompading {
+ .bottompadding {
  	padding-bottom: 75px;
+ }
+ 
+ .coloring {
+ 	color: #f5f5f5;
+ 	margin-bottom: 0;
+	line-height: 50px;
  }
 
 

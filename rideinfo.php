@@ -4,7 +4,8 @@
 	require_once('includes/sidebar.php');
 	include_once("../../private_html/connect.php");
 ?>
-<html>
+<!DOCTYPE HTML>
+<html lang-"en">
     <head>
         <title>Wlist</title>
         <link href="bootstrap/css/bootstrap.css" rel="stylesheet">

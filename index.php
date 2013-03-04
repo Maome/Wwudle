@@ -4,7 +4,8 @@
 	require_once('includes/sidebar.php');
 	include_once("../../private_html/connect.php");
 ?>
-<html>
+<!DOCTYPE HTML>
+<html lang-"en">
     <head>
         <title>Wlist</title>
         <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
@@ -12,12 +13,13 @@
     </head>
     <body>
 
-       <!-- Modal -->
+       <!-- Modal 
         <div id="loginModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-body">
                 <p>Oops I'm broken..</p>
             </div>
         </div>
+      -->
 		
 		<!-- Navbar -->
 		<?php DisplayNavbar(basename(__FILE__)); ?>
@@ -26,7 +28,6 @@
             <div class="row">
                 <div class="hero-unit">
                     <h1>Welcome</h1>
-                    <p><a href="login.php" role="button" class="btn btn-primary btn-large">Log In</a></p>
                 </div>
             </div>
             <div class="row-fluid">
