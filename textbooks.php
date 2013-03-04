@@ -4,7 +4,8 @@
 	require_once('includes/sidebar.php');
 	include_once("../../private_html/connect.php");
 ?>
-<html>
+<!DOCTYPE HTML>
+<html lang-"en">
     <head>
         <title>Wlist</title>
         <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
@@ -39,7 +40,7 @@
                         <div class="span6 offset1">
                             <form class="form-inline">
                                 <input class="input-medium" type="text" placeholder="textbook">
-                                <button type="submit" class="btn">Search</button>
+                                <button type="submit" class="btn btn-primary">Search</button>
                             </form>
                         </div>
                     </div>
