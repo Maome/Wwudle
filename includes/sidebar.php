@@ -3,6 +3,9 @@
 		require_once('../../private_html/connect.php');
 		echo '
 		<div class="span3">
+				<img src="images/wwu_logo2.png" alt="WWU Logo" style= "width: 100%"/>
+				<br />
+				<br />
 				<ul class="nav nav-tabs nav-stacked">
 					<li class="active"><a href="">Western Links</a></li>
 		';

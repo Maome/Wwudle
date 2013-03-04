@@ -98,44 +98,47 @@
 										echo "<option value='" .$row[0] ."'>" .$row[1] ."</option>";
 									}
 									echo "</select>";
-									echo "<br />Price<br /><input type='text' name='price' style='height:30px;'>";
+									echo "<br />Price<br /><input type='text' name='price' placeholder='$' style='height:30px;'>";
 									echo "<input type='hidden' name='isbn' value='" .$isbn ."' />";
 									echo "<br /><input type='submit' value='Submit' style='height:30px;' />";
 									echo "</form>";
 								}
 
 								function echoBookList($results) {
-								  foreach ($results['items'] as $result) {
-									 $volumeInfo = $result['volumeInfo'];
-									 $title = $volumeInfo['title'];
-									 if (isset($volumeInfo['imageLinks']['thumbnail'])) {
-										$thumbnail = $volumeInfo['imageLinks']['thumbnail'];
-									 } else {
-										$thumbnail = null;
-									 }
-									 if (isset($volumeInfo['authors'])) {
-										$creators = implode(" / ", $volumeInfo['authors']);
-									 }
+								  if ($results['items'] != NULL) {
+								    foreach ($results['items'] as $result) {
+									  $volumeInfo = $result['volumeInfo'];
+									  $title = $volumeInfo['title'];
+									  if (isset($volumeInfo['imageLinks']['thumbnail'])) {
+										  $thumbnail = $volumeInfo['imageLinks']['thumbnail'];
+									  } else {
+										  $thumbnail = null;
+									  }
+									  if (isset($volumeInfo['authors'])) {
+										  $creators = implode(" / ", $volumeInfo['authors']);
+									  }
 
-									 echo '<div class="span6">';
-									 $thumbnailImg = ($thumbnail) ? "<a href='${preview}'><img alt='$title' src='${thumbnail}' style='border:1px solid black' /></a>" : '';
-										echo '<br />' .$thumbnailImg;
-										echo '<br /><b>' .$title .'</b>';
-										echo '<br />Author(s): ' .$creators;
-										echo '<br />';
-										$identifiers = $volumeInfo['industryIdentifiers'];
-										$isbn = string;
-										for($i = 0; $i < count($identifiers); $i++) {
-											if ($identifiers[$i]['type'] == 'ISBN_10') echo "ISBN 10: " .$identifiers[$i]['identifier'] ."<br />";
-											else if ($identifiers[$i]['type'] == 'ISBN_13') {
-											  echo "ISBN 13: " .$identifiers[$i]['identifier'] ."<br />";
-											  $isbn = $identifiers[$i]['identifier'];
-											}
-										}
-										echoSaleForm($isbn);
-										
-									echo '</div>';
+									  echo '<div class="span6">';
+									  $thumbnailImg = ($thumbnail) ? "<a href='${preview}'><img alt='$title' src='${thumbnail}' style='border:1px solid black' /></a>" : '';
+										  echo '<br />' .$thumbnailImg;
+										  echo '<br /><b>' .$title .'</b>';
+										  echo '<br />Author(s): ' .$creators;
+										  echo '<br />';
+										  $identifiers = $volumeInfo['industryIdentifiers'];
+										  $isbn = string;
+										  for($i = 0; $i < count($identifiers); $i++) {
+											  if ($identifiers[$i]['type'] == 'ISBN_10') echo "ISBN 10: " .$identifiers[$i]['identifier'] ."<br />";
+											  else if ($identifiers[$i]['type'] == 'ISBN_13') {
+											    echo "ISBN 13: " .$identifiers[$i]['identifier'] ."<br />";
+											    $isbn = $identifiers[$i]['identifier'];
+											  }
+										  }
+										  echoSaleForm($isbn);
+										  
+									  echo '</div>';
+								    }
 								  }
+								  else echo '<b>No results found</b>';
 								}
 
 							  $volumes = $service->volumes;
