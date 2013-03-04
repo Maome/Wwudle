@@ -20,13 +20,12 @@
             </div>
         </div>
 
-		<!-- Navbar -->
-		<?php DisplayNavbar(basename(__FILE__)); ?>
-        
+	<!-- Navbar -->
+	<?php DisplayNavbar("buysell.php"); ?>
         <div class="container">
             <div class="row-fluid">
-				<!-- Sidebar -->
-				<?php DisplaySidebar(); ?>
+	      <!-- Sidebar -->
+	      <?php DisplaySidebar(); ?>
                 <div class="span9">
                     <div class="row-fluid">
                         <div class="span4">
@@ -38,7 +37,7 @@
 							<!-- Search box for book lookup -->
                      <div class="span6 offset1"w>				
                          <form class="form-inline" id="bookLookup" action="buyselladd.php">
-                             <input class="input-xlarge" type="text" placeholder="Enter 10 - 13 digit ISBN" name="searchText" style="height:30px;">
+                             <input class="input-xlarge" type="text" placeholder="Search by ISBN or Title" name="searchText" style="height:30px;">
                              <button type="submit" class="btn">Search</button>
                          </form>
                      </div>
@@ -56,14 +55,37 @@
 									// Insert book if it does not exist
 									$sql = "INSERT INTO Book
 											  (ISBN, ChangeSource, RecordStatus, RecordStatusDate)
-											  SELECT " .$isbn .", 0, 1, NOW()
-											  FROM BookListing
-											  WHERE ISBN NOT IN (
+											  SELECT DISTINCT " .$isbn .", 0, 1, NOW()
+											  FROM Book
+											  WHERE " .$isbn ." NOT IN (
 													SELECT ISBN
 													FROM BookListing
 											  )";
-									echo $sql;
+									//echo $sql;
+									if (!$connection->query($sql)) {
+									  echo "Error!";
+									  error_log(__FILE__ ."|" .$connection->error ."\r\n",3,"errors/errors.log");
+									}
+									
+									// Get book id
+									$sql = "SELECT BookID
+									        FROM Book
+									        WHERE ISBN = '" .$isbn ."';";
 									$result = $connection->query($sql);
+									$row = $result->fetch_row();
+									$bookID = $row[0];
+									
+									// Insert book listing
+									$sql = "INSERT INTO BookListing
+										(PostDate, UserID, BookID, BookConditionID, Price, ViewCount, ChangeSource, RecordStatus, RecordStatusDate)
+										VALUES(NOW()," .$_SESSION['userID'] ."," .$bookID ."," .$_POST['condition'] ."," .$_POST['price'] .", 0, 0, 1, NOW());";
+									$result = $connection->query($sql);
+									
+									echo "
+									  <div>
+									    <b> Your book has been listed! </b>
+									  </div>
+									";
 								}
 
 								function echoSaleForm($isbn) {
@@ -99,12 +121,16 @@
 									 $thumbnailImg = ($thumbnail) ? "<a href='${preview}'><img alt='$title' src='${thumbnail}' style='border:1px solid black' /></a>" : '';
 										echo '<br />' .$thumbnailImg;
 										echo '<br /><b>' .$title .'</b>';
-										echo '<br />' .$creators;
+										echo '<br />Author(s): ' .$creators;
 										echo '<br />';
 										$identifiers = $volumeInfo['industryIdentifiers'];
 										$isbn = string;
 										for($i = 0; $i < count($identifiers); $i++) {
-											if ($identifiers[$i]['type'] == 'ISBN_13') $isbn = $identifiers[$i]['identifier'];
+											if ($identifiers[$i]['type'] == 'ISBN_10') echo "ISBN 10: " .$identifiers[$i]['identifier'] ."<br />";
+											else if ($identifiers[$i]['type'] == 'ISBN_13') {
+											  echo "ISBN 13: " .$identifiers[$i]['identifier'] ."<br />";
+											  $isbn = $identifiers[$i]['identifier'];
+											}
 										}
 										echoSaleForm($isbn);
 										
@@ -117,7 +143,7 @@
 
 							  /* display a list of volumes */
 							  if (isset($_GET['searchText'])) {
-								 $searchText =  'isbn:' .$_GET['searchText'];
+								 $searchText =  (is_numeric($_GET['searchText'])? 'isbn:' : '') .$_GET['searchText'];
 							  	 $results = $volumes->listVolumes($searchText, $optParams);
 								 echoBookList($results);
 							  }
