@@ -44,31 +44,41 @@
 		else return '<li>';
 	}
 
+	function GetUserID($email) {
+		global $connection;							
+		$sql = "Select UserId from User where Email = '$email';";
+		$result = $connection->query($sql);
+		$row = $result->fetch_row();
+
+		if ($result->num_rows == 0) return NULL;
+		else return $row[0];
+	}
+
 	// Create / update user record if user_record session variable is not set
 	function CheckCreateUser() {
 		global $connection;	
 		session_start();
-		if (!isset($_SESSION['user_record'])) {
-			$username = PHPCAS::GetUser() ."@students.wwu.edu";							
-			$sql = "Select UserId from User where Email = '$username';";
-			$result = $connection->query($sql);
-			$row = $result->fetch_row();
+		if (!isset($_SESSION['userID'])) {
+			$email = PHPCAS::GetUser() ."@students.wwu.edu";
+			$userID = GetUserID($email);
 			
 			// Insert new user record
-			if ($result->num_rows == 0) {
+			if ($userID == NULL) {
 				$sql = "INSERT INTO User
 						  (Email,FirstLoginDate,LastLoginDate,ChangeSource,RecordStatus,RecordStatusDate)
-						  VALUES('" .$username ."',NOW(), NOW(), 0, 1, NOW())";
+						  VALUES('" .$email ."',NOW(), NOW(), 0, 1, NOW())";
 			  	$connection->query($sql);
+
+				$_SESSION['userID'] = GetUserID($email);
 			}
 			// Update existing user record
 			else {
+				$_SESSION['userID'] = $userID;
 				$sql = 'UPDATE User
 						  SET LastLoginDate = NOW(), RecordStatus = 2, RecordStatusDate = NOW()
-						  WHERE UserID = ' .$row[0];
+						  WHERE UserID = ' .$userID;
 				$result = $connection->query($sql);
 			}
-			$_SESSION['user_record'] = $username;
 		}
 	}
 ?>

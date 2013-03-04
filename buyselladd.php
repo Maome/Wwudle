@@ -50,6 +50,37 @@
 								$client->setApplicationName("Books_Example_App");
 								$service = new Google_BooksService($client);
 
+								function postBookListing($isbn) {
+									global $connection;
+									// Insert book if it does not exist
+									$sql = "INSERT INTO Book
+											  (ISBN, ChangeSource, RecordStatus, RecordStatusDate)
+											  SELECT " .$isbn .", 0, 1, NOW()
+											  FROM BookListing
+											  WHERE ISBN NOT IN (
+													SELECT ISBN
+													FROM BookListing
+											  )";
+									echo $sql;
+									$result = $connection->query($sql);
+								}
+
+								function echoSaleForm($isbn) {
+									global $connection;
+									$sql = "SELECT BookConditionID, Description FROM BookCondition";
+									$result = $connection->query($sql);
+									echo "<form action='buyselladd.php' method='POST'>";
+									echo "Condition<br /> <select name='condition'>";
+									while ($row = $result->fetch_row()) {
+										echo "<option value='" .$row[0] ."'>" .$row[1] ."</option>";
+									}
+									echo "</select>";
+									echo "<br />Price<br /><input type='text' name='price' style='height:30px;'>";
+									echo "<input type='hidden' name='isbn' value='" .$isbn ."' />";
+									echo "<br /><input type='submit' value='Submit' style='height:30px;' />";
+									echo "</form>";
+								}
+
 								function echoBookList($results) {
 								  foreach ($results['items'] as $result) {
 									 $volumeInfo = $result['volumeInfo'];
@@ -68,6 +99,14 @@
 										echo '<br />' .$thumbnailImg;
 										echo '<br /><b>' .$title .'</b>';
 										echo '<br />' .$creators;
+										echo '<br />';
+										$identifiers = $volumeInfo['industryIdentifiers'];
+										$isbn = string;
+										for($i = 0; $i < count($identifiers); $i++) {
+											if ($identifiers[$i]['type'] == 'ISBN_13') $isbn = $identifiers[$i]['identifier'];
+										}
+										echoSaleForm($isbn);
+										
 									echo '</div>';
 								  }
 								}
@@ -80,6 +119,10 @@
 								 $searchText =  'isbn:' .$_GET['searchText'];
 							  	 $results = $volumes->listVolumes($searchText, $optParams);
 								 echoBookList($results);
+							  }
+
+							  if (isset($_POST['isbn'])) {
+									postBookListing($_POST['isbn']);
 							  }
 
 							?>
