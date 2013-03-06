@@ -147,7 +147,7 @@
 
 							  /* display a list of volumes */
 							  if (isset($_GET['searchText'])) {
-								 $searchText =  (is_numeric($_GET['searchText'])? 'isbn:' : 'intitle:') .$_GET['searchText'];
+								 $searchText =  (is_numeric($_GET['searchText'])? 'isbn:' : 'title:') .$_GET['searchText'];
 							  	 $results = $volumes->listVolumes($searchText, $optParams);
 								 echoBookList($results);
 							  }

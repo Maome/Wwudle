@@ -1,0 +1,17 @@
+<?php
+class BookListing {
+	private $bookListingID;
+	private $userID;
+	private $bookID;
+	private $conditionID;
+
+	public BookListing($userID, $bookID, $conditionID) {
+		$this->userID = $UserID;
+		$this->bookID = $bookID;
+		$this->conditionID = $conditionID;
+	}
+
+	public BookListing($bookListingID) {
+
+	}
+}
