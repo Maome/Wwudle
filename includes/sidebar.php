@@ -7,7 +7,7 @@
 				<br />
 				<br />
 				<ul class="nav nav-tabs nav-stacked">
-					<li class="active"><a href="">Western Links</a></li>
+					<li class="active"><a href="">External Resources</a></li>
 		';
 			// Display each navbar link
 			global $connection;
