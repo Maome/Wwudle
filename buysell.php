@@ -40,131 +40,69 @@
                     <div class="row-fluid">
                         <div class="span6 offset1">
                             <form class="form-inline">
-                                <input class="input-medium" type="text" placeholder="search">
+                                Find a textbook: <input class="input-large" type="text" name="searchText" placeholder="Enter the Title or ISBN">
                                 <button type="submit" class="btn btn-primary">Search</button>
                             </form>
                         </div>
                     </div>
-                    <div class="row-fluid">
-                        <div class="span6">
-                            <div class="well well-small">
-                                <div class="media">
-                                    <a class="pull-left" href="#"><img class="media-object" data-src="holder.js/64x64"></a>
-                                    <div class="media-body">
-                                        <h4 class="media-heading">Heading</h4>
-                                        <p>A product description in project management...</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="span6">
-                            <div class="well well-small">
-                                <div class="media">
-                                    <a class="pull-left" href="#"><img class="media-object" data-src="holder.js/64x64"></a>
-                                    <div class="media-body">
-                                        <h4 class="media-heading">Heading</h4>
-                                        <p>A product description in project management...</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row-fluid">
-                        <div class="span6">
-                            <div class="well well-small">
-                                <div class="media">
-                                    <a class="pull-left" href="#"><img class="media-object" data-src="holder.js/64x64"></a>
-                                    <div class="media-body">
-                                        <h4 class="media-heading">Heading</h4>
-                                        <p>A product description in project management...</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="span6">
-                            <div class="well well-small">
-                                <div class="media">
-                                    <a class="pull-left" href="#"><img class="media-object" data-src="holder.js/64x64"></a>
-                                    <div class="media-body">
-                                        <h4 class="media-heading">Heading</h4>
-                                        <p>A product description in project management...</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row-fluid">
-                        <div class="span6">
-                            <div class="well well-small">
-                                <div class="media">
-                                    <a class="pull-left" href="#"><img class="media-object" data-src="holder.js/64x64"></a>
-                                    <div class="media-body">
-                                        <h4 class="media-heading">Heading</h4>
-                                        <p>A product description in project management...</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="span6">
-                            <div class="well well-small">
-                                <div class="media">
-                                    <a class="pull-left" href="#"><img class="media-object" data-src="holder.js/64x64"></a>
-                                    <div class="media-body">
-                                        <h4 class="media-heading">Heading</h4>
-                                        <p>A product description in project management...</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row-fluid">
-                        <div class="span6">
-                            <div class="well well-small">
-                                <div class="media">
-                                    <a class="pull-left" href="#"><img class="media-object" data-src="holder.js/64x64"></a>
-                                    <div class="media-body">
-                                        <h4 class="media-heading">Heading</h4>
-                                        <p>A product description in project management...</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="span6">
-                            <div class="well well-small">
-                                <div class="media">
-                                    <a class="pull-left" href="#"><img class="media-object" data-src="holder.js/64x64"></a>
-                                    <div class="media-body">
-                                        <h4 class="media-heading">Heading</h4>
-                                        <p>A product description in project management...</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row-fluid">
-                        <div class="span6">
-                            <div class="well well-small">
-                                <div class="media">
-                                    <a class="pull-left" href="#"><img class="media-object" data-src="holder.js/64x64"></a>
-                                    <div class="media-body">
-                                        <h4 class="media-heading">Heading</h4>
-                                        <p>A product description in project management...</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="span6">
-                            <div class="well well-small">
-                                <div class="media">
-                                    <a class="pull-left" href="#"><img class="media-object" data-src="holder.js/64x64"></a>
-                                    <div class="media-body">
-                                        <h4 class="media-heading">Heading</h4>
-                                        <p>A product description in project management...</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+					<div class="row-fluid">
+						<?php
+						
+							function displayBookListings($searchText) {
+								global $connection;
+								if (!isset($connection)) echo 'Unset!';
+								if (is_numeric($searchText)) {
+									$where_clause = "WHERE b.ISBN = " .$searchText;
+								}
+								else $where_clause = "WHERE COALESCE(b.Title,'') LIKE '%" .$searchText ."%'";
+								
+								$qry = "SELECT
+											 bl.PostID,
+											 b.ISBN,
+											 b.Title,
+											 bl.Price, 
+											 bc.Description
+											 FROM BookListing bl
+											 JOIN Book b
+											 ON (b.BookID = bl.BookID)
+											 LEFT JOIN BookCondition bc
+											 ON (bc.BookConditionID = bl.BookConditionID)" .$where_clause;
+								$result = $connection->query($qry);
+								
+								if ($result->num_rows > 0) {
+									$fields = array("ISBN","Title","Price","Description");
+									echo "<table>";
+										echo "<tr>";
+											foreach ($fields as $i) {
+												echo "<td>" .$i ."</td>";
+											}
+										echo "</tr>";
+										while ($row = $result->fetch_assoc()) {
+											echo "<tr>";
+												foreach ($fields as $i){
+													echo "<td>" .$row[$i] ."</td>";
+												}
+												echo "<td>";
+												echo "<form action='buysell.php' method='POST'>";
+												echo "<input type='hidden' name='postID' value='" .$row["PostID"] ."' />";
+												echo "<input type='submit' value='Buy' />";
+												echo "</form>";
+												echo "</td>";
+											echo "</tr>";
+										}
+									echo "</table>";
+								}
+								else echo "No results found";
+							}
+							
+							if (isset($_GET['searchText'])) {
+								displayBookListings($_GET['searchText']);
+							}
+							else if (isset($_POST['postID'])) {
+								echo "An email has been sent to the seller on your behalf.";
+							}
+						?>
+					</div>
                 </div>
             </div>
         </div>

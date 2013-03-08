@@ -48,9 +48,9 @@
 		else return '<li>';
 	}
 
-	function GetUserID($email) {
+	function GetUserID($userName) {
 		global $connection;							
-		$sql = "Select UserId from User where Email = '$email';";
+		$sql = "Select UserId from User where UserName = '" .$userName ."';";
 		$result = $connection->query($sql);
 		$row = $result->fetch_row();
 
@@ -62,18 +62,19 @@
 	function CheckCreateUser() {
 		global $connection;	
 		session_start();
+		
 		if (!isset($_SESSION['userID'])) {
 			$email = PHPCAS::GetUser() ."@students.wwu.edu";
-			$userID = GetUserID($email);
+			$userID = GetUserID(PHPCAS::GetUser());
 			
 			// Insert new user record
 			if ($userID == NULL) {
 				$sql = "INSERT INTO User
-						  (Email,FirstLoginDate,LastLoginDate,ChangeSource,RecordStatus,RecordStatusDate)
-						  VALUES('" .$email ."',NOW(), NOW(), 0, 1, NOW())";
+						  (UserName, Email,FirstLoginDate,LastLoginDate,ChangeSource,RecordStatus,RecordStatusDate)
+						  VALUES('" .PHPCAS::GetUser()  ."','" .$email ."',NOW(), NOW(), 0, 1, NOW())";
 			  	$connection->query($sql);
 
-				$_SESSION['userID'] = GetUserID($email);
+				$_SESSION['userID'] = GetUserID(PHPCAS::GetUser());
 			}
 			// Update existing user record
 			else {
