@@ -7,7 +7,7 @@
 <!DOCTYPE HTML>
 <html lang-"en">
     <head>
-        <title>Wlist</title>
+        <title>Western List</title>
         <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
         <link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
     </head>
@@ -25,11 +25,6 @@
 		<?php DisplayNavbar(basename(__FILE__)); ?>
         
         <div class="container">
-            <div class="row">
-                <div class="hero-unit">
-                    <h1>Welcome</h1>
-                </div>
-            </div>
             <div class="row-fluid">
 				<!-- Sidebar -->
 				<?php DisplaySidebar(); ?>
