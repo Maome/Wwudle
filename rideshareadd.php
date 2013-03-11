@@ -10,6 +10,7 @@
         <title>Wlist</title>
         <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
         <link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+        <link href="bootstrap/css/datepicker.css" rel="stylesheet">
     </head>
     <body>
 
@@ -38,8 +39,10 @@
 								<div class="control-group">
 									<label class="control-label" for="departureDate">Departure Date</label>
 									    <div class="controls input-prepend">
-									    	<span class="add-on">Month</span>
-											<?php
+                                            <input id="departdate" type="text" value="02-16-2012" data-date-format="mm-dd-yyyy"class="datepicker">
+									    	<!--<span class="add-on">Month</span>-->
+
+                                            <?php  /*
 											    $months = array("", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
 											    echo "<select id='departureMonth' name='departureMonth' style='width:115px'>";
 											    for ($month = 1; $month <= 12; $month++) {
@@ -62,7 +65,7 @@
 												echo "<option value='$year'>$year</option>";
 											    }
 											    echo "</select>";
-											?>
+                                             */ ?>
 									    </div>
 									</div>
 								<div class="control-group">
@@ -110,8 +113,9 @@
 									<div class="control-group"> 		
 									<label class="control-label" for="returnDate">Return Date</label>
 									    <div class="controls input-prepend">
-									    	<span class="add-on">Month</span>
-										<?php
+                                            <input id="returndate" type="text" value="02-16-2012" data-date-format="mm-dd-yyyy"class="datepicker">
+									    	<!--<span class="add-on">Month</span>-->
+										<?php/*
 										    $months = array("", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
 										    echo "<select id='returnMonth' name='returnMonth' style='width:115px'>";
 										    for ($month = 1; $month <= 12; $month++) {
@@ -134,7 +138,7 @@
 											echo "<option value='$year'>$year</option>";
 										    }
 										    echo "</select>";
-										?>
+                                         */?>
 									    </div>    							
 									</div>
 								<div class="control-group">
@@ -208,5 +212,8 @@
     <script src="holder/holder.js"></script>
     <script src="http://code.jquery.com/jquery-latest.js"></script>
     <script src="bootstrap/js/bootstrap.js"></script>
+    <script src="bootstrap/js/bootstrap-datepicker.js"></script>
+                                            <script>$('.datepicker').datepicker();</script>
+
 </html>
 
