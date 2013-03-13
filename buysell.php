@@ -60,7 +60,7 @@
 											 bl.PostID,
 											 b.ISBN,
 											 b.Title,
-											 bl.Price, 
+											 bl.Price Price, 
 											 bc.Description
 											 FROM BookListing bl
 											 JOIN Book b
@@ -71,11 +71,12 @@
 								
 								if ($result->num_rows > 0) {
 									$fields = array("ISBN","Title","Price","Description");
-									echo "<table>";
+									echo "<table class='table'>";
 										echo "<tr>";
 											foreach ($fields as $i) {
 												echo "<td>" .$i ."</td>";
 											}
+											echo "<td>Buy</td>";
 										echo "</tr>";
 										while ($row = $result->fetch_assoc()) {
 											echo "<tr>";

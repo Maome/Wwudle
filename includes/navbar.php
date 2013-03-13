@@ -14,9 +14,9 @@
 							<span class="icon-bar"></span>
 							<span class="icon-bar"></span>
 						</a>
-						<a class="brand" href="index.php">Western List</a>
+						<a class="brand" href="index.php" style="font-size: 26px">Western List</a>
 						<div class="nav-collapse collapse navbar-responsive-collapse">
-							<ul class="nav">
+							<ul class="nav" style = "font-size: 16px">
 								' .li_type($filename,"index.php") .'<a href="index.php">Home</a></li>
 								<li class="dropdown">
 									<a class="dropdown-toggle" href="" role="button" data-toggle="dropdown">Reviews<b class="caret"></b></a>
@@ -32,9 +32,14 @@
 							<div class="pull-right">';
 								if (!isset($_REQUEST['index'])) {
 									echo '
-										<ul class="nav"><li class="divider-vertical"></li></ul>
-										<p class="nav coloring">Logged in as <a href="#" class="navbar-link">' .phpCAS::getUser() .'</a></p>
-										<a href="?logout" role="button" class="btn btn-primary btn-medium">Log Out</a>
+    <div class="btn-group">
+    <a class="btn btn-primary" href="#"><i class="icon-user icon-white"></i>&nbsp;Logged in as ' .phpCAS::getUser() .'</a>
+    <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
+    <ul class="dropdown-menu">
+ 	<li><a href="settings.php"><i class="icon-cog"></i> Settings</a></li>
+	<li><a href="?logout"><i class="icon-off"></i> Logout</a></li>
+    </ul>
+    </div>
 									';
 								}
 								else {
