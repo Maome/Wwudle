@@ -7,21 +7,14 @@
 <!DOCTYPE HTML>
 <html lang-"en">
     <head>
-        <title>Wlist</title>
+        <title>Western List</title>
         <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
         <link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
     </head>
     <body>
 
-       <!-- Modal -->
-        <div id="loginModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-            <div class="modal-body">
-                <p>Oops I'm broken..</p>
-            </div>
-        </div>
-
 		<!-- Navbar -->
-		<?php DisplayNavbar(basename(__FILE__)); ?>
+		<?php DisplayNavbar("courses.php"); ?>
         
         <div class="container">
             <div class="row-fluid">
