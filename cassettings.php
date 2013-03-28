@@ -7,16 +7,10 @@
 		phpCAS::setNoCasServerValidation();
 		phpCAS::setFixedServiceURL($url='http://sw.cs.wwu.edu/~ritterb2/cs492/index.php');
 		phpCAS::setServerLogoutURL($url = 'https://websso.wwu.edu/cas/logout?url=https://sw.cs.wwu.edu/~ritterb2/cs492/index.php?index');
-   	phpCAS::forceAuthentication();
-   }
-
-	if (isset($_REQUEST['logout'])) {
-   	phpCAS::logout();
+		phpCAS::forceAuthentication();
 	}
 
-	#$auth = phpCAS::checkAuthentication();
-
-	#if ($auth) {
-	#	$user = phpCAS::getUser();
-	#}
+	if (isset($_REQUEST['logout'])) {
+		phpCAS::logout();
+	}
 ?>
