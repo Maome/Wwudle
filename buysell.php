@@ -30,12 +30,10 @@
 				<?php DisplaySidebar(); ?>
                 <div class="span9">
                     <div class="row-fluid">
-                        <div class="span4">
-                            <h2>Buy / Sell</h2>
+                        <div class="span6">
+                            <h2>Textbooks for Sale</h2>
                         </div>
-                        <div class="span4 offset4">
-                            <a class="btn btn-success" type="button" href="buyselladd.php">Sell an item</a>
-                        </div>
+							<div class="span4"><a class="btn btn-success" type="button" href="buyselladd.php">Sell an item</a></div>
                     </div>
                     <div class="row-fluid">
                         <div class="span6 offset1">

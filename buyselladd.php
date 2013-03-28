@@ -51,12 +51,12 @@
 								$client->setApplicationName("Books_Example_App");
 								$service = new Google_BooksService($client);
 
-								function postBookListing($isbn) {
+								function postBookListing($isbn,$title) {
 									global $connection;
 									// Insert book if it does not exist
 									$sql = "INSERT INTO Book
-											  (ISBN, ChangeSource, RecordStatus, RecordStatusDate)
-											  SELECT DISTINCT " .$isbn .", 0, 1, NOW()
+											  (ISBN, Title, ChangeSource, RecordStatus, RecordStatusDate)
+											  SELECT DISTINCT " .$isbn .", '" .$title ."', 0, 1, NOW()
 											  FROM Book
 											  WHERE " .$isbn ." NOT IN (
 													SELECT ISBN
@@ -89,7 +89,7 @@
 									";
 								}
 
-								function echoSaleForm($isbn) {
+								function echoSaleForm($isbn, $title) {
 									global $connection;
 									$sql = "SELECT BookConditionID, Description FROM BookCondition";
 									$result = $connection->query($sql);
@@ -101,6 +101,7 @@
 									echo "</select>";
 									echo "<br />Price<br /><input type='text' name='price' placeholder='$' style='height:30px;'>";
 									echo "<input type='hidden' name='isbn' value='" .$isbn ."' />";
+									echo "<input type='hidden' name='title' value='" .$title ."' />";
 									echo "<br /><input type='submit' value='Submit' style='height:30px;' />";
 									echo "</form>";
 								}
@@ -134,7 +135,7 @@
 											    $isbn = $identifiers[$i]['identifier'];
 											  }
 										  }
-										  echoSaleForm($isbn);
+										  echoSaleForm($isbn, $title);
 										  
 									  echo '</div>';
 								    }
@@ -153,7 +154,7 @@
 							  }
 
 							  if (isset($_POST['isbn'])) {
-									postBookListing($_POST['isbn']);
+									postBookListing($_POST['isbn'],$_POST['title']);
 							  }
 
 							?>

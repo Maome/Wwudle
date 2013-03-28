@@ -26,20 +26,21 @@
 										' .li_type($filename,"professors.php") .'<a tabindex="-1" href="professors.php">Professors</a></li>
 									</ul>
 								</li>
-								' .li_type($filename,"rideshare.php") .'<a href="rideshare.php">Rides</a></li>
-								' .li_type($filename,"buysell.php") .'<a href="buysell.php">Buy / Sell</a></li>
+								' .li_type($filename,"rideshare.php") .'<a href="rideshare.php">Rideshare</a></li>
+								' .li_type($filename,"buysell.php") .'<a href="buysell.php">Textbooks</a></li>
 							</ul>
+							</div>
 							<div class="pull-right">';
 								if (!isset($_REQUEST['index'])) {
 									echo '
-    <div class="btn-group">
-    <a class="btn btn-primary" href="#"><i class="icon-user icon-white"></i>&nbsp;Logged in as ' .phpCAS::getUser() .'</a>
-    <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
-    <ul class="dropdown-menu">
- 	<li><a href="settings.php"><i class="icon-cog"></i> Settings</a></li>
-	<li><a href="?logout"><i class="icon-off"></i> Logout</a></li>
-    </ul>
-    </div>
+								<div class="btn-group">
+								<a class="btn btn-primary" href="#"><i class="icon-user icon-white"></i>&nbsp;Logged in as ' .phpCAS::getUser() .'</a>
+								<a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
+								<ul class="dropdown-menu">
+								<li><a href="settings.php"><i class="icon-cog"></i> Settings</a></li>
+								<li><a href="?logout"><i class="icon-off"></i> Logout</a></li>
+								</ul>
+								</div>
 									';
 								}
 								else {
