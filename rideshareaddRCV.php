@@ -66,8 +66,9 @@
 									// Validate the data									
 									$isValid = true;
 										
-									// Check to departure date
-									if (strtotime($departureDate) < strtotime('now'))
+									// Check to departure date									
+									if ($departureDate <= $today)
+									//if (strtotime($departureDate) <= strtotime("now"))
 									{
 										// Date is before today
 										$isValid = false;
@@ -80,7 +81,7 @@
 										echo "Please enter a valid departure threshold";
 									}
 									// Check to return date
-									if (strtotime($returnDate) > strtotime('+3 months'))
+									if ($returnDate > date('Y-m-d', strtotime("+3 months", strtotime($returnDate))))
 									{
 										// Date is before today
 										$isValid = false;
