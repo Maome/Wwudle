@@ -31,7 +31,7 @@
 								<div class="control-group">
 									<label class="control-label" for="departureDate">Departure Date</label>
 									    <div class="controls input-prepend">
-                                            <input id="departdate" type="text" value="02-16-2012" data-date-format="mm-dd-yyyy"class="datepicker">
+                                            <input id="departureDate" name="departureDate" type="text" value="<?php echo date('m-d-Y'); ?>" data-date-format="mm-dd-yyyy"class="datepicker">
 									    	<!--<span class="add-on">Month</span>-->
 
                                             <?php  /*
@@ -105,7 +105,7 @@
 									<div class="control-group"> 		
 									<label class="control-label" for="returnDate">Return Date</label>
 									    <div class="controls input-prepend">
-                                            <input id="returndate" type="text" value="02-16-2012" data-date-format="mm-dd-yyyy"class="datepicker">
+                                            <input id="returnDate" name="returnDate" type="text" value="<?php echo date('m-d-Y'); ?>" data-date-format="mm-dd-yyyy"class="datepicker">
 									    	<!--<span class="add-on">Month</span>-->
 										<?php/*
 										    $months = array("", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");

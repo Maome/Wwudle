@@ -44,11 +44,15 @@
                     	$sql = "SELECT DepartureDate, SourceCity, DestCity, ReturnDate, SeatsRemaining, Price, PostID FROM RideShare ORDER BY PostID DESC;";
                     	$connection->multi_query($sql);
                     	$result = $connection->store_result();
-                    	$row = $result->fetch_row();                    								                   
-                    
+                    	$row = $result->fetch_row();  
+						
+						echo "
+							<table class='table'>
+								<tr><th>Departure City</th><th>Departure Date</th><th>Departure Time</th><th>Destination City</th><th>Return Date</th><th>Return Time</th><th>Price</th></tr>						
+						";
                     	// Display the 10 most recent rideshare posts
-                    	for($i=0; $i<5; $i++){
-			                if ($row == NULL){
+                    	for($i=0; $i<10; $i++){
+			                if ($row == NULL){ 
 			                	break;
 			                }
                     	
@@ -57,53 +61,66 @@
                     		$departTime = getTime($row[0]);
                     		$returnDate = getDateFunc($row[3]);
                     		$returnTime = getTime($row[3]);
+							
+							echo "
+								<tr>
+									<td><a href ='rideinfo?PostID=$row[6]'><h4 class='media-heading'>$row[1]</a></td>
+									<td>$departDate</td>
+									<td>$departTime</td>
+									<td><a href ='rideinfo?PostID=$row[6]'><h4 class='media-heading'>$row[2]</a></td>
+									<td>$returnDate</td>
+									<td>$returnTime</td>
+									<td>$$row[5]</td>
+								</tr>																
+							";
                     		
-		                    echo "
-			                    <div class='row-fluid'>	                    
-			                        <div class='span6'>
-			                            <div class='well well-small'>
-			                                <div class='media'>                                	
-			                                    <a class='pull-left' href='#'><img class='media-object' data-src='holder.js/64x64'></a>
-			                                    <div class='media-body'>
-			                                        <a href ='rideinfo?PostID=$row[6]'><h4 class='media-heading'>$row[1] <i class='icon-arrow-right'></i> $row[2]</h4></a>
-			                                        <p><b>Depart:</b> $departTime on $departDate</p>
-			                                        <p><b>Return:</b> $returnTime on $returnDate</p>
-			                                        <p><b>Price:</b> $$row[4]</p>
-			                                    </div>
-			                                </div>
-			                            </div>
-			                        </div>
-			                ";        
+		                    // echo "
+			                    // <div class='row-fluid'>	                    
+			                        // <div class='span6'>
+			                            // <div class='well well-small'>
+			                                // <div class='media'>                                	
+			                                    // <a class='pull-left' href='#'><img class='media-object' data-src='holder.js/64x64'></a>
+			                                    // <div class='media-body'>
+			                                        // <a href ='rideinfo?PostID=$row[6]'><h4 class='media-heading'>$row[1] <i class='icon-arrow-right'></i> $row[2]</h4></a>
+			                                        // <p><b>Depart:</b> $departTime on $departDate</p>
+			                                        // <p><b>Return:</b> $returnTime on $returnDate</p>
+			                                        // <p><b>Price:</b> $$row[5]</p>
+			                                    // </div>
+			                                // </div>
+			                            // </div>
+			                        // </div>
+			                // ";        
 			                
-			                // Get the next row 
-			                $row = $result->fetch_row();
-			                if ($row == NULL){
-			                	break;
-			                }			                			                
-                    		// Convert the date/time info
-                    		$departDate = getDateFunc($row[0]);
-                    		$departTime = getTime($row[0]);
-                    		$returnDate = getDateFunc($row[3]);
-                    		$returnTime = getTime($row[3]);
+			                // // Get the next row 
+			                // $row = $result->fetch_row();
+			                // if ($row == NULL){
+			                	// break;
+			                // }			                			                
+                    		// // Convert the date/time info
+                    		// $departDate = getDateFunc($row[0]);
+                    		// $departTime = getTime($row[0]);
+                    		// $returnDate = getDateFunc($row[3]);
+                    		// $returnTime = getTime($row[3]);
 			                
-			                echo "        
-			                        <div class='span6'>
-			                            <div class='well well-small'>
-			                                <div class='media'>
-			                                    <a class='pull-left' href='#'><img class='media-object' data-src='holder.js/64x64'></a>
-			                                    <div class='media-body'>
-			                                        <a href ='rideinfo?PostID=$row[6]'><h4 class='media-heading'>$row[1] <i class='icon-arrow-right'></i> $row[2]</h4></a>
-			                                        <p><b>Depart:</b> $departTime on $departDate</p>
-			                                        <p><b>Return:</b> $returnTime on $returnDate</p>
-			                                        <p><b>Price:</b> $$row[4]</p>
-			                                    </div>
-			                                </div>
-			                            </div>
-			                        </div>
-			                    </div>
-		                    ";
+			                // echo "        
+			                        // <div class='span6'>
+			                            // <div class='well well-small'>
+			                                // <div class='media'>
+			                                    // <a class='pull-left' href='#'><img class='media-object' data-src='holder.js/64x64'></a>
+			                                    // <div class='media-body'>
+			                                        // <a href ='rideinfo?PostID=$row[6]'><h4 class='media-heading'>$row[1] <i class='icon-arrow-right'></i> $row[2]</h4></a>
+			                                        // <p><b>Depart:</b> $departTime on $departDate</p>
+			                                        // <p><b>Return:</b> $returnTime on $returnDate</p>
+			                                        // <p><b>Price:</b> $$row[5]</p>
+			                                    // </div>
+			                                // </div>
+			                            // </div>
+			                        // </div>
+			                    // </div>
+		                    // ";
 		                    $row = $result->fetch_row();  
 	                    }
+						echo "</table>";
 	                    
                 		// Function to get the date from DATETIME
 						function getDateFunc($fromMYSQL){
