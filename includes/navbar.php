@@ -1,10 +1,14 @@
  <?php
  	require_once('cassettings.php');
+	require_once("../../private_html/connect.php");
+	require_once('classes/dbw.php');
+	require_once('classes/user.php');
 	
 	function DisplayNavbar($filename) {
 		if (!isset($_REQUEST['index'])) {
-			CheckCreateUser();
+			CheckCreateUser(true);
 		}
+		CheckCreateUser(true);
 		echo '
 			<div class="navbar navbar-inverse navbar-fixed-top">
 				<div class="navbar-inner">
@@ -37,8 +41,9 @@
 								<a class="btn btn-primary" href="#"><i class="icon-user icon-white"></i>&nbsp;Logged in as ' .phpCAS::getUser() .'</a>
 								<a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
 								<ul class="dropdown-menu">
-								<li><a href="settings.php"><i class="icon-cog"></i> Settings</a></li>
-								<li><a href="?logout"><i class="icon-off"></i> Logout</a></li>
+								<li><a href="settings.php"><i class="icon-cog"></i> Settings</a></li>'
+								.(isset($_SESSION['isAdmin']) ? '<li><a href="admin.php"><i class="icon-wrench"></i> Admin</a></i>' : '')
+								. '<li><a href="?logout"><i class="icon-off"></i> Logout</a></li>
 								</ul>
 								</div>
 									';
@@ -64,42 +69,23 @@
 		else return '<li>';
 	}
 
-	function GetUserID($userName) {
-		global $connection;							
-		$sql = "Select UserId from User where UserName = '" .$userName ."';";
-		$result = $connection->query($sql);
-		$row = $result->fetch_row();
-
-		if ($result->num_rows == 0) return NULL;
-		else return $row[0];
-	}
-
 	// Create / update user record if user_record session variable is not set
-	function CheckCreateUser() {
-		global $connection;	
+	function CheckCreateUser($reload = false) {
 		session_start();
+		$dbc = new dbw(DBSERVER,DBUSER,DBPASS,DBCATALOG);
 		
-		if (!isset($_SESSION['userID'])) {
+		if (!isset($_SESSION['userID']) || $reload) {
 			$email = PHPCAS::GetUser() ."@students.wwu.edu";
-			$userID = GetUserID(PHPCAS::GetUser());
+			$user = new user($dbc,PHPCAS::GetUser());
 			
-			// Insert new user record
-			if ($userID == NULL) {
-				$sql = "INSERT INTO User
-						  (UserName, Email,FirstLoginDate,LastLoginDate,ChangeSource,RecordStatus,RecordStatusDate)
-						  VALUES('" .PHPCAS::GetUser()  ."','" .$email ."',NOW(), NOW(), 0, 1, NOW())";
-			  	$connection->query($sql);
-
-				$_SESSION['userID'] = GetUserID(PHPCAS::GetUser());
-			}
-			// Update existing user record
-			else {
-				$_SESSION['userID'] = $userID;
-				$sql = 'UPDATE User
-						  SET LastLoginDate = NOW(), RecordStatus = 2, RecordStatusDate = NOW()
-						  WHERE UserID = ' .$userID;
-				$result = $connection->query($sql);
-			}
+			// Create user if they do not exist
+			if (!$user->exists()) $user->createUser($email,1);
+			
+			// Update user record
+			$_SESSION['userID'] = $user->getUserID();;
+			$user->login();
+			
+			if ($user->isAdmin()) $_SESSION['isAdmin'] = 1;
 		}
 	}
 ?>

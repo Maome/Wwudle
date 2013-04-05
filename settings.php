@@ -1,8 +1,6 @@
 <?php
-	require_once('cassettings.php');
-	require_once('includes/navbar.php');
-	require_once('includes/sidebar.php');
-	include_once("../../private_html/connect.php");
+	require_once('init.php');
+	require_once('classes/user.php');
 ?>
 <!DOCTYPE HTML>
 <html lang-"en">
@@ -22,25 +20,13 @@
 				<?php DisplaySidebar(); ?>
                 <div class="span9">
 						<?php
-							function GetEmail() {
-								global $connection;
-								$qry = "SELECT Email
-											 FROM User
-											 WHERE UserID = " .$_SESSION['userID'];
-								$result = $connection->query($qry);
-								$row = $result->fetch_assoc();
-								return $row['Email'];
-							}
 							
+							$dbc = new dbw(DBSERVER,DBUSER,DBPASS,DBCATALOG);
+							$user = new user($dbc,phpCAS::getUser());
 							$emailChanged = false;
+
 							if (isset($_POST['txtEmail'])) {
-								global $connection;
-								$qry = "UPDATE User
-											 SET Email = '{$_POST['txtEmail']}',
-												RecordStatus = 2,
-												RecordStatusDate = NOW()
-											 WHERE UserID = " .$_SESSION['userID'];
-								$result = $connection->query($qry);
+								$user->setEmail($_POST['txtEmail']);
 								unset($_POST['txtEmail']);
 							}
 							
@@ -51,7 +37,7 @@
 										<td><b>Email</b></td><td>';
 										echo "<td>";
 										echo "<form action='settings.php' method='POST'>";
-										echo "<td>" .(isset($_POST['emailEdit']) && !isset($_POST['save'])? "<input type='text'  name='txtEmail' value='" .GetEmail() ."' />" : GetEmail()) ."</td>";
+										echo "<td>" .(isset($_POST['emailEdit']) && !isset($_POST['save'])? "<input type='text'  name='txtEmail' value='" .$user->getEmail() ."' />" : $user->getEmail()) ."</td>";
 										echo "<td>" .(isset($_POST['emailEdit'])? "<input type='submit' name = 'save' value='Save' />" : "<input type='submit' name = 'emailEdit' value='Edit' />") ."</td>";
 										echo "</form>";
 										echo "</td>";								
