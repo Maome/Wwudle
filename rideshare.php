@@ -10,6 +10,7 @@
         <title>Western List</title>
         <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
         <link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+        <link href="bootstrap/css/bootstrap-rowlink.css" rel="stylesheet">
     </head>
     <body>
 
@@ -41,14 +42,20 @@
                     
                     <?php
                     	// Show the most resent ride shares posted 
+                    	$dbc = new dbw(DBSERVER,DBUSER,DBPASS,DBCATALOG);
+                    	
                     	$sql = "SELECT DepartureDate, SourceCity, DestCity, ReturnDate, SeatsRemaining, Price, PostID FROM RideShare ORDER BY PostID DESC;";
-                    	$connection->multi_query($sql);
-                    	$result = $connection->store_result();
+                    	
+                    	$result = $dbc->query($sql);
+                    	
                     	$row = $result->fetch_row();  
 						
 						echo "
-							<table class='table'>
-								<tr><th>Departure City</th><th>Departure Date</th><th>Departure Time</th><th>Destination City</th><th>Return Date</th><th>Return Time</th><th>Price</th></tr>						
+							<table id='table_id' class='table table-striped' data-provides='rowlink'>
+								<thead>
+								<tr><th>Departure City</th><th>Departure Date</th><th>Departure Time</th><th>Destination City</th><th>Return Date</th><th>Return Time</th><th>Price</th></tr>
+								</thead>
+								<tbody>
 						";
                     	// Display the 10 most recent rideshare posts
                     	for($i=0; $i<10; $i++){
@@ -62,16 +69,16 @@
                     		$returnDate = getDateFunc($row[3]);
                     		$returnTime = getTime($row[3]);
 							
-							echo "
+							echo "			
 								<tr>
-									<td><a href ='rideinfo?PostID=$row[6]'><h4 class='media-heading'>$row[1]</a></td>
+									<td><a href ='rideinfo?PostID=$row[6]'></a>$row[1]</td>
 									<td>$departDate</td>
 									<td>$departTime</td>
-									<td><a href ='rideinfo?PostID=$row[6]'><h4 class='media-heading'>$row[2]</a></td>
+									<td><a href ='rideinfo?PostID=$row[6]'></a>$row[2]</td>
 									<td>$returnDate</td>
 									<td>$returnTime</td>
-									<td>$$row[5]</td>
-								</tr>																
+									<td>$$row[5]</td>		
+								</tr>											
 							";
                     		
 		                    // echo "
@@ -120,7 +127,7 @@
 		                    // ";
 		                    $row = $result->fetch_row();  
 	                    }
-						echo "</table>";
+						echo "</tbody></table>";
 	                    
                 		// Function to get the date from DATETIME
 						function getDateFunc($fromMYSQL){
@@ -133,104 +140,6 @@
 						}
 
                     ?>
-                    <!--
-                    <div class="row-fluid">
-                        <div class="span6">
-                            <div class="well well-small">
-                                <div class="media">
-                                    <a class="pull-left" href="#"><img class="media-object" data-src="holder.js/64x64"></a>
-                                    <div class="media-body">
-                                        <h4 class="media-heading">Heading</h4>
-                                        <p>A product description in project management...</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="span6">
-                            <div class="well well-small">
-                                <div class="media">
-                                    <a class="pull-left" href="#"><img class="media-object" data-src="holder.js/64x64"></a>
-                                    <div class="media-body">
-                                        <h4 class="media-heading">Heading</h4>
-                                        <p>A product description in project management...</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row-fluid">
-                        <div class="span6">
-                            <div class="well well-small">
-                                <div class="media">
-                                    <a class="pull-left" href="#"><img class="media-object" data-src="holder.js/64x64"></a>
-                                    <div class="media-body">
-                                        <h4 class="media-heading">Heading</h4>
-                                        <p>A product description in project management...</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="span6">
-                            <div class="well well-small">
-                                <div class="media">
-                                    <a class="pull-left" href="#"><img class="media-object" data-src="holder.js/64x64"></a>
-                                    <div class="media-body">
-                                        <h4 class="media-heading">Heading</h4>
-                                        <p>A product description in project management...</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row-fluid">
-                        <div class="span6">
-                            <div class="well well-small">
-                                <div class="media">
-                                    <a class="pull-left" href="#"><img class="media-object" data-src="holder.js/64x64"></a>
-                                    <div class="media-body">
-                                        <h4 class="media-heading">Heading</h4>
-                                        <p>A product description in project management...</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="span6">
-                            <div class="well well-small">
-                                <div class="media">
-                                    <a class="pull-left" href="#"><img class="media-object" data-src="holder.js/64x64"></a>
-                                    <div class="media-body">
-                                        <h4 class="media-heading">Heading</h4>
-                                        <p>A product description in project management...</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row-fluid">
-                        <div class="span6">
-                            <div class="well well-small">
-                                <div class="media">
-                                    <a class="pull-left" href="#"><img class="media-object" data-src="holder.js/64x64"></a>
-                                    <div class="media-body">
-                                        <h4 class="media-heading">Heading</h4>
-                                        <p>A product description in project management...</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="span6">
-                            <div class="well well-small">
-                                <div class="media">
-                                    <a class="pull-left" href="#"><img class="media-object" data-src="holder.js/64x64"></a>
-                                    <div class="media-body">
-                                        <h4 class="media-heading">Heading</h4>
-                                        <p>A product description in project management...</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    -->
                 </div>
             </div>
         </div>
@@ -239,5 +148,6 @@
     <script src="holder/holder.js"></script>
     <script src="http://code.jquery.com/jquery-latest.js"></script>
     <script src="bootstrap/js/bootstrap.js"></script>
+    <script src="bootstrap/js/bootstrap-rowlink.js"></script>
 </html>
 

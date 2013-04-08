@@ -10,11 +10,23 @@
         <title>Western List</title>
         <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
         <link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+        <link href="bootstrap/css/bootstrap-rowlink.css" rel="stylesheet">   
+	<link href="datatables/media/css/bootstrap-dt.css" rel="stylesheet">     
+<script type="text/javascript" language="javascript" src="datatables/media/js/jquery.js"></script>
+	<script type="text/javascript" language="javascript" src="datatables/media/js/jquery.dataTables.js"></script>
+	<script type="text/javascript" language="javascript" src="datatables/media/js/paging.js"></script>
+	<script>
+		$(document).ready(function() {
+			var oTable = $('#table_id').dataTable( {
+				"sPaginationType": "bootstrap"
+			} );
+		} );
+	</script>
     </head>
     <body>
 
 		<!-- Navbar -->        
-		<?php DisplayNavbar(basename(__FILE__)); ?>
+		<?php DisplayNavbar(basename("rideshare.php")); ?>
         
         <div class="container">
             <div class="row-fluid">
@@ -34,24 +46,31 @@
                             <form class="form-inline" action="ridesharesearch.php" method="get">
                                 <input class="input-medium" type="text" placeholder="From:" name="from">
                                 <input class="input-medium" type="text" placeholder="To:" name="to">
-                                <button type="submit" class="btn">Search</button>
+                                <button type="submit" class="btn btn-primary">Search</button>
                             </form>
                         </div>
                     </div>
 
                             <!-- MAIN CONTENT FOR RIDESHARES -->
-							<?php														
+							<?php			
+								$dbc = new dbw(DBSERVER,DBUSER,DBPASS,DBCATALOG);											
 								// Get the search terms from the user
 								$source = $_GET['from'];
 								$destination = $_GET['to'];
 								
 								// Search for the appropriate rideshares
-		                    	$sql = "SELECT DepartureDate, SourceCity, DestCity, ReturnDate, SeatsRemaining, Price, PostID FROM RideShare WHERE SourceCity = '$source' AND DestCity = '$destination' ORDER BY PostID DESC;";
-		                    	$connection->multi_query($sql);
-		                    	$result = $connection->store_result();
+		                    	$sql = "SELECT DepartureDate, SourceCity, DestCity, ReturnDate, SeatsRemaining, Price, PostID FROM RideShare WHERE SourceCity like '$source%' AND DestCity like '$destination%' ORDER BY PostID DESC;";
+		                    	$result = $dbc->query($sql);
 		                    	$row = $result->fetch_row(); 
-								
-		                    	// Display the 10 most recent rideshare posts
+		                    	
+								echo "
+									<table id='table_id' class='table table-striped' data-provides='rowlink'>
+										<thead>
+										<tr><th>Departure City</th><th>Departure Date</th><th>Departure Time</th><th>Destination City</th><th>Return Date</th><th>Return Time</th><th>Price</th></tr>						
+										</thead>
+										<tbody>
+								";
+		                    								
 		                    	while($row){
 		                    		// Convert the date/time info
 		                    		$departDate = getDateFunc($row[0]);
@@ -59,7 +78,21 @@
 		                    		$returnDate = getDateFunc($row[3]);
 		                    		$returnTime = getTime($row[3]);
 		                    		
-				                    echo "
+		                    		echo "
+										<tr>
+											<td><a href ='rideinfo?PostID=$row[6]'></a>$row[1]</td>
+											<td>$departDate</td>
+											<td>$departTime</td>
+											<td><a href ='rideinfo?PostID=$row[6]'></a>$row[2]</td>
+											<td>$returnDate</td>
+											<td>$returnTime</td>
+											<td>$$row[5]</td>
+										</tr>																
+									";
+                    		
+
+		                    		
+/*				                    echo "
 					                    <div class='row-fluid'>	                    
 					                        <div class='span6'>
 					                            <div class='well well-small'>
@@ -104,8 +137,9 @@
 					                        </div>
 					                    </div>
 				                    ";
-				                    $row = $result->fetch_row();  
+*/				                    $row = $result->fetch_row();  
 			                    }
+			                    echo "</tbody></table>";
 			                    
 		                		// Function to get the date from DATETIME
 								function getDateFunc($fromMYSQL){
@@ -128,7 +162,8 @@
         
     </body>
     <script src="holder/holder.js"></script>
-    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <!--<script src="http://code.jquery.com/jquery-latest.js"></script>-->
     <script src="bootstrap/js/bootstrap.js"></script>
+    <!--<script src="bootstrap/js/bootstrap-rowlink.js"></script>    -->
 </html>
 

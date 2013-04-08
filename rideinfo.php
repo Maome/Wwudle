@@ -14,7 +14,7 @@
     <body>
 
 		<!-- Navbar -->
-		<?php DisplayNavbar(basename(__FILE__)); ?>
+		<?php DisplayNavbar(basename("rideshare.php")); ?>
         
         <div class="container">
             <div class="row-fluid">
@@ -22,20 +22,21 @@
 				<?php DisplaySidebar(); ?>
                 <div class="span9">
                     <div class="row-fluid">
-                        <div class="span4">
+                        <div class="span5">
 
                             <!-- MAIN CONTENT FOR RIDEINFO -->
 							<?php
+								$dbc = new dbw(DBSERVER,DBUSER,DBPASS,DBCATALOG);
+								
 								// Check to see if user is logged on/Valid user
 								$username = PHPCAS::GetUser();
 								
 								// See if the user is in the Users table
 								$username = $username . "@students.wwu.edu";
 								$sql = "Select * from User where Email = '$username';";
-								$result = $connection->prepare($sql);
-								$result->execute();
-								$result->store_result();
 								
+								$result = $dbc->query($sql);
+																
 								// Check if the name is in the table
 								$rows = $result->num_rows;					
 								
@@ -48,8 +49,7 @@
 									
 									// Get the information about this rideshare
 			                    	$sql = "SELECT DepartureDate, SourceCity, DestCity, ReturnDate, SeatsRemaining, Price, PostID FROM RideShare WHERE PostID=$PostID";
-			                    	$connection->multi_query($sql);
-			                    	$result = $connection->store_result();
+			                    	$result = $dbc->query($sql);
 			                    	$row = $result->fetch_row();									
 			                    	
 			                    	// Convert the date 
@@ -62,6 +62,45 @@
 																		
 									// Show the user all of the info that has been recieved 
 									echo "
+										<table id='table_id' class='table table-striped'>
+											<thead>
+												<th colspan='2'><h3>Ride Details:</h3></th>												
+											</thead>
+											<tbody>
+												<tr>
+													<td><b>Departure Date</b></td><td>$departureDate</td>
+												</tr>
+												<tr>
+													<td><b>Departure Time</b></td><td>$departureTime</td>
+												</tr>
+												<tr>
+													<td><b>Departure Location</b></td><td>$row[1]</td>
+												</tr>
+												<tr>
+													<td><b>Return Date</b></td><td>$returnDate</td>
+												</tr>
+												<tr>
+													<td><b>Return Time</b></td><td>$returnTime</td>
+												</tr>
+												<tr>
+													<td><b>Destination Location</b></td><td>$row[2]</td>
+												</tr>
+												<tr>
+													<td><b>Seats Remaining</b></td><td>$row[4]</td>
+												</tr>												
+												<tr>
+													<td><b>Price</b></td><td>$$row[5]</td>
+												</tr>													
+											</tbody>
+										</table>
+										
+			                            <form class='form-inline' action='ridesharerequest.php' method='get'>
+			                            	<input type='hidden' name='PostID' value='$PostID'>
+			                                <button type='submit' class='btn btn-primary'>Request Ride</button>
+			                            </form>																											
+									";
+									
+/*									echo "										
 										<p><b>Departure Date:</b> $departureDate</p>
 										<p><b>Departure Time:</b> $departureTime</p>
 										<p><b>Departure Location:</b> $row[1]</p>
@@ -73,7 +112,7 @@
 										<p><b>Seats Remaining:</b> $row[4]</p>
 										<p><b>Price:</b> $$row[5]</p>																			
 									";
-																		
+*/																		
 								}																   								
 								
 								// Function to get the date from DATETIME
