@@ -60,11 +60,16 @@
 									$Dest = $row[1];
 									
 									// Create a form to get the message
-									echo "
-			                            <form class='form-inline' action='sendridesharerequest.php' method='post'>
-											<input type='text'>Rideshare request from $Source to $Dest</input> <br /><br />
-			                            	<textarea class='field span12' rows='10' placeholder='Type your message here' name='MessageBody'></textarea><br /><br />
-			                                <button type='submit' class='btn btn-primary'>Request Ride</button>
+									echo "																												
+			                            <form class='form-inline' action='ridesharerequestRCV.php' method='post'>
+			                            	<div class='control-group'>
+				                             	<label class='control-label' for='Subject'>Subject</label>
+												<input class='field span12' type='text' name='Subject' id='Subject' value='Rideshare request from $Source to $Dest'> <br /><br />
+												<label class='control-label' for='MessageBody'>Message</label>
+				                            	<textarea class='field span12' rows='10' placeholder='Type your message here' name='MessageBody' id='MessageBody'></textarea><br /><br />
+				                            	<input type='hidden' name='PostID' value='$PostID'>
+				                                <button type='submit' class='btn btn-primary'>Request Ride</button>
+			                                </div>
 			                            </form>																				
 									";
 								}																   																											

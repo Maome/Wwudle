@@ -5,23 +5,23 @@
 	include_once("../../private_html/connect.php");
 ?>
 <!DOCTYPE HTML>
-<html lang-"en">
+<html lang="en">
     <head>
         <title>Western List</title>
         <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
         <link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
         <link href="bootstrap/css/bootstrap-rowlink.css" rel="stylesheet">   
-	<link href="datatables/media/css/bootstrap-dt.css" rel="stylesheet">     
-<script type="text/javascript" language="javascript" src="datatables/media/js/jquery.js"></script>
-	<script type="text/javascript" language="javascript" src="datatables/media/js/jquery.dataTables.js"></script>
-	<script type="text/javascript" language="javascript" src="datatables/media/js/paging.js"></script>
-	<script>
-		$(document).ready(function() {
-			var oTable = $('#table_id').dataTable( {
-				"sPaginationType": "bootstrap"
+		<link href="datatables/media/css/bootstrap-dt.css" rel="stylesheet">     
+		<script type="text/javascript" language="javascript" src="datatables/media/js/jquery.js"></script>
+		<script type="text/javascript" language="javascript" src="datatables/media/js/jquery.dataTables.js"></script>
+		<script type="text/javascript" language="javascript" src="datatables/media/js/paging.js"></script>
+		<script>
+			$(document).ready(function() {
+				var oTable = $('#table_id').dataTable( {
+					"sPaginationType": "bootstrap"
+				} );
 			} );
-		} );
-	</script>
+		</script>
     </head>
     <body>
 
@@ -66,7 +66,7 @@
 								echo "
 									<table id='table_id' class='table table-striped' data-provides='rowlink'>
 										<thead>
-										<tr><th>Departure City</th><th>Departure Date</th><th>Departure Time</th><th>Destination City</th><th>Return Date</th><th>Return Time</th><th>Price</th></tr>						
+										<tr><th>Leaving From <i class='icon-chevron-down'></i></th><th>Departing <i class='icon-chevron-down'></i></th><th>Departure Time <i class='icon-chevron-down'></i></th><th>Going To <i class='icon-chevron-down'></i></th><th>Return Date <i class='icon-chevron-down'></i></th><th>Return Time <i class='icon-chevron-down'></i></th><th>Price <i class='icon-chevron-down'></i></th></tr>						
 										</thead>
 										<tbody>
 								";
@@ -90,54 +90,7 @@
 										</tr>																
 									";
                     		
-
-		                    		
-/*				                    echo "
-					                    <div class='row-fluid'>	                    
-					                        <div class='span6'>
-					                            <div class='well well-small'>
-					                                <div class='media'>                                	
-					                                    <a class='pull-left' href='#'><img class='media-object' data-src='holder.js/64x64'></a>
-					                                    <div class='media-body'>
-					                                        <a href ='rideinfo?PostID=$row[6]'><h4 class='media-heading'>$row[1] <i class='icon-arrow-right'></i> $row[2]</h4></a>
-					                                        <p><b>Depart:</b> $departTime on $departDate</p>
-					                                        <p><b>Return:</b> $returnTime on $returnDate</p>
-					                                        <p><b>Price:</b> $$row[4]</p>
-					                                    </div>
-					                                </div>
-					                            </div>
-					                        </div>
-					                ";        
-					                
-					                // Get the next row 
-					                $row = $result->fetch_row();
-					                if ($row == NULL){
-					                	break;
-					                }
-					                
-		                    		// Convert the date/time info
-		                    		$departDate = getDateFunc($row[0]);
-		                    		$departTime = getTime($row[0]);
-		                    		$returnDate = getDateFunc($row[3]);
-		                    		$returnTime = getTime($row[3]);
-					                
-					                echo "        
-					                        <div class='span6'>
-					                            <div class='well well-small'>
-					                                <div class='media'>
-					                                    <a class='pull-left' href='#'><img class='media-object' data-src='holder.js/64x64'></a>
-					                                    <div class='media-body'>
-					                                        <a href ='rideinfo?PostID=$row[6]'><h4 class='media-heading'>$row[1] <i class='icon-arrow-right'></i> $row[2]</h4></a>
-					                                        <p><b>Depart:</b> $departTime on $departDate</p>
-					                                        <p><b>Return:</b> $returnTime on $returnDate</p>
-					                                        <p><b>Price:</b> $$row[4]</p>
-					                                    </div>
-					                                </div>
-					                            </div>
-					                        </div>
-					                    </div>
-				                    ";
-*/				                    $row = $result->fetch_row();  
+				                    $row = $result->fetch_row();  
 			                    }
 			                    echo "</tbody></table>";
 			                    
@@ -164,6 +117,6 @@
     <script src="holder/holder.js"></script>
     <!--<script src="http://code.jquery.com/jquery-latest.js"></script>-->
     <script src="bootstrap/js/bootstrap.js"></script>
-    <!--<script src="bootstrap/js/bootstrap-rowlink.js"></script>    -->
+    <script src="bootstrap/js/bootstrap-rowlink.js"></script>    
 </html>
 
