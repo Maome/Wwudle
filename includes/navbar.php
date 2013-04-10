@@ -8,7 +8,7 @@
 		if (!isset($_REQUEST['index'])) {
 			CheckCreateUser(true);
 		}
-		CheckCreateUser(true);
+		//CheckCreateUser(true);
 		echo '
 			<div class="navbar navbar-inverse navbar-fixed-top">
 				<div class="navbar-inner">
