@@ -18,7 +18,7 @@
 <!DOCTYPE HTML>
 <html lang-"en">
     <head>
-        <title>Wlist</title>
+        <title>Western List</title>
         <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
         <link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
     </head>
