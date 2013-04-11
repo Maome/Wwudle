@@ -1,8 +1,5 @@
 <?php
-	require_once('cassettings.php');
-	require_once('includes/navbar.php');
-	require_once('includes/sidebar.php');
-	include_once("../../private_html/connect.php");
+	require_once('init.php');
 ?>
 <!DOCTYPE HTML>
 <html lang-"en">
@@ -69,42 +66,42 @@
 									$isValid = true;
 										
 									// Check to departure date									
-									if ($departureDate <= $today)
+									if (!isset($departureDate) || ($departureDate <= $today) || ($departureDate > $returnDate))
 									{
 										// Date is before today
 										$isValid = false;
-										echo "Departure date must be after today";
+										echo "Departure date cannot be before today or the return date <br />";
 									}
 									// Check the departure threshhold
-									if (!is_numeric($departureThreshold))
+									if (!isset($departureThreshold) || !is_numeric($departureThreshold))
 									{
 										$isValid = false;
-										echo "Please enter a valid departure threshold";
+										echo "Please enter a valid departure threshold <br />";
 									}
 									// Check to return date
-									if ($returnDate > date('Y-m-d', strtotime("+3 months", strtotime($returnDate))))
+									if (!isset($returnDate) || ($returnDate > date('Y-m-d', strtotime("+3 months", strtotime($returnDate)))) || ($returnDate < $departureDate))
 									{
 										// Date is before today
 										$isValid = false;
-										echo "Return date must be within 3 months";
+										echo "Return date must be within 3 months, and after the departure date <br />";
 									}
 									// Check the return threshhold
-									if (!is_numeric($destinationThreshold))
+									if (!isset($destinationThreshold) || !is_numeric($destinationThreshold))
 									{
 										$isValid = false;
-										echo "Please enter a valid destination threshold";
+										echo "Please enter a valid destination threshold <br />";
 									}
 									// Check the numSeats 
-									if (!is_numeric($numSeats))
+									if (!isset($numSeats) || !is_numeric($numSeats))
 									{
 										$isValid = false;
-										echo "Please enter a valid number of seats";
+										echo "Please enter a valid number of seats <br />";
 									}
 									// Check the return price 
-									if (!is_numeric($price ))
+									if (!isset($price) || !is_numeric($price ))
 									{
 										$isValid = false;
-										echo "Please enter a valid price";
+										echo "Please enter a valid price <br />";
 									}
 
 									

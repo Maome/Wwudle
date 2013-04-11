@@ -22,7 +22,7 @@
 				<?php DisplaySidebar(); ?>
                 <div class="span9">
                     <div class="row-fluid">
-                        <h2>Recently Added</h2>
+                        <h2>Recently Added</h2>					
                     </div>
                     <div class="row-fluid">
                         <div class="span6">
