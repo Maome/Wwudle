@@ -79,9 +79,11 @@
     <script>
      $(function() {
     	$.fn.raty.defaults.path = 'bootstrap/raty/img';
-    	$('#hwd').raty({ half: true, score: 2.5 });
-    	$('#td').raty({ half: true, score: 2.5  });
-    	$('#lq').raty({ half: true, score: 2.5  });
+    	//defaults were changed in jquery.raty.js and jquery.raty.min.js to half=true, score=2.5, and 
+    	////hints=[very poor, poor, fair, good, very good]. Everything else in unchaged.
+    	$('#hwd').raty();
+    	$('#td').raty();
+    	$('#lq').raty();
      });
     </script>
 </html>
