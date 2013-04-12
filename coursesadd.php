@@ -14,6 +14,7 @@
 	use JasonKaz\FormBuild\Textarea as Textarea;
 	use JasonKaz\FormBuild\Hidden as Hidden;
 	use JasonKaz\FormBuild\Email as Email;
+	use JasonKaz\FormBuild\Star as Star;
 ?>
 <!DOCTYPE HTML>
 <html lang-"en">
@@ -40,7 +41,7 @@
                     </div>
                     <div class="row-fluid">    
                       
-                    <div id="star"></div>              
+                    <!-- <div id="star"></div>   -->           
                     
                      	<?php
                      		$dbc = new dbw(DBSERVER,DBUSER,DBPASS,DBCATALOG);
@@ -48,32 +49,20 @@
 									$CourseReviewForm=new Form;
 									echo $CourseReviewForm->init('','post',array('class'=>'form-horizontal'))
 										->group('Course',
-											new Select($dbc->queryPairs('SELECT Abbreviation,Description FROM Department WHERE RowOrder=1 ORDER BY RowOrder,Abbreviation'),1, array('class'=>'input-large','name'=>'dept')),
+											new Select($dbc->queryPairs('SELECT Abbreviation,Description FROM Department WHERE RowOrder=1 ORDER BY RowOrder,Abbreviation'),1, array('class'=>'input-xlarge','name'=>'dept')),
 											new Text(array('class'=>'input-medium','name'=>'course', 'placeholder'=>'Enter course number'))
 										)
 										->group('Usefulness', 
-											new Radio('1', array('name'=>'use', 'id'=>'use1'), true),
-											new Radio('2', array('name'=>'use', 'id'=>'use2'), true),
-											new Radio('3', array('name'=>'use', 'id'=>'use3', 'checked'), true),
-											new Radio('4', array('name'=>'use', 'id'=>'use4'), true),
-											new Radio('5', array('name'=>'use', 'id'=>'use5'), true)
+											new Star('use')
 										)
 										->group('Quality of content',
-											new Radio('1', array('name'=>'cq', 'id'=>'cq1'), true),
-											new Radio('2', array('name'=>'cq', 'id'=>'cq2'), true),
-											new Radio('3', array('name'=>'cq', 'id'=>'cq3', 'checked'), true),
-											new Radio('4', array('name'=>'cq', 'id'=>'cq4'), true),
-											new Radio('5', array('name'=>'cq', 'id'=>'cq5'), true)
+											new Star('qoc')
 										)
 										->group('Relevance to program',
-											new Radio('1', array('name'=>'rel', 'id'=>'rel1'), true),
-											new Radio('2', array('name'=>'rel', 'id'=>'rel2'), true),
-											new Radio('3', array('name'=>'rel', 'id'=>'rel3', 'checked'), true),
-											new Radio('4', array('name'=>'rel', 'id'=>'rel4'), true),
-											new Radio('5', array('name'=>'rel', 'id'=>'rel5'), true)
+											new Star('rtp')
 										)
 										->group('Additional comments',
-											new Textarea()
+											new Textarea('', array('class'=>'input-xlarge', 'rows'=>'8'))
 										)
 										->group('',
 											new Submit('Submit', array('class' => 'btn btn-primary'))
@@ -93,7 +82,9 @@
     <script>
      $(function() {
     	$.fn.raty.defaults.path = 'bootstrap/raty/img';
-    	$('#star').raty({ half: true });
+    	$('#use').raty({ half: true, score: 2.5 });
+    	$('#qoc').raty({ half: true, score: 2.5  });
+    	$('#rtp').raty({ half: true, score: 2.5  });
     });
     </script>
 </html>

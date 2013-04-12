@@ -14,6 +14,7 @@
 	use JasonKaz\FormBuild\Textarea as Textarea;
 	use JasonKaz\FormBuild\Hidden as Hidden;
 	use JasonKaz\FormBuild\Email as Email;
+	use JasonKaz\FormBuild\Star as Star;
 ?>
 <!DOCTYPE HTML>
 <html lang-"en">
@@ -45,31 +46,19 @@
 									$ProfReviewForm=new Form;
 									echo $ProfReviewForm->init('','post',array('class'=>'form-horizontal'))
 										->group('Professor Name',
-											new Select($dbc->queryPairs('SELECT Name,Name FROM Professor WHERE RowOrder=1 ORDER BY RowOrder,Name'),1, array('class'=>'input-large','name'=>'prof'))
+											new Select($dbc->queryPairs('SELECT Name,Name FROM Professor WHERE RowOrder=1 ORDER BY RowOrder,Name'),1, array('class'=>'input-xlarge','name'=>'prof'))
 										)
 										->group('Homework difficulty', 
-											new Radio('1', array('name'=>'hw', 'id'=>'hw1'), true),
-											new Radio('2', array('name'=>'hw', 'id'=>'hw2'), true),
-											new Radio('3', array('name'=>'hw', 'id'=>'hw3', 'checked'), true),
-											new Radio('4', array('name'=>'hw', 'id'=>'hw4'), true),
-											new Radio('5', array('name'=>'hw', 'id'=>'hw5'), true)
+											new Star('hwd')
 										)
 										->group('Test difficulty',
-											new Radio('1', array('name'=>'test', 'id'=>'test1'), true),
-											new Radio('2', array('name'=>'test', 'id'=>'test2'), true),
-											new Radio('3', array('name'=>'test', 'id'=>'test3', 'checked'), true),
-											new Radio('4', array('name'=>'test', 'id'=>'test4'), true),
-											new Radio('5', array('name'=>'test', 'id'=>'test5'), true)
+											new Star('td')
 										)
 										->group('Lecture quality',
-											new Radio('1', array('name'=>'lec', 'id'=>'lec1'), true),
-											new Radio('2', array('name'=>'lec', 'id'=>'lec2'), true),
-											new Radio('3', array('name'=>'lec', 'id'=>'lec3', 'checked'), true),
-											new Radio('4', array('name'=>'lec', 'id'=>'lec4'), true),
-											new Radio('5', array('name'=>'lec', 'id'=>'lec5'), true)
+											new Star('lq')
 										)
 										->group('Additional comments',
-											new Textarea()
+											new Textarea('', array('class'=>'input-xlarge', 'rows'=>'8'))
 										)
 										->group('',
 											new Submit('Submit', array('class' => 'btn btn-primary'))
@@ -85,5 +74,15 @@
     <script src="holder/holder.js"></script>
     <script src="http://code.jquery.com/jquery-latest.js"></script>
     <script src="bootstrap/js/bootstrap.js"></script>
+    <script src="bootstrap/raty/jquery.raty.js"></script>    
+    <script src="bootstrap/raty/jquery.raty.min.js"></script>
+    <script>
+     $(function() {
+    	$.fn.raty.defaults.path = 'bootstrap/raty/img';
+    	$('#hwd').raty({ half: true, score: 2.5 });
+    	$('#td').raty({ half: true, score: 2.5  });
+    	$('#lq').raty({ half: true, score: 2.5  });
+     });
+    </script>
 </html>
 

@@ -22,7 +22,9 @@
 						<div class="nav-collapse collapse navbar-responsive-collapse">
 							<ul class="nav" style = "font-size: 16px">
 								' .li_type($filename,"index.php") .'<a href="index.php">Home</a></li>
-								<li class="dropdown">
+								<li class="dropdown';
+								if ($filename == "courses.php" || $filename == "textbooks.php" || $filename == "professors.php") echo ' active';
+								echo '">
 									<a class="dropdown-toggle" href="" role="button" data-toggle="dropdown">Reviews<b class="caret"></b></a>
 									<ul class="dropdown-menu" role="menu" aria-labelledby="dropl">
 										' .li_type($filename,"courses.php") .'<a tabindex="-1" href="courses.php">Courses</a></li>
