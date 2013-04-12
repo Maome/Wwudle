@@ -38,7 +38,8 @@
 			<?php DisplaySidebar(); ?>
                 <div class="span9">
                     <div class="row-fluid">
-                        <div class="span6"><h2>Sell a Textbook</h2></div>
+                	<?php BuySellReviewNav(false) ?>                    
+                        <!--<div class="span6"><h2>Sell a Textbook</h2></div>-->
                     </div>
                     <div class="row-fluid">
 							<?php

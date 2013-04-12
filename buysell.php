@@ -40,10 +40,11 @@
 				<!-- Sidebar -->
 				<?php DisplaySidebar(); ?>
                 <div class="span9">
-                    <div class="row-fluid">
+                <?php BuySellReviewNav(true) ?>
+                    <!--<div class="row-fluid">
                         <div class="span6"><h2>Textbooks for Sale</h2></div>
 						<div class="span4"><a class="btn btn-success" type="button" href="buyselladd.php">Sell an item</a></div>
-                    </div>
+                    </div>-->
                     <div class="row-fluid">
 						<?php
 						$dbc = new dbw(DBSERVER,DBUSER,DBPASS,DBCATALOG);
@@ -101,11 +102,11 @@
 								
 								if ($result->num_rows > 0) {
 									$fields = array("ISBN","Title","Price","Description");
-									echo "<table class='table'>";
+									echo "<table class='table table-striped'>";
 										// Display header
-										echo "<tr>";
-											foreach ($fields as $i) echo "<td>" .$i ."</td>";
-										echo "</tr>";
+										echo "<thead>";
+											foreach ($fields as $i) echo "<th>" .$i ."</th>";
+										echo "</thead><tbody>";
 										
 										// Display rows
 										while ($row = $result->fetch_assoc()) {
@@ -115,7 +116,7 @@
 												}
 											echo "</tr>";
 										}
-									echo "</table>";
+									echo "</tbody></table>";
 								}
 								else echo "No results found";
 							}

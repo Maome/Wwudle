@@ -1,8 +1,5 @@
 <?php
-	require_once('cassettings.php');
-	require_once('includes/navbar.php');
-	require_once('includes/sidebar.php');
-	include_once("../../private_html/connect.php");
+	require_once('init.php');
 ?>
 <!DOCTYPE HTML>
 <html lang-"en">
@@ -22,12 +19,13 @@
 				<?php DisplaySidebar(); ?>
                 <div class="span9">
                     <div class="row-fluid">
-                        <div class="span6">
+                    <?php TextbookReviewNav(true); ?>
+                        <!--<div class="span6">
                             <h2>Textbook Reviews</h2>
                         </div>
                         <div class="span4 offset2">
                             <a class="btn btn-success" type="button" href="textbooksadd.php">Review a textbook</a>
-                        </div>
+                        </div>-->
                     </div>
                     <div class="row-fluid">
                         <div class="span6 offset1">

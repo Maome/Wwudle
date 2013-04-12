@@ -33,11 +33,15 @@
 				<?php DisplaySidebar(); ?>
                 <div class="span9">
                     <div class="row-fluid">
-                        <div class="span6">
+                    <?php CourseReviewNav(false) ?>
+                        <!--<div class="span6">
                             <h2>Course Review</h2>
-                        </div>
+                        </div>-->
                     </div>
-                    <div class="row-fluid">
+                    <div class="row-fluid">    
+                      
+                    <div id="star"></div>              
+                    
                      	<?php
                      		$dbc = new dbw(DBSERVER,DBUSER,DBPASS,DBCATALOG);
 						
@@ -80,10 +84,17 @@
                 </div>
             </div>
         </div>
-        
     </body>
     <script src="holder/holder.js"></script>
     <script src="http://code.jquery.com/jquery-latest.js"></script>
     <script src="bootstrap/js/bootstrap.js"></script>
+    <script src="bootstrap/raty/jquery.raty.js"></script>    
+    <script src="bootstrap/raty/jquery.raty.min.js"></script>
+    <script>
+     $(function() {
+    	$.fn.raty.defaults.path = 'bootstrap/raty/img';
+    	$('#star').raty({ half: true });
+    });
+    </script>
 </html>
 

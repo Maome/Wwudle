@@ -43,27 +43,23 @@
 								}
 								else{															
 									// Get the post data
-									$PostID = $_GET['PostID'];
+									$PostID = $_POST['PostID'];
+									$Subject = $_POST['Subject'];
+									$MessageBody = $_POST['MessageBody'];
 									
-									$sql = "SELECT SourceCity, DestCity FROM RideShare WHERE PostID = '$PostID';";
+									// Get the email for the person who posted the ride
+									$sql = "SELECT Email FROM User INNER JOIN RideShare ON User.UserID=RideShare.UserID WHERE RideShare.PostID='$PostID';";
 									$result = $dbc->query($sql);
 									$row = $result->fetch_row();
-									$Source = $row[0];
-									$Dest = $row[1];
+									$PostEmail = $row[0];
 									
-									// Create a form to get the message
-									echo "																												
-			                            <form class='form-inline' action='ridesharerequestRCV.php' method='post'>
-			                            	<div class='control-group'>
-				                             	<label class='control-label' for='Subject'>Subject</label>
-												<input class='field span12' type='text' name='Subject' id='Subject' value='Rideshare request from $Source to $Dest'> <br /><br />
-												<label class='control-label' for='MessageBody'>Message</label>
-				                            	<textarea class='field span12' rows='10' placeholder='Type your message here' name='MessageBody' id='MessageBody'></textarea><br /><br />
-				                            	<input type='hidden' name='PostID' value='$PostID'>
-				                                <button type='submit' class='btn btn-primary'>Request Ride</button>
-			                                </div>
-			                            </form>																				
-									";
+									// Constuct the email message
+									$headers = 'From: ' . $username . "\r\n" .
+									    'Reply-To: ' . $username . "\r\n" .
+									    'X-Mailer: PHP/' . phpversion();									
+						            mail($PostEmail,$Subject,$MessageBody,$headers);	
+						            
+									echo "<h2>Your email has been sent</h2>";																
 								}																   																											
 							?>
 							

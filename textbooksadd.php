@@ -33,9 +33,10 @@
 				<?php DisplaySidebar(); ?>
                 <div class="span9">
                     <div class="row-fluid">
-                        <div class="span6">
+                    <?php TextbookReviewNav(false); ?>
+                        <!--<div class="span6">
                             <h2>Textbook Reviews</h2>
-                        </div>
+                        </div>-->
                     </div>
                     <div class="row-fluid">
                      	<?php

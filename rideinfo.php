@@ -20,6 +20,7 @@
 				<?php DisplaySidebar(); ?>
                 <div class="span9">
                     <div class="row-fluid">
+                    <?php RideshareNav(true); ?>
                         <div class="span5">
 
                             <!-- MAIN CONTENT FOR RIDEINFO -->

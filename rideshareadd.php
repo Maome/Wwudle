@@ -20,15 +20,16 @@
 				<?php DisplaySidebar(); ?>
                 <div class="span9">
                     <div class="row-fluid">
+						<?php RideshareNav(false); ?>                    
                         <div class="span4">
 
                             <!-- MAIN CONTENT FOR RIDESHARES -->
-							<h2>Rideshare</h2>							
+							<!-- <h2>Rideshare</h2>	-->													
 							<form class="form-horizontal" name="addRideShare" action="rideshareaddRCV.php" method="post">																				
 								<div class="control-group">
 									<label class="control-label" for="departureDate">Departure Date</label>
 									    <div class="controls input-prepend">
-                                            <input id="departureDate" name="departureDate" type="text" value="<?php echo date('m/d/Y'); ?>" data-date-format="mm/dd/yyyy"class="datepicker">
+                                            <input id="departureDate" name="departureDate" type="text" value="<?php echo date('m/d/Y'); ?>" data-date-format="mm/dd/yyyy" class="datepicker">
 									    </div>
 									</div>
 								<div class="control-group">
@@ -137,7 +138,7 @@
 									</div>
 									<div class="control-group"> 		
 									<div class="controls">
-										<button class="btn" type="submit">Submit
+										<button type="submit" class="btn btn-primary">Submit
 										</button></div>
 								</div>														
 							</form>

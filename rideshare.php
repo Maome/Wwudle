@@ -32,12 +32,15 @@
 				<?php DisplaySidebar(); ?>
                 <div class="span9">
                     <div class="row-fluid">
-                        <div class="span4">
+                        <!--<div class="span4">
                             <h2>Rideshare</h2>
-                        </div>
-                        <div class="span4 offset4">
+                        </div>-->
+						<?php RideshareNav(true); ?>                        
+                        
+                        
+                        <!--<div class="span4 offset4">
                             <a class="btn btn-success" type="button" href="rideshareadd.php">Add a ride</a>
-                        </div>
+                        </div>-->
                     </div>
                     <div class="row-fluid">
                         <div class="span8 offset1">
@@ -48,7 +51,8 @@
                             </form>
                         </div>
                     </div>
-                    
+                        
+                                            
                     <?php						
                     	// Show the most resent ride shares posted 
 						ShowRides(false, null, null);

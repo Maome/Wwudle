@@ -9,12 +9,12 @@
 	{
 		global $dbc;
 		
-		$qry = "SELECT DepartureDate, SourceCity, DestCity, ReturnDate, SeatsRemaining, Price, PostID FROM RideShare WHERE DepartureDate >= CURRENT_TIMESTAMP ORDER BY PostID DESC;";
+		$qry = "SELECT DepartureDate, SourceCity, DestCity, ReturnDate, SeatsRemaining, Price, PostID, MaxSeats FROM RideShare WHERE DepartureDate >= CURRENT_TIMESTAMP ORDER BY PostID DESC;";
 		
 		// See if we are searching or homepage of rides
 		if ($isSearch)
 		{
-			$qry = "SELECT DepartureDate, SourceCity, DestCity, ReturnDate, SeatsRemaining, Price, PostID FROM RideShare WHERE SourceCity like '$source%' AND DestCity like '$destination%' AND DepartureDate >= CURRENT_TIMESTAMP ORDER BY PostID DESC;";
+			$qry = "SELECT DepartureDate, SourceCity, DestCity, ReturnDate, SeatsRemaining, Price, PostID, MaxSeats FROM RideShare WHERE SourceCity like '$source%' AND DestCity like '$destination%' AND DepartureDate >= CURRENT_TIMESTAMP ORDER BY PostID DESC;";
 		}				
 		
 		$result = $dbc->query($qry);		
@@ -23,7 +23,16 @@
 		echo "
 			<table id='table_id' class='table table-striped' data-provides='rowlink'>
 				<thead>
-				<tr><th>Leaving From <i class='icon-chevron-down'></i></th><th>Departing <i class='icon-chevron-down'></i></th><th>Departure Time <i class='icon-chevron-down'></i></th><th>Going To <i class='icon-chevron-down'></i></th><th>Return Date <i class='icon-chevron-down'></i></th><th>Return Time <i class='icon-chevron-down'></i></th><th>Price <i class='icon-chevron-down'></i></th></tr>
+				<tr>
+					<th>Leaving From <i class='icon-chevron-down'></i></th>
+					<th>Departing <i class='icon-chevron-down'></i></th>
+					<th>Departure Time <i class='icon-chevron-down'></i></th>
+					<th>Going To <i class='icon-chevron-down'></i></th>
+					<th>Return Date <i class='icon-chevron-down'></i></th>
+					<th>Return Time <i class='icon-chevron-down'></i></th>
+					<th>Price <i class='icon-chevron-down'></i></th></tr>
+
+				</tr>
 				</thead>
 				<tbody>
 		";
@@ -44,6 +53,7 @@
 					<td>$returnDate</td>
 					<td>$returnTime</td>
 					<td>$$row[5]</td>
+
 				</tr>									
 			";
 			$row = $result->fetch_row();  
