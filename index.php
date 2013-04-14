@@ -22,127 +22,22 @@
 				<?php DisplaySidebar(); ?>
                 <div class="span9">
                     <div class="row-fluid">
-                        <h2>Recently Added</h2>					
-                    </div>
-                    <div class="row-fluid">
-                        <div class="span6">
-                            <div class="well well-small">
-                                <div class="media">
-                                    <a class="pull-left" href="#"><img class="media-object" data-src="holder.js/64x64"></a>
-                                    <div class="media-body">
-                                        <h4 class="media-heading">Heading</h4>
-                                        <p>A product description in project management...</p>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="hero-unit">
+                            <h1>Woooooooooodle</h1>
+                            <p>Yo this website is cool, we should sell some stuff on it.</p>
                         </div>
-                        <div class="span6">
-                            <div class="well well-small">
-                                <div class="media">
-                                    <a class="pull-left" href="#"><img class="media-object" data-src="holder.js/64x64"></a>
-                                    <div class="media-body">
-                                        <h4 class="media-heading">Heading</h4>
-                                        <p>A product description in project management...</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row-fluid">
-                        <div class="span6">
-                            <div class="well well-small">
-                                <div class="media">
-                                    <a class="pull-left" href="#"><img class="media-object" data-src="holder.js/64x64"></a>
-                                    <div class="media-body">
-                                        <h4 class="media-heading">Heading</h4>
-                                        <p>A product description in project management...</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="span6">
-                            <div class="well well-small">
-                                <div class="media">
-                                    <a class="pull-left" href="#"><img class="media-object" data-src="holder.js/64x64"></a>
-                                    <div class="media-body">
-                                        <h4 class="media-heading">Heading</h4>
-                                        <p>A product description in project management...</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row-fluid">
-                        <div class="span6">
-                            <div class="well well-small">
-                                <div class="media">
-                                    <a class="pull-left" href="#"><img class="media-object" data-src="holder.js/64x64"></a>
-                                    <div class="media-body">
-                                        <h4 class="media-heading">Heading</h4>
-                                        <p>A product description in project management...</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="span6">
-                            <div class="well well-small">
-                                <div class="media">
-                                    <a class="pull-left" href="#"><img class="media-object" data-src="holder.js/64x64"></a>
-                                    <div class="media-body">
-                                        <h4 class="media-heading">Heading</h4>
-                                        <p>A product description in project management...</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row-fluid">
-                        <div class="span6">
-                            <div class="well well-small">
-                                <div class="media">
-                                    <a class="pull-left" href="#"><img class="media-object" data-src="holder.js/64x64"></a>
-                                    <div class="media-body">
-                                        <h4 class="media-heading">Heading</h4>
-                                        <p>A product description in project management...</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="span6">
-                            <div class="well well-small">
-                                <div class="media">
-                                    <a class="pull-left" href="#"><img class="media-object" data-src="holder.js/64x64"></a>
-                                    <div class="media-body">
-                                        <h4 class="media-heading">Heading</h4>
-                                        <p>A product description in project management...</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row-fluid">
-                        <div class="span6">
-                            <div class="well well-small">
-                                <div class="media">
-                                    <a class="pull-left" href="#"><img class="media-object" data-src="holder.js/64x64"></a>
-                                    <div class="media-body">
-                                        <h4 class="media-heading">Heading</h4>
-                                        <p>A product description in project management...</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="span6">
-                            <div class="well well-small">
-                                <div class="media">
-                                    <a class="pull-left" href="#"><img class="media-object" data-src="holder.js/64x64"></a>
-                                    <div class="media-body">
-                                        <h4 class="media-heading">Heading</h4>
-                                        <p>A product description in project management...</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <h2>Textbooks</h2>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce varius iaculis nisl, in placerat dolor iaculis in. Quisque turpis lectus, gravida vitae venenatis et, lacinia vel dui. Aenean tellus odio, dignissim eu eleifend id, volutpat in velit. Morbi at arcu vel felis euismod vehicula et ut risus. Aenean tempus sem posuere erat imperdiet pulvinar. Aenean ac mauris vitae eros aliquet interdum. Sed in tincidunt leo. Praesent quis justo id nisi dapibus semper sed blandit mi.</p>
+                        <button class="btn btn-primary pull-right" type="button">Search Textbooks</button>
+                        </br></br>
+                        <h2>Reviews</h2>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce varius iaculis nisl, in placerat dolor iaculis in. Quisque turpis lectus, gravida vitae venenatis et, lacinia vel dui. Aenean tellus odio, dignissim eu eleifend id, volutpat in velit. Morbi at arcu vel felis euismod vehicula et ut risus. Aenean tempus sem posuere erat imperdiet pulvinar. Aenean ac mauris vitae eros aliquet interdum. Sed in tincidunt leo. Praesent quis justo id nisi dapibus semper sed blandit mi.</p>
+                        <button class="btn btn-primary pull-right" type="button">Search Reviews</button>
+                        </br></br>
+                        <h2>Rideshare</h2>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce varius iaculis nisl, in placerat dolor iaculis in. Quisque turpis lectus, gravida vitae venenatis et, lacinia vel dui. Aenean tellus odio, dignissim eu eleifend id, volutpat in velit. Morbi at arcu vel felis euismod vehicula et ut risus. Aenean tempus sem posuere erat imperdiet pulvinar. Aenean ac mauris vitae eros aliquet interdum. Sed in tincidunt leo. Praesent quis justo id nisi dapibus semper sed blandit mi.</p>
+                        <button class="btn btn-primary pull-right" type="button">Search Rideshares</button>
+                        </br></br>
                     </div>
                 </div>
             </div>
