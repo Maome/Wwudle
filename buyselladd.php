@@ -1,6 +1,7 @@
 <?php
 	require_once('init.php');
 	require_once('classes/book.php');
+	require_once('buysellfunctions.php');
 	use JasonKaz\FormBuild\Form as Form;
 	use JasonKaz\FormBuild\Text as Text;
 	use JasonKaz\FormBuild\Help as Help;
@@ -65,7 +66,7 @@
 									}*/
 									
 									$dbc = new dbw(DBSERVER,DBUSER,DBPASS,DBCATALOG);
-									$book = new book($dbc,$isbn,$title);
+									$book = new book($dbc,$isbn,$title,true);
 									if (!$book->exists()) $book->createBook($isbn,null,$title,null,null);
 									
 									// Insert book listing
@@ -73,6 +74,7 @@
 										(PostDate, UserID, BookID, BookConditionID, Price, ViewCount, ChangeSource, RecordStatus, RecordStatusDate)
 										VALUES(NOW()," .$_SESSION['userID'] ."," .$bookID ."," .$_POST['condition'] ."," .$_POST['price'] .", 0, 0, 1, NOW());";
 									$result = $dbc->query($sql);*/
+									createBookListing($dbc,$book->getBookID(),$_POST['condition'],$_POST['price']);
 									
 									echo "
 									  <div>
@@ -154,7 +156,7 @@
 
 							  /* display a list of volumes */
 							  if (isset($_GET['srchText'])) {
-								 $srchText =  (is_numeric($_GET['srchText'])? 'isbn:' : 'intitle:') .$_GET['srchText'];
+								 $srchText =  (is_numeric(str_replace('-','',$_GET['srchText']))? 'isbn:' : 'intitle:') .str_replace('-','',$_GET['srchText']);
 							  	 $results = $volumes->listVolumes($srchText, $optParams);
 								 echoBookList($dbc, $results);
 							  }

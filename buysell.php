@@ -1,5 +1,6 @@
 <?php
 	require_once('init.php');
+	require_once('buysellfunctions.php');
 	use JasonKaz\FormBuild\Form as Form;
 	use JasonKaz\FormBuild\Text as Text;
 	use JasonKaz\FormBuild\Help as Help;
@@ -41,10 +42,6 @@
 				<?php DisplaySidebar(); ?>
                 <div class="span9">
                 <?php BuySellReviewNav(true) ?>
-                    <!--<div class="row-fluid">
-                        <div class="span6"><h2>Textbooks for Sale</h2></div>
-						<div class="span4"><a class="btn btn-success" type="button" href="buyselladd.php">Sell an item</a></div>
-                    </div>-->
                     <div class="row-fluid">
 						<?php
 						$dbc = new dbw(DBSERVER,DBUSER,DBPASS,DBCATALOG);
@@ -64,7 +61,7 @@
 						echo '<h4>Find a textbook by course</h4>';
 						echo $FormB->init('','get',array('class'=>'form-inline'))
 							->group('',
-								new Select($dbc->queryPairs('SELECT Abbreviation,Description FROM Department ORDER BY RowOrder,Abbreviation'),1, array('class'=>'input-large','name'=>'srchDept')),
+								new Select($dbc->queryPairs('SELECT Abbreviation, Description FROM Department ORDER BY RowOrder,Abbreviation'),$_GET['srchDept'], array('class'=>'input-large','name'=>'srchDept')),
 								new Text(array('class'=>'input-medium','name'=>'srchCourse', 'placeholder'=>'Enter course number')),
 								new Submit('Search',array('class'=>'btn btn-primary'))
 							)
@@ -74,59 +71,13 @@
                     </div>
 					<div class="row-fluid">
 						<?php
-						
-							function displayBookListings($srch, $isCourseSearch) {
-								$dbc = new dbw(DBSERVER,DBUSER,DBPASS,DBCATALOG);
-								
-								if ($isCourseSearch) $where = "WHERE COALESCE(bl.Course,'') LIKE '%" .$srch ."%'";
-								else {
-									if (is_numeric($srch)) {
-										$where = "WHERE b.ISBN = " .$srch;
-									}
-									else $where = "WHERE COALESCE(b.Title,'') LIKE '%" .$srch ."%'";
-								}
-								
-								$qry = "SELECT
-												bl.PostID,
-												b.ISBN,
-												b.Title,
-												bl.Price Price, 
-												bc.Description
-											 FROM BookListing bl
-											 JOIN Book b
-											 ON (b.BookID = bl.BookID)
-											 LEFT JOIN BookCondition bc
-											 ON (bc.BookConditionID = bl.BookConditionID)" 
-											 .$where;
-								$result = $dbc->query($qry);
-								
-								if ($result->num_rows > 0) {
-									$fields = array("ISBN","Title","Price","Description");
-									echo "<table class='table table-striped'>";
-										// Display header
-										echo "<thead>";
-											foreach ($fields as $i) echo "<th>" .$i ."</th>";
-										echo "</thead><tbody>";
-										
-										// Display rows
-										while ($row = $result->fetch_assoc()) {
-											echo "<tr>";
-												foreach ($fields as $i){
-													echo "<td>" .$row[$i] ."</td>";
-												}
-											echo "</tr>";
-										}
-									echo "</tbody></table>";
-								}
-								else echo "No results found";
-							}
 							
 							if (isset($_GET['srchText'])) {
-								displayBookListings($_GET['srchText'],0);
+								displayBookListings(array($_GET['srchText']),0);
 							}
 							else if (isset($_GET['srchCourse']) || isset($_GET['srchDept'])) {
 								$dept = trim($_GET['srchDept'] == 'ALL' ? '' : $_GET['srchDept']) .' ';
-								displayBookListings(trim($dept .' ' .$_GET['srchCourse']),1);
+								displayBookListings(array(trim($dept),trim($_GET['srchCourse'])),1);
 							}
 							else if (isset($_POST['postID'])) {
 								echo "An email has been sent to the seller on your behalf.";
