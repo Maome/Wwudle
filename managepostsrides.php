@@ -1,6 +1,6 @@
 <?php
 	require_once('init.php');
-	require_once('ridesharefunctions.php');
+	require_once('ridesharefunctions.php');	
 ?>
 <!DOCTYPE HTML>
 <html lang-"en">
@@ -8,6 +8,35 @@
         <title>Western List</title>
         <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
         <link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+		<link href="bootstrap/css/datepicker.css" rel="stylesheet">
+		<link href="bootstrap/css/bootstrap-modal.css" rel="stylesheet">
+		<script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js'></script>
+		<script>
+		
+		$(document).ready(function(){
+			$("#EditRideshareAjax").submit(function(){
+				// Stop the from from submiting normally
+				event.preventDefault();			
+				
+				// get the values from the elements on the page
+				var values = $(this).serialize();
+				
+				// Send the data using post 
+				$.ajax({
+					type: "POST",
+					url: "updaterideshare.php",
+					data: values,
+					success: function(msg){											
+						location.reload();
+					},
+					error:function(){
+						alert("An error has occured, please try again");
+					}
+				});
+			});
+		});			
+
+	</script>
     </head>
     <body>
 		
@@ -19,7 +48,7 @@
 				<!-- Sidebar -->
 				<?php DisplaySidebar(); ?>
                 <div class="span9">
-						<?php
+					<?php
 							ManagePostsNav(true);
 							
 							$dbc = new dbw(DBSERVER,DBUSER,DBPASS,DBCATALOG);
@@ -39,12 +68,14 @@
 							$row = $result->fetch_assoc();														
 
 							if ($result->num_rows > 0) {
-								$headers = array("Leaving From", "Departing", "Departure Time", "Going To", "Return Date", "Return Time", "Price");
+								$headers = array("Leaving From", "Departing", "Departure Time", "Going To", "Return Date", "Return Time", "Edit");
 								echo "<table class='table table-striped'>";
 									// Display header
 									echo "<thead>";
 										foreach ($headers as $i) echo "<th>" .$i ."</th>";
 									echo "</thead><tbody>";
+									
+									$count = 0;
 									
 									// Display rows
 									while($row){			            
@@ -62,15 +93,19 @@
 											<td>" . $row['DestCity'] . "</td>
 											<td>" . $returnDate . "</td>
 											<td>" . $returnTime . "</td>
-											<td>$" . $row['Price'] . "</td>							
-										</tr>";																			
+											<td><a href='#edit" . $count . "' role='button' class='btn btn-primary' data-toggle='modal'>Edit</a></td>							
+										</tr>";		
+
+										// Create a modal to edit the rideshare
+										include('ridesharemodal.php');
 										
 										$row = $result->fetch_assoc(); 
+										$count++;
 									}
-									echo "</tbody></table>";
+									echo "</tbody></table>";									
 							}
 							else echo "You currently have no rideshares pending";																																	
-						?>
+						?>					
                 </div>
             </div>
         </div>
@@ -79,5 +114,9 @@
     <script src="holder/holder.js"></script>
     <script src="http://code.jquery.com/jquery-latest.js"></script>
     <script src="bootstrap/js/bootstrap.js"></script>
+	<script src="bootstrap/js/bootstrap-modal.js"></script>
+	<script src="bootstrap/js/bootstrap-modalmanager.js"></script>
+	<script src="bootstrap/js/bootstrap-datepicker.js"></script>
+    <script>$('.datepicker').datepicker();</script>
 </html>
 

@@ -8,6 +8,7 @@
         <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
         <link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
         <link href="bootstrap/css/datepicker.css" rel="stylesheet">
+	<link href="bootstrap/validaty/jquery.validaty.css" rel="stylesheet">
     </head>
     <body>
 
@@ -25,7 +26,7 @@
 
                             <!-- MAIN CONTENT FOR RIDESHARES -->
 							<!-- <h2>Rideshare</h2>	-->													
-							<form class="form-horizontal" name="addRideShare" action="rideshareaddRCV.php" method="post">																				
+							<form class="form-horizontal" name="addRideShare" id="addRideShare" action="rideshareaddRCV.php" method="post">																				
 								<div class="control-group">
 									<label class="control-label" for="departureDate">Departure Date</label>
 									    <div class="controls input-prepend">
@@ -65,7 +66,7 @@
 									<div class="control-group">    
 									<label class="control-label" for="departureLocation">Departure Location</label>
 										<div class="controls">
-											<input id="departureLocation" name="departureLocation" type="text">
+											<input id="departureLocation" name="departureLocation" type="text" data-validaty="required">
 										</div>
 									</div>
 									<div class="control-group"> 
@@ -138,7 +139,7 @@
 									</div>
 									<div class="control-group"> 		
 									<div class="controls">
-										<button type="submit" class="btn btn-primary">Submit
+										<button type="submit" class="button btn btn-primary">Submit
 										</button></div>
 								</div>														
 							</form>
@@ -155,6 +156,17 @@
     <script src="bootstrap/js/bootstrap.js"></script>
     <script src="bootstrap/js/bootstrap-datepicker.js"></script>
     <script>$('.datepicker').datepicker();</script>
-
+    <script src="bootstrap/validaty/jquery.validaty.js"></script>
+    <script src="bootstrap/validaty/jquery.validaty.min.js"></script>
+    <script src="bootstrap/validaty/jquery.validaty.validators.js"></script>
+    <script>
+	$(document).ready(function(){
+		
+		$('.form').validaty();
+		      $('.button').on('click', function() {
+        $(this).parent('form').validaty('validate');
+      });
+	)};
+    </script>
 </html>
 

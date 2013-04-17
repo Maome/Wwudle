@@ -28,15 +28,15 @@
                         </div>
                         <h2>Textbooks</h2>
                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce varius iaculis nisl, in placerat dolor iaculis in. Quisque turpis lectus, gravida vitae venenatis et, lacinia vel dui. Aenean tellus odio, dignissim eu eleifend id, volutpat in velit. Morbi at arcu vel felis euismod vehicula et ut risus. Aenean tempus sem posuere erat imperdiet pulvinar. Aenean ac mauris vitae eros aliquet interdum. Sed in tincidunt leo. Praesent quis justo id nisi dapibus semper sed blandit mi.</p>
-                        <button class="btn btn-primary pull-right" type="button">Search Textbooks</button>
+                        <a class="btn btn-primary pull-right" type="button" href="buysell.php">Search Textbooks</a>
                         </br></br>
                         <h2>Reviews</h2>
                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce varius iaculis nisl, in placerat dolor iaculis in. Quisque turpis lectus, gravida vitae venenatis et, lacinia vel dui. Aenean tellus odio, dignissim eu eleifend id, volutpat in velit. Morbi at arcu vel felis euismod vehicula et ut risus. Aenean tempus sem posuere erat imperdiet pulvinar. Aenean ac mauris vitae eros aliquet interdum. Sed in tincidunt leo. Praesent quis justo id nisi dapibus semper sed blandit mi.</p>
-                        <button class="btn btn-primary pull-right" type="button">Search Reviews</button>
+                        <a class="btn btn-primary pull-right" type="button" href="#">Search Reviews</a>
                         </br></br>
                         <h2>Rideshare</h2>
                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce varius iaculis nisl, in placerat dolor iaculis in. Quisque turpis lectus, gravida vitae venenatis et, lacinia vel dui. Aenean tellus odio, dignissim eu eleifend id, volutpat in velit. Morbi at arcu vel felis euismod vehicula et ut risus. Aenean tempus sem posuere erat imperdiet pulvinar. Aenean ac mauris vitae eros aliquet interdum. Sed in tincidunt leo. Praesent quis justo id nisi dapibus semper sed blandit mi.</p>
-                        <button class="btn btn-primary pull-right" type="button">Search Rideshares</button>
+                        <a class="btn btn-primary pull-right" type="button" href="rideshare.php">Search Rideshares</a>
                         </br></br>
                     </div>
                 </div>
