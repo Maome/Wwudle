@@ -66,6 +66,8 @@
 								new Submit('Search',array('class'=>'btn btn-primary'))
 							)
 							->render();
+
+						$dbc->queryToTable('SELECT * FROM BookCondition', 'myTable');
 							
 						?>
                     </div>
