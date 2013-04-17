@@ -74,11 +74,10 @@
 			echo '</thead>';
 			echo '<tbody>';
 				while($row = $result->fetch_array()) {
-					echo '<tr>';
+					echo '<td>';
 					for($i = 0; $i < count($row); $i++) {
-						echo '<td>' .$row[$i] .'</td>';
+						echo 
 					}
-					echo '</tr>';
 				}
 			echo '</tbody>';
 		}
