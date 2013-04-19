@@ -66,7 +66,10 @@
 									<div class="control-group">    
 									<label class="control-label" for="departureLocation">Departure Location</label>
 										<div class="controls">
-											<input id="departureLocation" name="departureLocation" type="text" data-validaty="required">
+											<input id="departureLocation" name="departureLocation" type="text" data-validaty="required" data-source='
+											["Seattle", "Tacoma", "Spokane", "Bellevue", "Olympia", "Everett", "Vancouver", "Renton", "Bellingham", "Redmond", "Kirkland", "Puyallup", "Federal Way", "Kent", "Lynnwood", "Bremerton", "Bothell", "Yakima", "Issaquah", "Kennewick", "Auburn", "Marysville", "Lakewood", "Edmonds", "Wenatchee", "Gig Harbor", "Tri-Cities", "Pasco", "Woodinville", "Richland", "Mercer Island", "Anacortes", "Shoreline", "Port Angeles", "Tukwila", "Lacey", "Burien", "Forks", "Port Townsend", "Mount Vernon", "Walla Walla", "Sammamish", "Leavenworth", "Port Orchard", "Poulsbo", "Fort Lewis", "Ellensburg", "Sequim", "Spokane Valley", "Mukilteo"]'
+											data-items="4" data-provide="typeahead" style="margin: 0 auto;"></input>
+											<!--<input id="departureLocation" name="departureLocation" type="text" data-validaty="required">-->
 										</div>
 									</div>
 									<div class="control-group"> 
@@ -116,7 +119,9 @@
 									<div class="control-group"> 		
 									<label class="control-label" for="destinationLocation">Destination Location</label>
 									<div class="controls">
-										<input id="destinationLocation" name="destinationLocation" type="text">
+										<input id="destinationLocation" name="destinationLocation" type="text" data-validaty="required" data-source='
+											["Seattle", "Tacoma", "Spokane", "Bellevue", "Olympia", "Everett", "Vancouver", "Renton", "Bellingham", "Redmond", "Kirkland", "Puyallup", "Federal Way", "Kent", "Lynnwood", "Bremerton", "Bothell", "Yakima", "Issaquah", "Kennewick", "Auburn", "Marysville", "Lakewood", "Edmonds", "Wenatchee", "Gig Harbor", "Tri-Cities", "Pasco", "Woodinville", "Richland", "Mercer Island", "Anacortes", "Shoreline", "Port Angeles", "Tukwila", "Lacey", "Burien", "Forks", "Port Townsend", "Mount Vernon", "Walla Walla", "Sammamish", "Leavenworth", "Port Orchard", "Poulsbo", "Fort Lewis", "Ellensburg", "Sequim", "Spokane Valley", "Mukilteo"]'
+											data-items="4" data-provide="typeahead" style="margin: 0 auto;"></input>
 									</div>
 									</div>
 									<div class="control-group"> 		
