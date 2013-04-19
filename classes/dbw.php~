@@ -59,27 +59,30 @@
 			return $rv;
 		}
 
-		function queryToTable($qry, $headers = NULL) {
+		function queryToTable($qry, $name, $headers = NULL, $classOverride = NULL) {
+			echo '<table id="' .$name .'" class="table ' .(empty(classOverride) ? 'table-striped' : $classOverride) .'">';
 			echo '<thead>';
 				echo '<tr>';
-				$result = $this->qry($qry);
+				$result = $this->query($qry);
 				if (!empty($headers)) {
 					for($i = 0; $i < count($headers); $i++) echo '<th>' .$headers[$i] .'</th>';
 				}
 				else {
 					$fields = $result->fetch_fields();
-					for($i = 0; $i < count($fields); $i++) echo '<th>' .$fields[$i] .'</th>';
+					for($i = 0; $i < count($fields); $i++) echo '<th>' .$fields[$i]->name .'</th>';
 				}
 				echo '</tr>';
 			echo '</thead>';
 			echo '<tbody>';
 				while($row = $result->fetch_array()) {
-					echo '<td>';
+					echo '<tr>';
 					for($i = 0; $i < count($row); $i++) {
-						echo 
+						echo '<td>' .$row[$i] .'</td>';
 					}
+					echo '</tr>';
 				}
 			echo '</tbody>';
+			echo '</table>';
 		}
 		
 		function getError() {

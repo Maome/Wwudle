@@ -1,6 +1,7 @@
 <?php
 	function createBookListing($dbc, $bookID, $conditionID, $price) {
 		$dbc->setDebug(true);
+		echo 'Hello!';
 		$sql = "INSERT INTO BookListing
 			(PostDate, UserID, BookID, BookConditionID, Price, ViewCount, ChangeSource, RecordStatus, RecordStatusDate)
 			VALUES(NOW()," .$_SESSION['userID'] ."," .$bookID ."," .$conditionID ."," .$price .", 0, 0, 1, NOW());";
@@ -36,7 +37,7 @@
 		$result = $dbc->query($qry);
 	
 		if ($result->num_rows > 0) {
-			$fields = array("ISBN","Title","Price","Description");
+			/*$fields = array("ISBN","Title","Price","Description");
 			echo "<table class='table table-striped'>";
 				// Display header
 				echo "<thead>";
@@ -51,7 +52,8 @@
 						}
 					echo "</tr>";
 				}
-			echo "</tbody></table>";
+			echo "</tbody></table>";*/
+			$dbc->queryToTable($qry,'booklistings');
 		}
 		else echo "No results found";
 	} 

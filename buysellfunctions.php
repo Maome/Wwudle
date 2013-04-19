@@ -23,7 +23,6 @@
 		}
 	
 		$qry = "SELECT
-						bl.PostID,
 						b.ISBN,
 						b.Title,
 						bl.Price Price,
@@ -37,7 +36,7 @@
 		$result = $dbc->query($qry);
 	
 		if ($result->num_rows > 0) {
-			$fields = array("ISBN","Title","Price","Description");
+			/*$fields = array("ISBN","Title","Price","Description");
 			echo "<table class='table table-striped'>";
 				// Display header
 				echo "<thead>";
@@ -52,7 +51,8 @@
 						}
 					echo "</tr>";
 				}
-			echo "</tbody></table>";
+			echo "</tbody></table>";*/
+			$dbc->queryToTable($qry,'booklistings');
 		}
 		else echo "No results found";
 	} 
