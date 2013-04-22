@@ -49,7 +49,7 @@
 				<?php DisplaySidebar(); ?>
                 <div class="span9">
 					<?php
-							ManagePostsNav(true);
+							ManagePostsNav(true, false);
 							
 							$dbc = new dbw(DBSERVER,DBUSER,DBPASS,DBCATALOG);
 							

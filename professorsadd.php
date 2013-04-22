@@ -49,10 +49,16 @@
 											new Select($dbc->queryPairs('SELECT Name,Name FROM Professor WHERE RowOrder=1 ORDER BY RowOrder,Name'),1, array('class'=>'input-xlarge','name'=>'prof'))
 										)
 										->group('Homework difficulty', 
-											new Star('hwd')
+											new Star('hwd'),
+											new Checkbox('N/A')
+										)
+										->group('Homework quantity',
+											new Star('hwq'), 
+											new Checkbox('N/A')
 										)
 										->group('Test difficulty',
-											new Star('td')
+											new Star('td'), 
+											new Checkbox('N/A')
 										)
 										->group('Lecture quality',
 											new Star('lq')
@@ -82,6 +88,7 @@
     	//defaults were changed in jquery.raty.js and jquery.raty.min.js to half=true, score=2.5, and 
     	////hints=[very poor, poor, fair, good, very good]. Everything else in unchaged.
     	$('#hwd').raty();
+    	$('#hwq').raty();
     	$('#td').raty();
     	$('#lq').raty();
      });

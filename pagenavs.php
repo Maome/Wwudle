@@ -125,6 +125,37 @@
 		}
 	}
 	
+	// Navs for Reviews
+	function ReviewNav($isSearch)
+	{
+		if($isSearch)
+		{
+			echo '
+                <ul class="nav nav-tabs">
+					<li class="active">
+						<a href="reviews.php">Search</a>
+				    </li>
+				    <li>
+				    	<a href="reviewsadd.php">Review a Professor/Course</a>
+				    </li>
+				</ul>						
+			';
+		}
+		else
+		{
+			echo '
+                <ul class="nav nav-tabs">
+					<li>
+						<a href="reviews.php">Search</a>
+				    </li>
+				    <li class="active">
+				    	<a href="reviewsadd.php">Review a Professor/Course</a>
+				    </li>
+				</ul>						
+			';		
+		}
+	}
+	
 	// Navs for Textbook buy/sell
 	function BuySellReviewNav($isSearch)
 	{
@@ -156,7 +187,7 @@
 		}
 	}
 	
-	function ManagePostsNav($isRideshare)
+	function ManagePostsNav($isRideshare, $isBooks)
 	{
 		if($isRideshare)
 		{
@@ -168,10 +199,13 @@
 				    <li>
 				    	<a href="managepostsbooks.php">Textbooks</a>
 				    </li>
+				    <li>
+				    	<a href="managepostsreviews.php">Reviews</a>
+				    </li>
 				</ul>						
 			';
 		}
-		else
+		else if($isBooks)
 		{
 			echo '
                 <ul class="nav nav-tabs">
@@ -181,9 +215,27 @@
 				    <li class="active">
 				    	<a href="managepostsbooks.php">Textbooks</a>
 				    </li>
+				    <li>
+				    	<a href="managepostsreviews.php">Reviews</a>
+				    </li>
 				</ul>						
 			';		
 		}
-
+		else
+		{
+			echo '
+                <ul class="nav nav-tabs">
+					<li>
+						<a href="managepostsrides.php">Rideshare</a>
+				    </li>
+				    <li>
+				    	<a href="managepostsbooks.php">Textbooks</a>
+				    </li>
+				    <li class="active">
+				    	<a href="managepostsreviews.php">Reviews</a>
+				    </li>
+				</ul>						
+			';		
+		}
 	}
 ?>

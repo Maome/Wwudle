@@ -19,7 +19,7 @@
 				<?php DisplaySidebar(); ?>
                 <div class="span9">
 						<?php
-							ManagePostsNav(false);
+							ManagePostsNav(false, true);
 							$dbc = new dbw(DBSERVER,DBUSER,DBPASS,DBCATALOG);
 
 							// Get the UserID

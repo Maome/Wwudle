@@ -22,16 +22,7 @@
 						<div class="nav-collapse collapse navbar-responsive-collapse">
 							<ul class="nav" style = "font-size: 16px">
 								' .li_type($filename,"index.php") .'<a href="index.php">Home</a></li>
-								<li class="dropdown';
-								if ($filename == "courses.php" || $filename == "textbooks.php" || $filename == "professors.php") echo ' active';
-								echo '">
-									<a class="dropdown-toggle" href="" role="button" data-toggle="dropdown">Reviews<b class="caret"></b></a>
-									<ul class="dropdown-menu" role="menu" aria-labelledby="dropl">
-										' .li_type($filename,"courses.php") .'<a tabindex="-1" href="courses.php">Courses</a></li>
-										' .li_type($filename,"textbooks.php") .'<a tabindex="-1" href="textbooks.php">Textbooks</a></li>
-										' .li_type($filename,"professors.php") .'<a tabindex="-1" href="professors.php">Professors</a></li>
-									</ul>
-								</li>
+								' .li_type($filename,"reviews.php") .'<a href="reviews.php">Reviews</a></li>
 								' .li_type($filename,"rideshare.php") .'<a href="rideshare.php">Rideshare</a></li>
 								' .li_type($filename,"buysell.php") .'<a href="buysell.php">Textbooks</a></li>
 							</ul>
@@ -92,3 +83,14 @@
 		}
 	}
 ?>
+
+<!--old reviews backup	'<li class="dropdown';
+								if ($filename == "courses.php" || $filename == "textbooks.php" || $filename == "professors.php") echo ' active';
+								echo '">
+									<a class="dropdown-toggle" href="" role="button" data-toggle="dropdown">Reviews<b class="caret"></b></a>
+									<ul class="dropdown-menu" role="menu" aria-labelledby="dropl">
+										' .li_type($filename,"courses.php") .'<a tabindex="-1" href="courses.php">Courses</a></li>
+										' .li_type($filename,"textbooks.php") .'<a tabindex="-1" href="textbooks.php">Textbooks</a></li>
+										' .li_type($filename,"professors.php") .'<a tabindex="-1" href="professors.php">Professors</a></li>
+									</ul>
+								</li>'-->
