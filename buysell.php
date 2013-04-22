@@ -25,14 +25,6 @@
     </head>
     <body>
 
-       <!-- Modal -->
-        <div id="loginModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-            <div class="modal-body">
-                <p>Oops I'm broken..</p>
-            </div>
-        </div>
-
-
 		<!-- Navbar -->
 		<?php DisplayNavbar(basename(__FILE__)); ?>
         
