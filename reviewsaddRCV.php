@@ -55,54 +55,61 @@
 											$Comments = $_POST['comments'];										
 																		
 											// Validate the data									
-											//$isValid = true;
+											if($CourseNumber != '') {
+												$isValid = true;
+											}
+											else {
+												$isValid = false;
+											}
 											
-											//if($isValid) {
+											if($isValid) {
 												$sql = "INSERT INTO Review (PostDate, UserID, CourseDept, CourseNumber, Professor, Workload, LectureQuality, TestRelevance, RelevanceToProgram, Enjoyable, BookNecessity, Overall, Comments, ViewCount, ChangeSource, RecordStatus, RecordStatusDate) VALUES (CURDATE(), $UserID, '$CourseDept', '$CourseNumber', '$Professor', $Workload, $LectureQuality, $TestRelevance, $RelevanceToProgram, $Enjoyable, $BookNecessity, $Overall, '$Comments', 0, 0, 1, CURDATE());"; 
 												//$dbc->setDebug(true);
 												$dbc->query($sql);
-											//}
 											
-											echo "<h3>Your information has been submitted</h3>";
+											
+												echo "<h3>Your information has been submitted</h3>";
 										
-											// Show the user all of the info that has been recieved 
-											echo "
-												<table id='table_id' class='table table-striped'>
-													<tbody>
-														<tr>
-															<td><b>Course</b></td><td>$CourseDept $CourseNumber</td>
-														</tr>
-														<tr>
-															<td><b>Professor</b></td><td>$Professor</td>
-														</tr>
-														<tr>
-															<td><b>Workload</b></td><td>"; if($Workload == 0) echo "Light"; else if($Workload == 1) echo "Moderate"; else echo "Heavy"; echo "</td>
-														</tr>
-														<tr>
-															<td><b>Lecture Quality</b></td><td>$LectureQuality</td>
-														</tr>
-														<tr>
-															<td><b>Test Relevance</b></td><td>$TestRelevance</td>
-														</tr>
-														<tr>
-															<td><b>Relevance To Program</b></td><td>$RelevanceToProgram</td>
-														</tr>
-														<tr>
-															<td><b>Enjoyable</b></td><td>$Enjoyable</td>
-														</tr>												
-														<tr>
-															<td><b>Book necessity</b></td><td>"; if($BookNecessity == 0) echo "Absolutely necessary"; else if($BookNecessity == 1) echo "Somewhat necessary"; else echo "Not necessary"; echo "</td>
-														</tr>
-														<tr>
-															<td><b>Overall</b></td><td>$Overall</td>
-														</tr>	
-														<tr>
-															<td><b>Comments</b></td><td>$Comments</td>
-														</tr>												
-													</tbody>
-												</table>
-																			
-											";											
+												// Show the user all of the info that has been recieved 
+												echo "
+													<table id='table_id' class='table table-striped'>
+														<tbody>
+															<tr>
+																<td><b>Course</b></td><td>$CourseDept $CourseNumber</td>
+															</tr>
+															<tr>
+																<td><b>Professor</b></td><td>$Professor</td>
+															</tr>
+															<tr>
+																<td><b>Workload</b></td><td>"; if($Workload == 0) echo "Light"; else if($Workload == 1) echo "Moderate"; else echo "Heavy"; echo "</td>
+															</tr>
+															<tr>
+																<td><b>Lecture Quality</b></td><td>$LectureQuality</td>
+															</tr>
+															<tr>
+																<td><b>Test Relevance</b></td><td>$TestRelevance</td>
+															</tr>
+															<tr>
+																<td><b>Relevance To Program</b></td><td>$RelevanceToProgram</td>
+															</tr>
+															<tr>
+																<td><b>Enjoyable</b></td><td>$Enjoyable</td>
+															</tr>												
+															<tr>
+																<td><b>Book necessity</b></td><td>"; if($BookNecessity == 0) echo "Absolutely necessary"; else if($BookNecessity == 1) echo "Somewhat necessary"; else echo "Not necessary"; echo "</td>
+															</tr>
+															<tr>
+																<td><b>Overall</b></td><td>$Overall</td>
+															</tr>	
+															<tr>
+																<td><b>Comments</b></td><td>$Comments</td>
+															</tr>												
+														</tbody>
+													</table>";											
+											}
+											else {
+												echo "Please enter a valid course number";
+											}
 										}
 		               		?>
                         </div>

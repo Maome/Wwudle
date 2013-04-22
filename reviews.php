@@ -46,7 +46,7 @@
                      		$ReviewSearchCourseForm=new Form;
 									echo $ReviewSearchCourseForm->init('','get',array('class'=>'form-inline', 'name'=>'reviewSearchCourseForm', 'id'=>'reviewSearchCourseForm'))
 										->group('',
-											new Select($dbc->queryPairs('SELECT Abbreviation,Description FROM Department ORDER BY RowOrder,Abbreviation'), 1, array('class'=>'input-xlarge','name'=>'courseDept', 'id'=>'courseDept')),
+											new Select($dbc->queryPairs('SELECT Abbreviation,Description FROM Department WHERE RowOrder = 1 ORDER BY RowOrder,Abbreviation'), 1, array('class'=>'input-xlarge','name'=>'courseDept', 'id'=>'courseDept')),
 											new Text(array('class'=>'input-small','name'=>'courseNumber', 'id'=>'courseNumber', 'placeholder'=>'Course #')),
 											new Submit('Search',array('class'=>'btn btn-primary'))
 										)
@@ -56,7 +56,7 @@
 									$ReviewSearchProfForm=new Form;
 									echo $ReviewSearchProfForm->init('','get',array('class'=>'form-inline', 'name'=>'reviewSearchProfForm', 'id'=>'reviewSearchProfForm'))
 										->group('',
-											new Select($dbc->queryPairs('SELECT Name,Name FROM Professor ORDER BY RowOrder,Name'),1, array('class'=>'input-xlarge','name'=>'searchProf', 'id'=>'searchProf')),
+											new Select($dbc->queryPairs('SELECT Name,Name FROM Professor WHERE RowOrder = 1 ORDER BY RowOrder,Name'),1, array('class'=>'input-xlarge','name'=>'searchProf', 'id'=>'searchProf')),
 											new Submit('Search',array('class'=>'btn btn-primary'))
 										)
 										->render();

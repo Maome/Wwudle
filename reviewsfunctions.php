@@ -20,6 +20,19 @@
 		$row = $result->fetch_row();  
 		
 		if ($row) {
+			if(!$isCourse) {
+				$prof = $row[2];
+				$profqry = "SELECT AVG(Overall) FROM Review WHERE Professor = '$prof'";
+				$profresult = $dbc->query($profqry);
+				$profrow = $profresult->fetch_row();
+			
+				if($profrow) {
+					echo "<h4>". $row[2] ."</h4><p>Average overall rating: ". number_format($profrow[0], 2) ." out of 5</p><br />";
+				}
+				else {
+					echo "<h6>Not yet rated</h6>";
+				} 
+			}
 			echo "
 				<table id='table_id' class='table table-striped' data-provides='rowlink'>
 					<thead>
@@ -60,7 +73,7 @@
 			echo "</tbody></table>";
 		}
 		else {
-			echo "No results found.";
+			echo "No reviews found.";
 		}
 	}
 	

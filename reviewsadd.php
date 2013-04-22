@@ -90,18 +90,25 @@
     	$.fn.raty.defaults.path = 'bootstrap/raty/img';
     	//defaults were changed in jquery.raty.js and jquery.raty.min.js to half=true, score=2.5, and 
     	////hints=[very poor, poor, fair, good, very good]. Everything else in unchaged.
-    	$('#lq').raty({scoreName: 'lectureQuality', click: function(lectureQuality) {
-    		$.post('reviewsaddRCV.php', {lectureQuality: lectureQuality})
+    	$('#lq').raty({
+    		scoreName: 'lectureQuality', click: function(lectureQuality) {
+    			$.post('reviewsaddRCV.php', {lectureQuality: lectureQuality})
     	}});
-    	$('#tr').raty({scoreName: 'testRelevance', click: function(testRelevance) {
-    		$.post('reviewsaddRCV.php', {testRelevance: testRelevance})
-    	}});
-    	$('#rtp').raty({scoreName: 'relevanceToProgram', click: function(relevanceToProgram) {
-    		$.post('reviewsaddRCV.php', {relevanceToProgram: relevanceToProgram})
-    	}});
-    	$('#enj').raty({scoreName: 'enjoyable', click: function(enjoyable) {
-    		$.post('reviewsaddRCV.php', {enjoyable: enjoyable})
-    	}});
+    	$('#tr').raty({
+    		scoreName: 'testRelevance', click: function(testRelevance) {
+    			$.post('reviewsaddRCV.php', {testRelevance: testRelevance})},
+    		hints: ['Very irrelevant to lecture/homework', 'Irrelevant to lecture/homework', 'Neutral', 'Relevant to lecture/homework', 'Very relevant to lecture/homework']
+    	});
+    	$('#rtp').raty({
+    		scoreName: 'relevanceToProgram', click: function(relevanceToProgram) {
+    			$.post('reviewsaddRCV.php', {relevanceToProgram: relevanceToProgram})},
+    		hints: ['Very irrelevant', 'Irrelevant', 'Neutral', 'Relevant', 'Very relevant']
+    	});
+    	$('#enj').raty({
+    		scoreName: 'enjoyable', click: function(enjoyable) {
+    			$.post('reviewsaddRCV.php', {enjoyable: enjoyable})},
+    		hints: ['Very unenjoyable', 'Unenjoyable', 'Neutral', 'Enjoyable', 'Very enjoyable']
+    	});
     });
     </script>
     <script src="bootstrap/validaty/jquery.validaty.js"></script>
