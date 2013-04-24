@@ -28,7 +28,7 @@
 							<!-- <h2>Rideshare</h2>	-->													
 							<form class="form-horizontal" name="addRideShare" id="addRideShare" action="rideshareaddRCV.php" method="post">																				
 								<div class="control-group">
-									<label class="control-label" for="departureDate">Departure Date</label>
+									<label class="control-label" for="departureDate">Departing</label>
 									    <div class="controls input-prepend">
                                             <input id="departureDate" name="departureDate" type="text" value="<?php echo date('m/d/Y'); ?>" data-date-format="mm/dd/yyyy" class="datepicker">
 									    </div>
@@ -64,24 +64,17 @@
 									    </div>
 									</div>
 									<div class="control-group">    
-									<label class="control-label" for="departureLocation">Departure Location</label>
+									<label class="control-label" for="departureLocation">Leaving From</label>
 										<div class="controls">
-											<input id="departureLocation" name="departureLocation" type="text" data-validaty="required" data-source='
+											<input id="departureLocation" name="departureLocation" type="text" value="Bellingham" data-validaty="required" data-source='
 											["Seattle", "Tacoma", "Spokane", "Bellevue", "Olympia", "Everett", "Vancouver", "Renton", "Bellingham", "Redmond", "Kirkland", "Puyallup", "Federal Way", "Kent", "Lynnwood", "Bremerton", "Bothell", "Yakima", "Issaquah", "Kennewick", "Auburn", "Marysville", "Lakewood", "Edmonds", "Wenatchee", "Gig Harbor", "Tri-Cities", "Pasco", "Woodinville", "Richland", "Mercer Island", "Anacortes", "Shoreline", "Port Angeles", "Tukwila", "Lacey", "Burien", "Forks", "Port Townsend", "Mount Vernon", "Walla Walla", "Sammamish", "Leavenworth", "Port Orchard", "Poulsbo", "Fort Lewis", "Ellensburg", "Sequim", "Spokane Valley", "Mukilteo"]'
 											data-items="4" data-provide="typeahead" style="margin: 0 auto;"></input>
 											<!--<input id="departureLocation" name="departureLocation" type="text" data-validaty="required">-->
 										</div>
-									</div>
-									<div class="control-group"> 
-									<label class="control-label" for="departureThreshold">Departure Threshold</label>
-										<div class="controls">
-											<input id="departureThreshold" name="departureThreshold" type="text">
-										</div>
-									</div>
-																		
+									</div>																		
 									
 									<div class="control-group"> 		
-									<label class="control-label" for="returnDate">Return Date</label>
+									<label class="control-label" for="returnDate">Returning</label>
 									    <div class="controls input-prepend">
                                             <input id="returnDate" name="returnDate" type="text" value="<?php echo date('m/d/Y'); ?>" data-date-format="mm/dd/yyyy"class="datepicker">                                            
 									    </div>    							
@@ -117,17 +110,11 @@
 									    </div>
 									</div>									
 									<div class="control-group"> 		
-									<label class="control-label" for="destinationLocation">Destination Location</label>
+									<label class="control-label" for="destinationLocation">Going To</label>
 									<div class="controls">
 										<input id="destinationLocation" name="destinationLocation" type="text" data-validaty="required" data-source='
 											["Seattle", "Tacoma", "Spokane", "Bellevue", "Olympia", "Everett", "Vancouver", "Renton", "Bellingham", "Redmond", "Kirkland", "Puyallup", "Federal Way", "Kent", "Lynnwood", "Bremerton", "Bothell", "Yakima", "Issaquah", "Kennewick", "Auburn", "Marysville", "Lakewood", "Edmonds", "Wenatchee", "Gig Harbor", "Tri-Cities", "Pasco", "Woodinville", "Richland", "Mercer Island", "Anacortes", "Shoreline", "Port Angeles", "Tukwila", "Lacey", "Burien", "Forks", "Port Townsend", "Mount Vernon", "Walla Walla", "Sammamish", "Leavenworth", "Port Orchard", "Poulsbo", "Fort Lewis", "Ellensburg", "Sequim", "Spokane Valley", "Mukilteo"]'
 											data-items="4" data-provide="typeahead" style="margin: 0 auto;"></input>
-									</div>
-									</div>
-									<div class="control-group"> 		
-									<label class="control-label" for="destinationThreshold">Destination Threshold</label>
-									<div class="controls">
-										<input id="destinationThreshold" name="destinationThreshold" type="text">
 									</div>
 									</div>
 									<div class="control-group"> 								

@@ -9,7 +9,7 @@
     <head>
         <title>Western List</title>
         <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
-        <link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+        <link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet">        
     </head>
     <body>
 		
@@ -23,7 +23,7 @@
                 <div class="span9">
                     <div class="row-fluid">
                         <div class="hero-unit">
-                            <h1>Woooooooooodle</h1>
+                            <h1>Woooooooooodle</h1>                            
                             <p>Rides, Reviews, and Textbook Exchange.</p>
                         </div>
                         <h2>Textbooks</h2>

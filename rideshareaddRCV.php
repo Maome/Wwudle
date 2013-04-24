@@ -49,8 +49,7 @@
 									$departureMinute = $_POST['departureMinute'];
 									$departureAMPM = $_POST['departureAMPM'];
 									
-									$departureLocation = $_POST['departureLocation'];
-									$departureThreshold = $_POST['departureThreshold'];							
+									$departureLocation = $_POST['departureLocation'];								
 									
 									$returnDate = $_POST['returnDate'];
 									$returnHour = $_POST['returnHour'];
@@ -58,7 +57,6 @@
 									$returnAMPM = $_POST['returnAMPM'];									
 									
 									$destinationLocation = $_POST['destinationLocation'];
-									$destinationThreshold = $_POST['destinationThreshold'];								
 																
 									$numSeats = $_POST['numSeats'];
 									$price = $_POST['price'];		
@@ -73,24 +71,12 @@
 										$isValid = false;
 										echo "Departure date cannot be before today or the return date <br />";
 									}
-									// Check the departure threshhold
-									if (!isset($departureThreshold) || !is_numeric($departureThreshold))
-									{
-										$isValid = false;
-										echo "Please enter a valid departure threshold <br />";
-									}
 									// Check to return date
 									if (!isset($returnDate) || ($returnDate > date('Y-m-d', strtotime("+3 months", strtotime($returnDate)))) || ($returnDate < $departureDate))
 									{
 										// Date is before today
 										$isValid = false;
 										echo "Return date must be within 3 months, and after the departure date <br />";
-									}
-									// Check the return threshhold
-									if (!isset($destinationThreshold) || !is_numeric($destinationThreshold))
-									{
-										$isValid = false;
-										echo "Please enter a valid destination threshold <br />";
 									}
 									// Check the numSeats 
 									if (!isset($numSeats) || !is_numeric($numSeats))
@@ -117,7 +103,7 @@
 									
 										// Write the information to the database
 										// NEED TO GET THE ACTUAL USERID, SOURCE/DEST LAT/LONG
-										$sql = "INSERT INTO RideShare (PostDate, UserID, DepartureDate, ReturnDate, SourceLatitude, SourceLongitude, SourceCity, DestLatitude, DestLongitude, DestCity, SourceThresholdMiles, DestThresholdMiles, SeatsRemaining, MaxSeats, Price,  ViewCount, ChangeSource, RecordStatus, RecordStatusDate) VALUES (CURDATE(), $UserID, '$departureDate', '$returnDate', 0.0, 0.0, '$departureLocation', 0.0, 0.0, '$destinationLocation', $departureThreshold, $destinationThreshold, $numSeats, $numSeats, $price, 0, 0, 1, CURDATE());"; 
+										$sql = "INSERT INTO RideShare (PostDate, UserID, DepartureDate, ReturnDate, SourceLatitude, SourceLongitude, SourceCity, DestLatitude, DestLongitude, DestCity, SeatsRemaining, MaxSeats, Price,  ViewCount, ChangeSource, RecordStatus, RecordStatusDate) VALUES (CURDATE(), $UserID, '$departureDate', '$returnDate', 0.0, 0.0, '$departureLocation', 0.0, 0.0, '$destinationLocation', $numSeats, $numSeats, $price, 0, 0, 1, CURDATE());"; 
 										$dbc->query($sql);
 
 										$departureTime = getTime($departureDate);

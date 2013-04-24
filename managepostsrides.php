@@ -13,6 +13,23 @@
 		<script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js'></script>
 		<script>
 		
+		function DeleteRideshare(pid){
+			if (window.XMLHttpRequest){// code for IE7+, Firefox, Chrome, Opera, Safari
+			  xmlhttp=new XMLHttpRequest();
+			}
+			else{// code for IE6, IE5
+			  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+			}			
+			// Make sure they want to delete
+			var conf = confirm("Are you sure you want to delete this rideshare?");
+			if(conf == true){
+				xmlhttp.open("POST","updaterideshare.php",true);
+				xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+				xmlhttp.send("delete=true&PostID="+pid);	
+				location.reload();						
+			}			
+		}		
+		
 		$(document).ready(function(){
 			$("#EditRideshareAjax").submit(function(){
 				// Stop the from from submiting normally
@@ -34,7 +51,8 @@
 					}
 				});
 			});
-		});			
+		});
+					
 
 	</script>
     </head>
@@ -48,7 +66,7 @@
 				<!-- Sidebar -->
 				<?php DisplaySidebar(); ?>
                 <div class="span9">
-					<?php
+					<?php							
 							ManagePostsNav(true, false);
 							
 							$dbc = new dbw(DBSERVER,DBUSER,DBPASS,DBCATALOG);
@@ -63,7 +81,8 @@
 							$UserID = $row['UserID'];
 
 							// Populate a table with the rideshares the user currently has posted
-							$qry = "SELECT * FROM RideShare WHERE UserID='$UserID' AND DepartureDate >= CURRENT_TIMESTAMP ORDER BY PostID DESC;";
+							// **** THE SERVER CLOCK IS FAST BY 7 HOURS ****
+							$qry = "SELECT * FROM RideShare WHERE UserID='$UserID' AND DepartureDate >= CURRENT_TIMESTAMP - INTERVAL 7 HOUR ORDER BY PostID DESC;";
 							$result = $dbc->query($qry);
 							$row = $result->fetch_assoc();														
 
@@ -93,7 +112,10 @@
 											<td>" . $row['DestCity'] . "</td>
 											<td>" . $returnDate . "</td>
 											<td>" . $returnTime . "</td>
-											<td><a href='#edit" . $count . "' role='button' class='btn btn-primary' data-toggle='modal'>Edit</a></td>							
+											<td>
+												<a href='#edit" . $count . "' role='button' class='btn btn-primary' data-toggle='modal'>Edit</a>
+												<button class='btn btn-danger' onclick='DeleteRideshare(" . $row['PostID'] . ")'>Delete</button>
+											</td>							
 										</tr>";		
 
 										// Create a modal to edit the rideshare

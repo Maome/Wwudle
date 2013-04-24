@@ -9,12 +9,14 @@
 	{
 		global $dbc;
 		
-		$qry = "SELECT DepartureDate, SourceCity, DestCity, ReturnDate, SeatsRemaining, Price, PostID, MaxSeats FROM RideShare WHERE DepartureDate >= CURRENT_TIMESTAMP ORDER BY PostID DESC;";
+		// **** THE SERVER CLOCK IS FAST BY 7 HOURS ****
+		$qry = "SELECT DepartureDate, SourceCity, DestCity, ReturnDate, SeatsRemaining, Price, PostID, MaxSeats FROM RideShare WHERE DepartureDate >= CURRENT_TIMESTAMP - INTERVAL 7 HOUR ORDER BY PostID DESC;";
 		
 		// See if we are searching or homepage of rides
 		if ($isSearch)
 		{
-			$qry = "SELECT DepartureDate, SourceCity, DestCity, ReturnDate, SeatsRemaining, Price, PostID, MaxSeats FROM RideShare WHERE SourceCity like '$source%' AND DestCity like '$destination%' AND DepartureDate >= CURRENT_TIMESTAMP ORDER BY PostID DESC;";
+		// **** THE SERVER CLOCK IS FAST BY 7 HOURS ****
+			$qry = "SELECT DepartureDate, SourceCity, DestCity, ReturnDate, SeatsRemaining, Price, PostID, MaxSeats FROM RideShare WHERE SourceCity like '$source%' AND DestCity like '$destination%' AND DepartureDate >= CURRENT_TIMESTAMP - INTERVAL 7 HOUR ORDER BY PostID DESC;";
 		}				
 		
 		$result = $dbc->query($qry);		

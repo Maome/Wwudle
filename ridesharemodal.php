@@ -1,7 +1,7 @@
 <?php
 // Modal for the rideshare
 	echo '
-		<div id="edit' . $count . '" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div id="edit' . $count . '" class="modal hide" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
 				<h3 id="myModalLabel">Edit Rideshare</h3>
@@ -108,8 +108,8 @@
 					</div>																																											
 			</div>
 			<div class="modal-footer">												
-				<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-				<button class="btn btn-primary" type="submit">Save changes</button>
+				<button class="btn btn-success" type="submit">Save changes</button>
+				<button class="btn btn-primary" data-dismiss="modal" aria-hidden="true">Close</button>				
 			</div>
 		</div>
 		</form>

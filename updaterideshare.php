@@ -21,26 +21,30 @@
 	$price = $_POST['price'];
 	$postID = $_POST['PostID'];	
 	
-	// The data will only get passed if it has been validated client side
-	// Convert the departure and return dates to store 
-	$departureDate = $departureDate . " " . $departureHour . ":" . $departureMinute . ":00" .  $departureAMPM;
-	$returnDate = $returnDate . " " . $returnHour . ":" . $returnMinute . ":00" .  $returnAMPM;
-	$departureDate = formatDate($departureDate);
-	$returnDate = formatDate($returnDate);		
+	$delete = $_POST['delete'];
 	
-/*	$departureDate = "2013-04-20 17:00:00";
-	$returnDate ="2013-04-23 6:00:00";*/	
-	
-	$source = $_POST['name'];																
-
-	// Update the information in the database
 	$dbc = new dbw(DBSERVER,DBUSER,DBPASS,DBCATALOG);
-	$sql = "UPDATE RideShare SET DepartureDate='$departureDate', SourceCity='$departureLocation', ReturnDate='$returnDate', DestCity='$destinationLocation', MaxSeats='$numSeats', Price='$price' WHERE PostID='$postID';";
-	//$sql = "UPDATE RideShare SET DepartureDate='2013-04-20 17:00:00', SourceCity='$source', ReturnDate='2013-04-23 6:00:00', DestCity='beeee', MaxSeats='111', Price='44' WHERE PostID='37';";
-	$dbc->query($sql);		
-	return $sql;
-	//do_alert($sql);	
-	//return $sql;
+	
+	if(isset($delete)){
+		$sql = "DELETE FROM RideShare WHERE PostID='$postID';";
+		$dbc->query($sql);
+	}
+	else{
+	
+		// The data will only get passed if it has been validated client side
+		// Convert the departure and return dates to store 
+		$departureDate = $departureDate . " " . $departureHour . ":" . $departureMinute . ":00" .  $departureAMPM;
+		$returnDate = $returnDate . " " . $returnHour . ":" . $returnMinute . ":00" .  $returnAMPM;
+		$departureDate = formatDate($departureDate);
+		$returnDate = formatDate($returnDate);					
+		
+		$source = $_POST['name'];																
+	
+		// Update the information in the database		
+		$sql = "UPDATE RideShare SET DepartureDate='$departureDate', SourceCity='$departureLocation', ReturnDate='$returnDate', DestCity='$destinationLocation', MaxSeats='$numSeats', Price='$price' WHERE PostID='$postID';";
+		$dbc->query($sql);		
+		return $sql;
+	}
 	
 	// Function to format date information into mysql DATETIME format
 	function formatDate($d){									
