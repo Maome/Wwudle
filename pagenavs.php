@@ -167,7 +167,7 @@
 						<a href="buysell.php">Search</a>
 				    </li>
 				    <li>
-				    	<a href="buyselladd.php">Sell an Book</a>
+				    	<a href="buyselladd.php">Sell a Book</a>
 				    </li>
 				</ul>						
 			';
@@ -180,7 +180,7 @@
 						<a href="buysell.php">Search</a>
 				    </li>
 				    <li class="active">
-				    	<a href="buyselladd.php">Sell an Book</a>
+				    	<a href="buyselladd.php">Sell a Book</a>
 				    </li>
 				</ul>						
 			';		
