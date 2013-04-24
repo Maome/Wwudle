@@ -1,6 +1,6 @@
 <?php	
 	function printHead($title) {
-		echo sprintf('
+        echo sprintf('
 		<head>
 			<title>%s</title>
 			<link href="bootstrap/css/bootstrap.css" rel="stylesheet">
