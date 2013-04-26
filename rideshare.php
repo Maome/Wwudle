@@ -17,8 +17,9 @@
 			$(document).ready(function() {
 				var oTable = $('#table_id').dataTable( {
 					"sPaginationType": "bootstrap"
-				} );
+				} );															
 			} );
+			
 		</script>        
     </head>
     <body>

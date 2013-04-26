@@ -10,13 +10,13 @@
 		global $dbc;
 		
 		// **** THE SERVER CLOCK IS FAST BY 7 HOURS ****
-		$qry = "SELECT DepartureDate, SourceCity, DestCity, ReturnDate, SeatsRemaining, Price, PostID, MaxSeats FROM RideShare WHERE DepartureDate >= CURRENT_TIMESTAMP - INTERVAL 7 HOUR ORDER BY PostID DESC;";
+		$qry = "SELECT DepartureDate, SourceCity, DestCity, ReturnDate, SeatsRemaining, Price, PostID, MaxSeats FROM RideShare WHERE RecordStatus != '3' AND DepartureDate >= CURRENT_TIMESTAMP - INTERVAL 7 HOUR ORDER BY PostID DESC;";
 		
 		// See if we are searching or homepage of rides
 		if ($isSearch)
 		{
 		// **** THE SERVER CLOCK IS FAST BY 7 HOURS ****
-			$qry = "SELECT DepartureDate, SourceCity, DestCity, ReturnDate, SeatsRemaining, Price, PostID, MaxSeats FROM RideShare WHERE SourceCity like '$source%' AND DestCity like '$destination%' AND DepartureDate >= CURRENT_TIMESTAMP - INTERVAL 7 HOUR ORDER BY PostID DESC;";
+			$qry = "SELECT DepartureDate, SourceCity, DestCity, ReturnDate, SeatsRemaining, Price, PostID, MaxSeats FROM RideShare WHERE RecordStatus != '3' AND SourceCity like '$source%' AND DestCity like '$destination%' AND DepartureDate >= CURRENT_TIMESTAMP - INTERVAL 7 HOUR ORDER BY PostID DESC;";
 		}				
 		
 		$result = $dbc->query($qry);		
@@ -68,8 +68,11 @@
 	{
 		global $dbc;
 		
+		// Add a view
+		$dbc->query("Update RideShare Set ViewCount=ViewCount+1 Where PostID='$PostID';");
+		
 		// Get the information about this rideshare
-		$sql = "SELECT DepartureDate, SourceCity, DestCity, ReturnDate, SeatsRemaining, Price, PostID FROM RideShare WHERE PostID=$PostID";
+		$sql = "SELECT DepartureDate, SourceCity, DestCity, ReturnDate, SeatsRemaining, Price, PostID, ViewCount FROM RideShare WHERE PostID=$PostID";
 		$result = $dbc->query($sql);
 		$row = $result->fetch_row();									
 		
@@ -80,12 +83,13 @@
 		$returnDate = getDateFunc($row[3]);
 		$returnTime = getTime($row[3]);
 
+//echo "";
 											
 		// Show the user all of the info that has been recieved 
 		echo "
 			<table id='table_id' class='table table-striped'>
 				<thead>
-					<th colspan='2'><h3>Ride Details:</h3></th>												
+					<th colspan='2'><h3>Ride Details: $row[7] Views</h3></th>																	
 				</thead>
 				<tbody>
 					<tr>
@@ -113,12 +117,11 @@
 						<td><b>Price</b></td><td>$$row[5]</td>
 					</tr>													
 				</tbody>
-			</table>
-			
+			</table>						
 			<form class='form-inline' action='ridesharerequest.php' method='get'>
 				<input type='hidden' name='PostID' value='$PostID'>
-				<button type='submit' class='btn btn-primary'>Request Ride</button>
-			</form>																											
+				<button type='submit' class='btn btn-primary'>Request Ride</button>				
+			</form>		
 		";																										
 						
 	}

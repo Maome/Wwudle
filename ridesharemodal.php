@@ -8,8 +8,9 @@
 			</div>
 			<div class="modal-body">											
 			
-				<form class="form-horizontal" name="addRideShare" id="EditRideshareAjax">	
+				<form class="form-horizontal" name="EditRideshareAjax" id="EditRideshareAjax" action="managepostsrides.php" method="POST">	
 					<input type="hidden" name="PostID" id="PostID' . $count . '" value="' . $row['PostID'] . '">
+					<input type="hidden" name="Edit" id="Edit" value="true">
 					<div class="control-group">
 						<label class="control-label" for="departureDate">Departure Date</label>
 						<div class="controls input-prepend">
@@ -108,7 +109,7 @@
 					</div>																																											
 			</div>
 			<div class="modal-footer">												
-				<button class="btn btn-success" type="submit">Save changes</button>
+				<input class="btn btn-success" type="submit" value="Save changes">
 				<button class="btn btn-primary" data-dismiss="modal" aria-hidden="true">Close</button>				
 			</div>
 		</div>
