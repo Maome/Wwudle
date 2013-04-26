@@ -68,7 +68,7 @@
 							$row = $result->fetch_assoc();														
 
 							if ($result->num_rows > 0) {
-								$headers = array("Professor", "Course", "Workload", "Lecture Quality", "Test Relevance", "Relevance To Program", "Enjoyable", "Book Necessity", "Overall");
+								$headers = array("Professor", "Course", "Workload", "Lecture Quality", "Test Relevance", "Relevance To Program", "Enjoyable", "Book Necessity", "Edit", "Delete");
 								echo "<table class='table table-striped'>";
 									// Display header
 									echo "<thead>";
@@ -91,12 +91,12 @@
 											<td>" . $row['RelevanceToProgram'] . "</td>
 											<td>" . $row['Enjoyable'] . "</td>
 											<td>" . $booknec . "</td>
-											<td>" . $row['Overall'] . "</td>
-											<td><a href='#edit" . $count . "' role='button' class='btn btn-primary' data-toggle='modal'>Edit</a></td>							
+											<td><a href='#edit" . $count . "' role='button' class='btn btn-primary' data-toggle='modal'>Edit</a></td>
+											<td><a href='#delete". $count ."' role='button' class='btn btn-danger' data-toggle='modal'>Delete</a></td>
 										</tr>";		
 
 										// Create a modal to edit the rideshare
-										//include('ridesharemodal.php');
+										//include('reviewmodal.php');
 										
 										$row = $result->fetch_assoc(); 
 										$count++;

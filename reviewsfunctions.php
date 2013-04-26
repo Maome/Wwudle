@@ -27,7 +27,7 @@
 				$profrow = $profresult->fetch_row();
 			
 				if($profrow) {
-					echo "<h4>". $row[2] ."</h4><p>Average overall rating: ". number_format($profrow[0], 2) ." out of 5</p><br />";
+					echo "<h3>". $row[2] ."</h3><p><b>Average overall rating: ". number_format($profrow[0], 2) ." out of 5</b></p><br />";
 				}
 				else {
 					echo "<h6>Not yet rated</h6>";
@@ -111,7 +111,42 @@
 		// Get the information about this rideshare
 		$sql = "SELECT CourseDept, CourseNumber, Professor, Workload, LectureQuality, TestRelevance, RelevanceToProgram, Enjoyable, BookNecessity, Comments, Overall, PostID FROM Review WHERE PostID = $PostID;";
 		$result = $dbc->query($sql);
-		$row = $result->fetch_row();		
-								
+		$row = $result->fetch_row();
+		echo "<h4>Review Details</h4>";
+		echo "
+			<table id='table_id' class='table table-striped'>
+				<tbody>
+					<tr>
+						<td><b>Course</b></td><td>". $row[0] ." ". $row[1] ."</td>
+					</tr>
+					<tr>
+						<td><b>Professor</b></td><td>". $row[2] ."</td>
+					</tr>
+					<tr>
+						<td><b>Workload</b></td><td>"; if($row[3] == 0) echo "Light"; else if($row[3] == 1) echo "Moderate"; else echo "Heavy"; echo "</td>
+					</tr>
+					<tr>
+						<td><b>Lecture Quality</b></td><td>". $row[4] ."</td>
+					</tr>
+					<tr>
+						<td><b>Test Relevance</b></td><td>". $row[5] ."</td>
+					</tr>
+					<tr>
+						<td><b>Relevance To Program</b></td><td>". $row[6] ."</td>
+					</tr>
+					<tr>
+						<td><b>Enjoyable</b></td><td>". $row[7] ."</td>
+					</tr>												
+					<tr>
+						<td><b>Book necessity</b></td><td>"; if($row[8] == 0) echo "Absolutely necessary"; else if($row[8] == 1) echo "Somewhat necessary"; else echo "Not necessary"; echo "</td>
+					</tr>
+					<tr>
+						<td><b>Overall</b></td><td>". $row[10] ."</td>
+					</tr>	
+					<tr>
+						<td><b>Comments</b></td><td>". $row[9] ."</td>
+					</tr>												
+				</tbody>
+			</table>";	
 	}
 ?>

@@ -39,40 +39,12 @@
                     <div class="row-fluid">
                     <?php ReviewNav(true) ?>
                     </div>
-                    <div class="row-fluid">
+                    <div class="span5">
                         <?php
-                     		$dbc = new dbw(DBSERVER,DBUSER,DBPASS,DBCATALOG);
-                     		echo '<h4>Find reviews by course</h4>';
-                     		$ReviewSearchCourseForm=new Form;
-									echo $ReviewSearchCourseForm->init('','get',array('class'=>'form-inline', 'name'=>'reviewSearchCourseForm', 'id'=>'reviewSearchCourseForm'))
-										->group('',
-											new Select($dbc->queryPairs('SELECT Abbreviation,Description FROM Department WHERE RowOrder = 1 ORDER BY RowOrder,Abbreviation'), 1, array('class'=>'input-xlarge','name'=>'courseDept', 'id'=>'courseDept')),
-											new Text(array('class'=>'input-small','name'=>'courseNumber', 'id'=>'courseNumber', 'placeholder'=>'Course #')),
-											new Submit('Search',array('class'=>'btn btn-primary'))
-										)
-										->render();
-									echo '<b>OR</b>';
-									echo '<h4>Find reviews by professor</h4>';
-									$ReviewSearchProfForm=new Form;
-									echo $ReviewSearchProfForm->init('','get',array('class'=>'form-inline', 'name'=>'reviewSearchProfForm', 'id'=>'reviewSearchProfForm'))
-										->group('',
-											new Select($dbc->queryPairs('SELECT Name,Name FROM Professor WHERE RowOrder = 1 ORDER BY RowOrder,Name'),1, array('class'=>'input-xlarge','name'=>'searchProf', 'id'=>'searchProf')),
-											new Submit('Search',array('class'=>'btn btn-primary'))
-										)
-										->render();
+                     		$PostID = $_GET['PostID'];
+                     		ShowReviewInfo($PostID);
 								?>
                     </div>
-                    <div class="row-fluid">
-		                 <?php
-							
-								if (isset($_GET['searchProf'])) {
-									ShowReviews($_GET['searchProf'], NULL, false);
-								}
-								else if (isset($_GET['courseDept']) && isset($_GET['courseNumber'])) {
-									ShowReviews($_GET['courseDept'], $_GET['courseNumber'], true);
-								}
-							?>
-						</div>
                 </div>
             </div>
         </div>
