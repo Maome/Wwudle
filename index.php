@@ -23,8 +23,8 @@
                 <div class="span9">
                     <div class="row-fluid">
                         <div class="hero-unit" style="background-image:url('images/coolwwu.png');">
-                            <h1>Woooooooooodle</h1>                            
-                            <p>Rides, Reviews, and Textbook Exchange.</p>
+                            <h1 style="color:#00aae9; text-shadow: 1px 1px 1px #000, 1px 1px 1px black;">Woooooooooodle</h1>                            
+                            <p style="color:#00aae9; text-shadow: 1px 1px 1px #000, 1px 1px 1px black;">Rides, Reviews, and Textbook Exchange.</p>
                         </div>
                         <h2>Textbooks</h2>
                         <p>Have an old textbook that you don't need anymore? Or maybe you're trying to find an alternative route to save money from the high costs of books? Well look no further, here on woodle you can buy and sell old textbooks with other Western Students in a nice, easy fashion that will avoid the hassel of the bookstore or shopping online, all while saving money in the process! Easily search for books posted by ISBN or title and send off a quick easy email to the seller. Easy, right?!</p>
