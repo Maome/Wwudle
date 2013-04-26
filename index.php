@@ -22,7 +22,7 @@
 				<?php DisplaySidebar(); ?>
                 <div class="span9">
                     <div class="row-fluid">
-                        <div class="hero-unit">
+                        <div class="hero-unit" style="background-image:url('images/coolwwu.png');">
                             <h1>Woooooooooodle</h1>                            
                             <p>Rides, Reviews, and Textbook Exchange.</p>
                         </div>
