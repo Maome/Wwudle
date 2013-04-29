@@ -1,5 +1,4 @@
 <?php
-	require_once('init.php');
 	require_once('buysellfunctions.php');
 	use JasonKaz\FormBuild\Form as Form;
 	use JasonKaz\FormBuild\Text as Text;
@@ -22,6 +21,19 @@
         <title>Western List</title>
         <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
         <link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+        <link href="bootstrap/css/bootstrap-rowlink.css" rel="stylesheet">
+		<link href="datatables/media/css/bootstrap-dt.css" rel="stylesheet">     
+		<script type="text/javascript" language="javascript" src="datatables/media/js/jquery.js"></script>
+		<script type="text/javascript" language="javascript" src="datatables/media/js/jquery.dataTables.js"></script>
+		<script type="text/javascript" language="javascript" src="datatables/media/js/paging.js"></script>
+		<script>
+		$(document).ready(function() {
+			var oTable = $('#bookListings').dataTable( {
+				"sPaginationType": "bootstrap",
+				"bFilter": false
+			} );															
+		} );		
+		</script> 
     </head>
     <body>
 
@@ -42,7 +54,7 @@
 						$FormA=new Form;
 						echo $FormA->init('','get',array('class'=>'form-inline'))
 							->group('',
-								new Text(array('class'=>'input-large','name'=>'srchText','placeholder'=>'Enter ISBN or title')),
+								new Text(array('class'=>'input-large','name'=>'srchText','value'=>$_GET['srchText'], 'placeholder'=>(empty($_GET['srchText']) ? 'Enter ISBN or title' : ''))),
 								new Submit('Search',array('class'=>'btn btn-primary'))
 							)
 							->render();
@@ -54,7 +66,7 @@
 						echo $FormB->init('','get',array('class'=>'form-inline'))
 							->group('',
 								new Select($dbc->queryPairs('SELECT Abbreviation, Description FROM Department ORDER BY RowOrder,Abbreviation'),$_GET['srchDept'], array('class'=>'input-large','name'=>'srchDept')),
-								new Text(array('class'=>'input-medium','name'=>'srchCourse', 'placeholder'=>'Enter course number')),
+								new Text(array('class'=>'input-medium','name'=>'srchCourse','value'=>$_GET['srchCourse'], 'placeholder'=>(empty($_GET['srchCourse']) ? 'Enter course number' : ''))),
 								new Submit('Search',array('class'=>'btn btn-primary'))
 							)
 							->render();
@@ -82,7 +94,8 @@
         
     </body>
     <script src="holder/holder.js"></script>
-    <script src="http://code.jquery.com/jquery-latest.js"></script>
-    <script src="bootstrap/js/bootstrap.js"></script>
+    <!--<script src="http://code.jquery.com/jquery-latest.js"></script>-->
+    <script src="bootstrap/js/bootstrap.js"></script>    
+    <script src="bootstrap/js/bootstrap-rowlink.js"></script>
 </html>
 
