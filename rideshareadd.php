@@ -8,7 +8,61 @@
         <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
         <link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
         <link href="bootstrap/css/datepicker.css" rel="stylesheet">
-	<link href="bootstrap/validaty/jquery.validaty.css" rel="stylesheet">
+		<link href="bootstrap/validaty/jquery.validaty.css" rel="stylesheet">
+		<script>
+			// Form validation
+			function Validate(){
+				var isValid = false;
+				
+				var date = new Date();
+				setDate()   
+				setFullYear()   
+				setHours()  
+				setMilliseconds()   
+				setMinutes()    
+				setMonth()  
+				setSeconds()    
+				setTime()
+				
+				
+				// Get the values from the form
+				// Departure Information
+				var departureDateField = document.getElementById("departureDate");
+				var departureDate = departureDateField ? departureDateField.value : '';		
+				if(date>departureDate){
+					alert(date + "     " + departureDate);
+				}
+				alert(date + "     " + departureDate);
+				
+				var departureHourField = document.getElementById("departureHour");
+				var departureHour = departureHourField ? departureHourField.value : '';	
+				var departureMinuteField = document.getElementById("departureMinute");
+				var departureMinute = departureMinuteField ? departureMinuteField.value : '';	
+				var departureAMPMField = document.getElementById("departureAMPM");
+				var departureAMPM = departureAMPMField ? departureAMPMField.value : '';		
+
+				// return Information
+				var returnDateField = document.getElementById("returnDate");
+				var returnDate = returnDateField ? returnDateField.value : '';		
+				var returnHourField = document.getElementById("returnHour");
+				var returnHour = returnHourField ? returnHourField.value : '';	
+				var returnMinuteField = document.getElementById("returnMinute");
+				var returnMinute = returnMinuteField ? returnMinuteField.value : '';	
+				var returnAMPMField = document.getElementById("returnAMPM");
+				var returnAMPM = returnAMPMField ? returnAMPMField.value : '';			
+
+				// Misc info
+				var destinationLocationField = document.getElementById("destinationLocation");
+				var destinationLocation = destinationLocationField ? destinationLocationField.value : '';					
+				var numSeatsField = document.getElementById("numSeats");
+				var numSeats = numSeatsField ? numSeatsField.value : '';				
+				var priceField = document.getElementById("price");
+				var priceVal = priceField ? priceField.value : '';
+				
+				
+			}
+			
+		</script>
     </head>
     <body>
 
@@ -22,11 +76,11 @@
                 <div class="span9">
                     <div class="row-fluid">
 						<?php RideshareNav(false); ?>                    
-                        <div class="span4">
+                        <div class="span12">
 
                             <!-- MAIN CONTENT FOR RIDESHARES -->
 							<!-- <h2>Rideshare</h2>	-->													
-							<form class="form-horizontal" name="addRideShare" id="addRideShare" action="rideshareaddRCV.php" method="post">																				
+							<form class="form-horizonal" name="addRideShare" id="addRideShare" action="rideshareaddRCV.php" method="post">
 								<div class="control-group">
 									<label class="control-label" for="departureDate">Departing</label>
 									    <div class="controls input-prepend">
@@ -123,15 +177,24 @@
 										<input id="numSeats" name="numSeats" type="text">
 									</div>
 									</div>
-									<div class="control-group"> 		
+									<?php
+									if(isset($pError)){ 
+										
+										echo '<div class="control-group warning">';
+										} 
+									else echo '<div class="control-group">'?> 		
 									<label class="control-label" for="price">Price</label>
-									<div class="controls">
-										<input id="price" name="price" type="text">
+									<div class="controls">										
+										<input id="price" name="price" type="text" id="inputWarning">
+										<?php 
+										if(isset($pError)){
+											echo '<span class="help-inline">Please enter a valid price</span>';}
+										?>
 									</div>
 									</div>
 									<div class="control-group"> 		
 									<div class="controls">
-										<button type="submit" class="button btn btn-primary">Submit
+										<button type="submit" class="button btn btn-primary" onClick="Validate()">Submit
 										</button></div>
 								</div>														
 							</form>

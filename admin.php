@@ -94,29 +94,33 @@
                         <div class="span6"><h2>Site Settings</h2></div>
                     </div>
                     <div class="row-fluid">
-						  <table id="table_id" class="table">
+					<?php
+						/*echo '
+						<table id="table_id" class="table">
 						<thead>
 							<tr>
 								<th>Abbreviation</th>
 								<th>Description</th>
-								<th>Edit</th>
+								<!--<th>Edit</th>-->
 							</tr>
 						</thead>
-						<tbody>
-						<?php
+						<tbody>';
 							$dbc = new dbw(DBSERVER,DBUSER,DBPASS,DBCATALOG);
 							$data = $dbc->query('SELECT Abbreviation, Description FROM Department ORDER BY Description');
 							while ($row = $data->fetch_assoc()) {
 								echo '
 								<tr>
 									<td>' .$row['Abbreviation'] .'</td>
-									<td>' .$row['Description'] .'</td>
-									<td><a class="edit" href="">Edit</a></td>
-								</tr>';
+									<td>' .$row['Description'] .'</td>';
+									//<td><a class="edit" href="">Edit</a></td>
+								echo '</tr>';
 							}
-						?>
+					echo '
 						</tbody>
-					</table>
+					</table>';*/
+					$dbc = new dbw(DBSERVER,DBUSER,DBPASS,DBCATALOG);
+					$dbc->queryToTable('SELECT Abbreviation, Description FROM Department ORDER BY Description','table_id');
+					?>
 					</div>
 				</div>
 			</div>
