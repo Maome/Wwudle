@@ -44,25 +44,49 @@
                     <div class="row-fluid">
 						<?php
 							BuySellReviewNav(true);
+							echo '<div class="span9">';
 							echo '<div class="row-fluid">';
 							$dbc = new dbw(DBSERVER,DBUSER,DBPASS,DBCATALOG);
-							$post = $dbc->querySingleRow('SELECT bl.*, b.* FROM BookListing bl JOIN Book b ON (b.BookID = bl.BookID) WHERE bl.PostID = ' .$_GET['postID'], true);							
+							$post = $dbc->querySingleRow(
+								'SELECT DATE_FORMAT(bl.PostDate, "%m/%d/%Y %h:%m %p") "Post Date", b.ISBN, b.Title, b.Authors, b.Edition, bl.Course, bl.Price
+								FROM BookListing bl 
+								JOIN Book b 
+								ON (b.BookID = bl.BookID) 
+								WHERE bl.PostID = ' .$_GET['postID'], 
+							true);							
 							echo '<h4>' .$post['Title'] .'</h4>';	
 							echo '</div>';
 							
+							// Display book listing information
 							echo '<div class="row-fluid">';
 							echo '<table id="' .$name .'" class="table table-striped">';
 							echo '<tbody>';
-								while($row = $result->fetch_array()) {
-									echo '<tr>' .PHP_EOL;
-									for($i = 0; $i < $result->field_count; $i++) {
-										echo '<td>' .$row[$i] .'</td>';
+								foreach ($post as $key => $value) {
+									if (!empty($value)) {
+										echo '<tr>' .PHP_EOL;
+										echo '<td><b>' .$key .'</b></td>';
+										echo '<td>' .$value .'</td>';
+										echo '</tr>' .PHP_EOL;
 									}
-									echo '</tr>' .PHP_EOL;
 								}
 							echo '</tbody>';
 							echo '</table>';
 							echo '</div>';
+							
+							// Display book request box
+							echo "																												
+							<form class='form-inline' action='buysellview.php' method='post'>
+								<div class='control-group'>
+									<label class='control-label' for='Subject'>Subject</label>
+									<input class='field span12' type='text' name='Subject' id='Subject' value='Western List Book Sale for " .$post['Title'] ."'> <br /><br />
+									<label class='control-label' for='MessageBody'>Message</label>
+									<textarea class='field span12' rows='10' placeholder='Type your message here' name='MessageBody' id='MessageBody'></textarea><br /><br />
+									<input type='hidden' name='PostID' value='$PostID'>
+									<button type='submit' class='btn btn-primary'>Offer Purchase</button>
+								</div>
+							</form>																	
+						";
+						echo '</div>';
 						?>
                     </div>
                 </div>
