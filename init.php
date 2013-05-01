@@ -7,4 +7,8 @@
 	require_once("../../private_html/connect.php");
 	require_once('classes/dbw.php');
 	require_once('pagenavs.php');
+	
+	function Woodle() {
+		echo "Woodle";
+	}
 ?>
