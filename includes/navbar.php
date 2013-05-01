@@ -25,6 +25,7 @@
 								' .li_type($filename,"reviews.php") .'<a href="reviews.php">Reviews</a></li>
 								' .li_type($filename,"rideshare.php") .'<a href="rideshare.php">Rideshare</a></li>
 								' .li_type($filename,"buysell.php") .'<a href="buysell.php">Textbooks</a></li>
+								' .li_type($filename,"about.php") .'<a href="about.php">About</a></li>
 							</ul>
 							</div>
 							<div class="pull-right">';
