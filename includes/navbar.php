@@ -4,6 +4,7 @@
 	require_once('classes/dbw.php');
 	require_once('classes/user.php');
 	
+	
 	function DisplayNavbar($filename) {
 		if (!isset($_REQUEST['index'])) {
 			CheckCreateUser(true);
@@ -18,13 +19,14 @@
 							<span class="icon-bar"></span>
 							<span class="icon-bar"></span>
 						</a>
-						<a class="brand" href="index.php" style="font-size: 26px">Western List</a>
+						<a class="brand" href="index.php" style="font-size: 26px">Woodle</a>
 						<div class="nav-collapse collapse navbar-responsive-collapse">
 							<ul class="nav" style = "font-size: 16px">
 								' .li_type($filename,"index.php") .'<a href="index.php">Home</a></li>
 								' .li_type($filename,"reviews.php") .'<a href="reviews.php">Reviews</a></li>
 								' .li_type($filename,"rideshare.php") .'<a href="rideshare.php">Rideshare</a></li>
 								' .li_type($filename,"buysell.php") .'<a href="buysell.php">Textbooks</a></li>
+								' .li_type($filename,"about.php") .'<a href="about.php">About</a></li>
 							</ul>
 							</div>
 							<div class="pull-right">';

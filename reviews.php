@@ -20,7 +20,7 @@
 <!DOCTYPE HTML>
 <html lang-"en">
     <head>
-         <title>Western List</title>
+         <title><?php Woodle(); ?></title>
          <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
          <link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
          <link href="bootstrap/css/bootstrap-rowlink.css" rel="stylesheet">   
