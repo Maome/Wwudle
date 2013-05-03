@@ -15,7 +15,7 @@
 	
 	// Insert a book listing into the database
 	function createBookListing($dbc, $bookID, $conditionID, $price, $course) {
-		//$dbc->setDebug(true);
+		$dbc->setDebug(true);
 		$sql = "INSERT INTO BookListing
 			(PostDate, UserID, BookID, BookConditionID, Price, ViewCount, ChangeSource, RecordStatus, RecordStatusDate, Course)
 			VALUES(NOW()," .$_SESSION['userID'] ."," .$bookID ."," .$conditionID ."," .$price .", 0, 0, 1, NOW(), " .$dbc::singleQuote($course) .");";

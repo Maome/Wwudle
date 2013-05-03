@@ -6,7 +6,9 @@
     <head>
         <title>Western List</title>
         <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
+		  <link href="bootstrap/css/datepicker.css" rel="stylesheet">
         <link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+		  <link href="bootstrap/css/bootstrap-modal.css" rel="stylesheet">
     </head>
     <body>
 		
@@ -33,7 +35,9 @@
 
 							// Populate a table with the rideshares the user currently has posted
 							$qry = "SELECT ISBN, Title, Price FROM Book b INNER JOIN BookListing bl ON b.BookID=bl.BookID WHERE bl.UserID='$UserID' ORDER BY PostID DESC;";
-							$result = $dbc->query($qry);
+							$dbc->queryToEditableTable($qry,'bookPosts',0,'managepostsbooks.php');
+							include('ridesharemodal.php');
+							/*$result = $dbc->query($qry);
 							$row = $result->fetch_assoc();														
 
 							if ($result->num_rows > 0) {
@@ -54,7 +58,7 @@
 									}
 									echo "</tbody></table>";
 							}
-							else echo "You currently have no books posted";														
+							else echo "You currently have no books posted";*/												
 						?>
                 </div>
             </div>
@@ -63,6 +67,8 @@
     </body>
     <script src="holder/holder.js"></script>
     <script src="http://code.jquery.com/jquery-latest.js"></script>
+	 <script src="bootstrap/js/bootstrap-modal.js"></script>
+	 <script src="bootstrap/js/bootstrap-modalmanager.js"></script>
     <script src="bootstrap/js/bootstrap.js"></script>
 </html>
 
