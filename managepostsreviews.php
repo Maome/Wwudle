@@ -5,7 +5,7 @@
 <!DOCTYPE HTML>
 <html lang-"en">
     <head>
-        <title>Western List</title>
+        <title><?php Woodle(); ?></title>
         <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
         <link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
 		<link href="bootstrap/css/datepicker.css" rel="stylesheet">
@@ -68,7 +68,7 @@
 							$row = $result->fetch_assoc();														
 
 							if ($result->num_rows > 0) {
-								$headers = array("Professor", "Course", "Workload", "Lecture Quality", "Test Relevance", "Relevance To Program", "Enjoyable", "Book Necessity", "Edit", "Delete");
+								$headers = array("Professor", "Course", "Workload", "Lecture Quality", "Test Relevance", "Relevance To Program", "Enjoyable", "Book Necessity", "Edit");
 								echo "<table class='table table-striped'>";
 									// Display header
 									echo "<thead>";
@@ -91,11 +91,21 @@
 											<td>" . $row['RelevanceToProgram'] . "</td>
 											<td>" . $row['Enjoyable'] . "</td>
 											<td>" . $booknec . "</td>
-											<td><a href='#edit" . $count . "' role='button' class='btn btn-primary' data-toggle='modal'>Edit</a></td>
-											<td><a href='#delete". $count ."' role='button' class='btn btn-danger' data-toggle='modal'>Delete</a></td>
+											<td>
+												<form class='form-inline' action='managepostsreviews.php' method='POST'>
+													<input type='hidden' name='pid' id='pid' value='" . $row["PostID"] . "'>											
+													<a href='#edit" . $count . "' role='button' class='btn btn-primary' data-toggle='modal'>Edit</a>
+												</form>	
+											</td>
+											<td>
+												<form class='form-inline' action='managepostsreviews.php' method='POST'>
+													<input type='hidden' name='delete' id='delete' value='true'>	
+													<input class='btn btn-danger' type='submit' value='Delete' >
+												</form>
+											</td>	
 										</tr>";		
 
-										// Create a modal to edit the rideshare
+										// Create a modal to edit the review
 										//include('reviewmodal.php');
 										
 										$row = $result->fetch_assoc(); 
