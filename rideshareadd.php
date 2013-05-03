@@ -57,12 +57,12 @@
 		$pError = true;
 	}	
 	// Check the departure location
-	if(isset($departureLocation) && !ctype_alpha($departureLocation)){
+	if(isset($departureLocation) && !ctype_alpha(str_replace(' ', '', $departureLocation))){
 		$isValid = false;
 		$departLocError = true;
 	}
 	// Check the destination location
-	if(isset($destinationLocation ) && !ctype_alpha($destinationLocation )){
+	if(isset($destinationLocation ) && !ctype_alpha(str_replace(' ', '', $destinationLocation ))){
 		$isValid = false;
 		$destLocError = true;
 	}																																							
@@ -72,7 +72,7 @@
 <!DOCTYPE HTML>
 <html lang-"en">
     <head>
-        <title><?php Woodle(); ?></title>
+        <title>Western List</title>
         <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
         <link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
         <link href="bootstrap/css/datepicker.css" rel="stylesheet">		
@@ -88,7 +88,7 @@
                 <div class="span9">
                     <div class="row-fluid">
 						<?php RideshareNav(false); ?>                    
-                        <div class="span12">						
+                        <div class="span9">						
                             <!-- MAIN CONTENT FOR RIDESHARES -->
 							<?php 														
 								// If everything is valid, write the rideshare to the database
