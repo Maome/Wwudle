@@ -25,12 +25,12 @@
                     <p>Kyle Hiebert</p>
                     <p>Beau Ritter</p>
                     <p>Reilly Steele</p>
-                    <p>Nicholas Tarter</p>
+                    <p>Nick Tarter</p>
+                    <p>Special thanks to Professor James Hearne for advising us through the process of the creation of this project</p>
                     <p>Special thanks to Professor Kendra Douglas for design decision suggestions.</p>
                 </div>
             </div>
         </div>
-        
     </body>
     <script src="holder/holder.js"></script>
     <script src="http://code.jquery.com/jquery-latest.js"></script>
