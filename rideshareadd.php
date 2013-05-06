@@ -76,6 +76,23 @@
         <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
         <link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
         <link href="bootstrap/css/datepicker.css" rel="stylesheet">		
+        <script src="http://maps.googleapis.com/maps/api/js?sensor=false&amp;libraries=places" type="text/javascript"></script>
+        <script type="text/javascript">
+		   	function initialize() {
+			   	var options = {
+				  types: ['(cities)'],
+				  componentRestrictions: {country: "us"}
+				};
+		      	var departInput = document.getElementById('departureLocation');
+		      	var autocomplete = new google.maps.places.Autocomplete(departInput, options);
+		      	
+		      	var destInput = document.getElementById('destinationLocation');
+		      	var autocomplete = new google.maps.places.Autocomplete(destInput, options);
+		      	
+		   }
+		   google.maps.event.addDomListener(window, 'load', initialize);
+		</script>
+        
     </head>
     <body>
 
@@ -213,9 +230,7 @@
 										<label class="control-label" for="departureLocation">Leaving From</label>
 										<div class="controls">										
 											<div class="controls">
-											<input id="departureLocation" name="departureLocation" type="text" data-source='
-												["Seattle", "Tacoma", "Spokane", "Bellevue", "Olympia", "Everett", "Vancouver", "Renton", "Bellingham", "Redmond", "Kirkland", "Puyallup", "Federal Way", "Kent", "Lynnwood", "Bremerton", "Bothell", "Yakima", "Issaquah", "Kennewick", "Auburn", "Marysville", "Lakewood", "Edmonds", "Wenatchee", "Gig Harbor", "Tri-Cities", "Pasco", "Woodinville", "Richland", "Mercer Island", "Anacortes", "Shoreline", "Port Angeles", "Tukwila", "Lacey", "Burien", "Forks", "Port Townsend", "Mount Vernon", "Walla Walla", "Sammamish", "Leavenworth", "Port Orchard", "Poulsbo", "Fort Lewis", "Ellensburg", "Sequim", "Spokane Valley", "Mukilteo"]'
-												data-items="4" data-provide="typeahead" style="margin: 0 auto;" value="<?php if(isset($departureLocation)){echo $departureLocation;} else echo "Bellingham"; ?>"/>
+											<input id="departureLocation" name="departureLocation" type="text"autocomplete="on" value="<?php if(isset($departureLocation)){echo $departureLocation;} else echo "Bellingham"; ?>"/>
 											<?php 
 											if($departLocError == true && !$isValid){
 												echo '<span class="help-inline">Please enter a valid city</span>';}
@@ -275,9 +290,7 @@
 										<label class="control-label" for="destinationLocation">Going To</label>
 										<div class="controls">										
 											<div class="controls">
-											<input id="destinationLocation" name="destinationLocation" type="text" data-source='
-												["Seattle", "Tacoma", "Spokane", "Bellevue", "Olympia", "Everett", "Vancouver", "Renton", "Bellingham", "Redmond", "Kirkland", "Puyallup", "Federal Way", "Kent", "Lynnwood", "Bremerton", "Bothell", "Yakima", "Issaquah", "Kennewick", "Auburn", "Marysville", "Lakewood", "Edmonds", "Wenatchee", "Gig Harbor", "Tri-Cities", "Pasco", "Woodinville", "Richland", "Mercer Island", "Anacortes", "Shoreline", "Port Angeles", "Tukwila", "Lacey", "Burien", "Forks", "Port Townsend", "Mount Vernon", "Walla Walla", "Sammamish", "Leavenworth", "Port Orchard", "Poulsbo", "Fort Lewis", "Ellensburg", "Sequim", "Spokane Valley", "Mukilteo"]'
-												data-items="4" data-provide="typeahead" style="margin: 0 auto;" value="<?php echo $destinationLocation; ?>"/>
+											<input id="destinationLocation" name="destinationLocation" type="text" autocomplete="on" value="<?php echo $destinationLocation; ?>"/>
 											<?php 
 											if($destLocError == true && !$isValid){
 												echo '<span class="help-inline">Please enter a valid city</span>';}
