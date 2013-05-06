@@ -22,63 +22,66 @@
         <title><?php Woodle(); ?></title>
         <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
         <link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+        <link href="bootstrap/css/footer.css" rel="stylesheet">
     </head>
     <body>
-
-		<!-- Navbar -->
-		<?php DisplayNavbar("reviews.php"); ?>
-        
-        <div class="container">
-            <div class="row-fluid">
-				<!-- Sidebar -->
-				<?php DisplaySidebar(); ?>
-                <div class="span9">
-                    <div class="row-fluid">
-                    	<?php ReviewNav(false) ?>
-                    </div>
-                    <div class="row-fluid">           
-                     	<?php
-                     		$dbc = new dbw(DBSERVER,DBUSER,DBPASS,DBCATALOG);
+		<div id="wrap">
+			<!-- Navbar -->
+			<?php DisplayNavbar("reviews.php"); ?>
+		     
+		     <div class="container">
+		         <div class="row-fluid">
+					<!-- Sidebar -->
+					<?php DisplaySidebar(); ?>
+		             <div class="span9">
+		                 <div class="row-fluid">
+		                 	<?php ReviewNav(false) ?>
+		                 </div>
+		                 <div class="row-fluid">           
+		                  	<?php
+		                  		$dbc = new dbw(DBSERVER,DBUSER,DBPASS,DBCATALOG);
 						
-									$ReviewForm=new Form;
-									echo $ReviewForm->init('reviewsaddRCV.php','post',array('class'=>'form-horizontal', 'name'=>'reviewForm', 'id'=>'reviewForm'))
-										->group('Course',
-											new Select($dbc->queryPairs('SELECT Abbreviation,Description FROM Department WHERE RowOrder=1 ORDER BY RowOrder,Abbreviation'), 1, array('class'=>'input-xlarge','name'=>'courseDept', 'id'=>'courseDept')),
-											new Text(array('class'=>'input-small','name'=>'courseNumber', 'id'=>'courseNumber', 'placeholder'=>'Course #'))
-										)
-										->group('Professor',
-											new Select($dbc->queryPairs('SELECT Name,Name FROM Professor WHERE RowOrder=1 ORDER BY RowOrder,Name'),false, array('class'=>'input-xlarge','name'=>'professor', 'id'=>'professor'))
-										)
-										->group('Workload', 
-											new Select(array('Light', 'Moderate', 'Heavy'), false, array('class'=>'input-xlarge', 'name'=>'workload', 'id'=>'workload'))
-										)
-										->group('Lecture quality',
-											new Star('lq')
-										)
-										->group('Test relevance',
-											new Star('tr')
-										)
-										->group('Relevance to program',
-											new Star('rtp')
-										)
-										->group('Enjoyable',
-											new Star('enj')
-										)
-										->group('Book necessity',
-											new Select(array('Absolutely necessary', 'Somewhat necessary', 'Not necessary'), 0, array('class'=>'input-xlarge', 'name'=>'bookNecessity', 'id'=>'bookNecessity'))
-										)
-										->group('Additional comments',
-											new Textarea('', array('class'=>'input-xlarge', 'rows'=>'8', 'name'=>'comments', 'id'=>'comments'))
-										)
-										->group('',
-											new Submit('Submit', array('class' => 'btn btn-primary'))
-										)
-										->render();
-                     	?>
-                    </div>
-                </div>
-            </div>
+										$ReviewForm=new Form;
+										echo $ReviewForm->init('reviewsaddRCV.php','post',array('class'=>'form-horizontal', 'name'=>'reviewForm', 'id'=>'reviewForm'))
+											->group('Course',
+												new Select($dbc->queryPairs('SELECT Abbreviation,Description FROM Department WHERE RowOrder=1 ORDER BY RowOrder,Abbreviation'), 1, array('class'=>'input-xlarge','name'=>'courseDept', 'id'=>'courseDept')),
+												new Text(array('class'=>'input-small','name'=>'courseNumber', 'id'=>'courseNumber', 'placeholder'=>'Course #'))
+											)
+											->group('Professor',
+												new Select($dbc->queryPairs('SELECT Name,Name FROM Professor WHERE RowOrder=1 ORDER BY RowOrder,Name'),false, array('class'=>'input-xlarge','name'=>'professor', 'id'=>'professor'))
+											)
+											->group('Workload', 
+												new Select(array('Light', 'Moderate', 'Heavy'), false, array('class'=>'input-xlarge', 'name'=>'workload', 'id'=>'workload'))
+											)
+											->group('Lecture quality',
+												new Star('lq')
+											)
+											->group('Test relevance',
+												new Star('tr')
+											)
+											->group('Relevance to program',
+												new Star('rtp')
+											)
+											->group('Enjoyable',
+												new Star('enj')
+											)
+											->group('Book necessity',
+												new Select(array('Absolutely necessary', 'Somewhat necessary', 'Not necessary'), 0, array('class'=>'input-xlarge', 'name'=>'bookNecessity', 'id'=>'bookNecessity'))
+											)
+											->group('Additional comments',
+												new Textarea('', array('class'=>'input-xlarge', 'rows'=>'8', 'name'=>'comments', 'id'=>'comments'))
+											)
+											->group('',
+												new Submit('Submit', array('class' => 'btn btn-primary'))
+											)
+											->render();
+		                  	?>
+		                 </div>
+		             </div>
+		         </div>
+		     </div>
         </div>
+        <?php DisplayFooter(); ?>
     </body>
     <script src="holder/holder.js"></script>
     <script src="http://code.jquery.com/jquery-latest.js"></script>

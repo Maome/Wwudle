@@ -6,10 +6,7 @@
 	
 	
 	function DisplayNavbar($filename) {
-		if (!isset($_REQUEST['index'])) {
-			CheckCreateUser(true);
-		}
-		//CheckCreateUser(true);
+		CheckCreateUser(true);
 		echo '
 			<div class="navbar navbar-inverse navbar-fixed-top">
 				<div class="navbar-inner">
@@ -44,7 +41,6 @@
 						</div><!--/.nav-collapse -->
 					</div>
 				</div>
-			</div>
 			<div class="bottompadding">
 			</div>
 		';
@@ -75,14 +71,3 @@
 		}
 	}
 ?>
-
-<!--old reviews backup	'<li class="dropdown';
-								if ($filename == "courses.php" || $filename == "textbooks.php" || $filename == "professors.php") echo ' active';
-								echo '">
-									<a class="dropdown-toggle" href="" role="button" data-toggle="dropdown">Reviews<b class="caret"></b></a>
-									<ul class="dropdown-menu" role="menu" aria-labelledby="dropl">
-										' .li_type($filename,"courses.php") .'<a tabindex="-1" href="courses.php">Courses</a></li>
-										' .li_type($filename,"textbooks.php") .'<a tabindex="-1" href="textbooks.php">Textbooks</a></li>
-										' .li_type($filename,"professors.php") .'<a tabindex="-1" href="professors.php">Professors</a></li>
-									</ul>
-								</li>'-->
