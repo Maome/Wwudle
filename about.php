@@ -26,8 +26,7 @@
                     <p>Beau Ritter</p>
                     <p>Reilly Steele</p>
                     <p>Nick Tarter</p>
-                    <p>Special thanks to Professor James Hearne for advising us through the process of the creation of this project</p>
-                    <p>Special thanks to Professor Kendra Douglas for design decision suggestions.</p>
+                    <p>Special thanks to Professor James Hearne for advising us through the process of the creation of this project and Professor Kendra Douglas for design suggestions.</p>
                 </div>
             </div>
         </div>
