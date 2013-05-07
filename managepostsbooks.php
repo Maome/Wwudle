@@ -34,31 +34,19 @@
 							$UserID = $row['UserID'];
 
 							// Populate a table with the rideshares the user currently has posted
-							$qry = "SELECT ISBN, Title, Price FROM Book b INNER JOIN BookListing bl ON b.BookID=bl.BookID WHERE bl.UserID='$UserID' ORDER BY PostID DESC;";
-							$dbc->queryToEditableTable($qry,'bookPosts',0,'managepostsbooks.php');
-							include('ridesharemodal.php');
-							/*$result = $dbc->query($qry);
-							$row = $result->fetch_assoc();														
-
-							if ($result->num_rows > 0) {
-								$fields = array("Title", "ISBN", "Price");
-								echo "<table class='table table-striped'>";
-									// Display header
-									echo "<thead>";
-										foreach ($fields as $i) echo "<th>" .$i ."</th>";
-									echo "</thead><tbody>";
-									
-									// Display rows
-									while ($row = $result->fetch_assoc()) {
-										echo "<tr>";
-											foreach ($fields as $i){
-												echo "<td>" .$row[$i] ."</td>";
-											}
-										echo "</tr>";
-									}
-									echo "</tbody></table>";
-							}
-							else echo "You currently have no books posted";*/												
+							$qry = "
+								SELECT PostID, ISBN, Title, Price, Course 
+								FROM Book b INNER 
+								JOIN BookListing bl ON b.BookID=bl.BookID 
+								WHERE bl.UserID='$UserID' AND b.RecordStatus <> 3 AND bl.RecordStatus <> 3 
+								ORDER BY PostID DESC;";
+							$updateQry = "
+								UPDATE BookListing SET
+								RecordStatus = 2, RecordStatusDate = NOW(),
+								Course = '" .$_POST['subject'] ." " .$_POST['course'] ."',
+								Price = " .$_POST['price'] ."
+								WHERE PostID = " .$_POST['PostID'];
+							$dbc->queryToEditableTable($qry,'PostID','bookPosts','managepostsbooks.php','booksmodal.php', $updateQry);											
 						?>
                 </div>
             </div>

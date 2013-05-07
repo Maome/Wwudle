@@ -106,38 +106,51 @@
 		}
 
 		// Output a table based on the results of a query
-		function queryToEditableTable($qry, $name, $keyColumn, $action, $headers = NULL, $classOverride = NULL) {
-			echo '<table id="' .$name .'" class="table '.(empty($classOverride) ? 'table-striped' : $classOverride) .'">';
+		function queryToEditableTable($qry, $keyColumn, $name, $action, $modalFile, $updateQry, $headers = NULL) {
+			// Delete record
+			if (isset($_POST['delete'])) {
+				$delQry = 'UPDATE ' .$tableToEdit .' SET RecordStatus = 3, RecordStatusDate = NOW() WHERE ' .$keyColumn .' = ' .$_POST[$keyColumn];
+				$this->query($delQry);
+			}
+			// Edit record
+			else if (isset($_POST['edit'])) {
+				$this->query($updateQry);
+			}
+
+			echo '<table id="' .$name .'" class="table table-striped">';
 			echo '<thead>' .PHP_EOL;
-				echo '<tr>' .PHP_EOL;
-				$result = $this->query($qry);
-				if (!empty($headers)) {
-					for($i = 0; $i < count($headers); $i++) echo '<th>' .$headers[$i] .'</th>';
+			echo '<tr>' .PHP_EOL;
+			$result = $this->query($qry);
+			if (!empty($headers)) {
+				for($i = 0; $i < count($headers); $i++) echo '<th>' .$headers[$i] .'</th>';
+			}
+			else {
+				$fields = $result->fetch_fields();
+				for($i = 0; $i < count($fields); $i++) {
+					if ($i != $keyColumn) echo '<th>' .$fields[$i]->name .'</th>';
 				}
-				else {
-					$fields = $result->fetch_fields();
-					for($i = 0; $i < count($fields); $i++) echo '<th>' .$fields[$i]->name .'</th>';
-					echo '<th></th>';
-				}
-				echo '</tr>' .PHP_EOL;
+				echo '<th></th>';
+			}
+			echo '</tr>' .PHP_EOL;
 			echo '</thead>' .PHP_EOL;
 			echo '<tbody>';
-				$count = 0;
-				while($row = $result->fetch_array()) {
-					echo '<tr>' .PHP_EOL;
-					for($i = 0; $i < $result->field_count; $i++) {
-						echo '<td>' .$row[$i] .'</td>';
-					}
-					echo "
-					<form class='form-inline' action='" .$action ."' method='POST'>
-					<input type='hidden' name='pid' id='pid' value='" . $row[$keyColumn] . "'>
-					<input type='hidden' name='delete' id='delete' value='true'>												
-					<td><a href='#edit" . $count . "' role='button' class='btn btn-primary' data-toggle='modal'>Edit</a>
-					<input class='btn btn-danger' type='submit' value='Delete'></td>
-					</form>";
-					echo '</tr>' .PHP_EOL;
-					$count++;
+			$count = 0;
+			for($count = 0; $row = $result->fetch_array(); $count++) {
+				echo '<tr>' .PHP_EOL;
+				for($i = 0; $i < $result->field_count; $i++) {
+					if ($i != $keyColumn)	echo '<td>' .$row[$i] .'</td>';
 				}
+				echo "
+				<form class='form-inline' action='" .$action ."' method='POST'>
+				<input type='hidden' name='key' id='key' value='" . $row[$keyColumn] . "'>
+				<input type='hidden' name='delete' id='delete' value='true'>												
+				<td><a href='#edit" . $count . "' role='button' class='btn btn-primary' data-toggle='modal'>Edit</a>
+				<input class='btn btn-danger' type='submit' value='Delete'></td>
+				</form>";
+				echo '</tr>' .PHP_EOL;
+				require_once($modalFile);
+				renderModals($this, $row, $action, $count);
+			}
 			echo '</tbody>';
 			echo '</table>';
 		}
