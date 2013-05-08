@@ -56,13 +56,13 @@
 		$isValid = false;
 		$pError = true;
 	}	
-	// Check the departure location
-	if(isset($departureLocation) && !ctype_alpha(str_replace(' ', '', $departureLocation))){
+	// Check the departure location	
+	if(isset($departureLocation) && !preg_match(@"(^[\w\s]+,\s\w{2}$)", $departureLocation)){
 		$isValid = false;
-		$departLocError = true;
+		$departLocError = true;		
 	}
 	// Check the destination location
-	if(isset($destinationLocation ) && !ctype_alpha(str_replace(' ', '', $destinationLocation ))){
+	if(isset($destinationLocation ) && !preg_match(@"(^[\w\s]+,\s\w{2}$)", $destinationLocation)){
 		$isValid = false;
 		$destLocError = true;
 	}																																							
@@ -81,8 +81,8 @@
 		   	function initialize() {
 			   	var options = {
 				  types: ['(cities)'],
-				  componentRestrictions: {country: "us"}
-				};
+				  componentRestrictions: {country: "us"},				  
+				};				
 		      	var departInput = document.getElementById('departureLocation');
 		      	var autocomplete = new google.maps.places.Autocomplete(departInput, options);
 		      	
@@ -91,8 +91,7 @@
 		      	
 		   }
 		   google.maps.event.addDomListener(window, 'load', initialize);
-		</script>
-        
+		</script>        
     </head>
     <body>
 
@@ -230,7 +229,7 @@
 										<label class="control-label" for="departureLocation">Leaving From</label>
 										<div class="controls">										
 											<div class="controls">
-											<input id="departureLocation" name="departureLocation" type="text"autocomplete="on" value="<?php if(isset($departureLocation)){echo $departureLocation;} else echo "Bellingham"; ?>"/>
+											<input id="departureLocation" name="departureLocation" type="text"autocomplete="on" value="<?php if(isset($departureLocation)){echo $departureLocation;} else echo "Bellingham, WA"; ?>"/>
 											<?php 
 											if($departLocError == true && !$isValid){
 												echo '<span class="help-inline">Please enter a valid city</span>';}
