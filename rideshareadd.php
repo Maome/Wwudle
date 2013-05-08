@@ -175,74 +175,8 @@
 									// Else display the form
 									else {							
 								?>
-							
-<<<<<<< HEAD
-								<form class="form-horizonal" name="addRideShare" id="addRideShare" action="rideshareadd.php" method="post">
-									<input type="hidden" name="postback" value="true"/>
-									<?php
-									if($dDateError == true && !$isValid){ 										
-										echo '<div class="control-group warning">';
-										} 
-									else echo '<div class="control-group ">';?> 		
-									<label class="control-label" for="departureDate">Departing</label>
-									<div class="controls">																				
-										<input id="departureDate" name="departureDate" type="text" value="<?php if(isset($departureDate)){echo $departureDate;} else echo date('m/d/Y', strtotime("+1 days")); ?>" data-date-format="mm/dd/yyyy" class="datepicker">
-										<?php 
-										if($dDateError == true && !$isValid){
-											echo '<span class="help-inline">Please enter a valid departing date</span>';}
-										?>	
-									</div>							
-									</div>
-									<div class="control-group">
-										<label class="control-label" for="departureDate">Departure Time</label>
-										    <div class="controls input-prepend">
-												<?php	
-													// Hour										    
-												    echo "<select id='departureHour' name='departureHour' style='width:60px'>";
-												    for ($h = 1; $h <= 12; $h++) {
-													echo "<option value='$h'>$h</option>";
-												    }
-												    echo "</select> : ";											    
-												    
-												    // Minute
-												    echo "<select id='departureMinute' name='departureMinute' style='width:60px'>";
-												    for ($m = 00; $m <= 59; $m++) {
-												    	// Add the leading 0
-												    	if ($m < 10){
-												    		$m = '0' . $m;
-												    	}											    
-														echo "<option value='$m'>$m</option>";
-												    }
-												    echo "</select>";
-												    
-												    // AM/PM
-													echo "<select id='departureAMPM' name='departureAMPM' style='width:75px'>";
-													echo "<option value='AM'>AM</option>";
-													echo "<option value='PM'>PM</option>";
-												    echo "</select>";
-												?>
-										    </div>
-										</div>
-										<?php
-										if($departLocError == true && !$isValid){ 										
-											echo '<div class="control-group warning">';
-											} 
-										else echo '<div class="control-group ">';?> 		
-										<label class="control-label" for="departureLocation">Leaving From</label>
-										<div class="controls">										
-											<div class="controls">
-											<input id="departureLocation" name="departureLocation" type="text"autocomplete="on" value="<?php if(isset($departureLocation)){echo $departureLocation;} else echo "Bellingham, WA"; ?>"/>
-											<?php 
-											if($departLocError == true && !$isValid){
-												echo '<span class="help-inline">Please enter a valid city</span>';}
-											?>
-										</div>
-										</div>
-										</div>									
-=======
 									<form class="form-horizonal" name="addRideShare" id="addRideShare" action="rideshareadd.php" method="post">
 										<input type="hidden" name="postback" value="true"/>
->>>>>>> 8b6ebd8f86583f44c12a1be16378b7541e5ed3d6
 										<?php
 										if($dDateError == true && !$isValid){ 										
 											echo '<div class="control-group warning">';
@@ -295,7 +229,7 @@
 											<label class="control-label" for="departureLocation">Leaving From</label>
 											<div class="controls">										
 												<div class="controls">
-												<input id="departureLocation" name="departureLocation" type="text"autocomplete="on" value="<?php if(isset($departureLocation)){echo $departureLocation;} else echo "Bellingham"; ?>"/>
+												<input id="departureLocation" name="departureLocation" type="text"autocomplete="on" value="<?php if(isset($departureLocation)){echo $departureLocation;} else echo "Bellingham, WA"; ?>"/>
 												<?php 
 												if($departLocError == true && !$isValid){
 													echo '<span class="help-inline">Please enter a valid city</span>';}
