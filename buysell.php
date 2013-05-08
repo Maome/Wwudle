@@ -18,11 +18,12 @@
 <!DOCTYPE HTML>
 <html lang-"en">
     <head>
-        <title><?php Woodle(); ?></title>
-        <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
-        <link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
-        <link href="bootstrap/css/bootstrap-rowlink.css" rel="stylesheet">
-		<link href="datatables/media/css/bootstrap-dt.css" rel="stylesheet">     
+		<title><?php Woodle(); ?></title>
+		<link href="bootstrap/css/bootstrap.css" rel="stylesheet">
+		<link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+		<link href="bootstrap/css/bootstrap-rowlink.css" rel="stylesheet">
+		<link href="bootstrap/css/footer.css" rel="stylesheet">
+		<link href="datatables/media/css/bootstrap-dt.css" rel="stylesheet">
 		<script type="text/javascript" language="javascript" src="datatables/media/js/jquery.js"></script>
 		<script type="text/javascript" language="javascript" src="datatables/media/js/jquery.dataTables.js"></script>
 		<script type="text/javascript" language="javascript" src="datatables/media/js/paging.js"></script>
@@ -36,62 +37,63 @@
 		</script> 
     </head>
     <body>
-
-		<!-- Navbar -->
-		<?php DisplayNavbar(basename(__FILE__)); ?>
-        
-        <div class="container">
-            <div class="row-fluid">
-				<!-- Sidebar -->
-				<?php DisplaySidebar(); ?>
-                <div class="span9">
-                <?php BuySellReviewNav(true) ?>
-                    <div class="row-fluid">
-						<?php
-						$dbc = new dbw(DBSERVER,DBUSER,DBPASS,DBCATALOG);
+		<div id="wrap">
+			<!-- Navbar -->
+			<?php DisplayNavbar(basename(__FILE__)); ?>
+		     
+		     <div class="container">
+		         <div class="row-fluid">
+					<!-- Sidebar -->
+					<?php DisplaySidebar(); ?>
+		             <div class="span9">
+		             <?php BuySellReviewNav(true) ?>
+		                 <div class="row-fluid">
+							<?php
+							$dbc = new dbw(DBSERVER,DBUSER,DBPASS,DBCATALOG);
 						
-						echo '<h4>Find a textbook by ISBN or title</h4>';
-						$FormA=new Form;
-						echo $FormA->init('','get',array('class'=>'form-inline'))
-							->group('',
-								new Text(array('class'=>'input-large','name'=>'srchText','value'=>$_GET['srchText'], 'placeholder'=>(empty($_GET['srchText']) ? 'Enter ISBN or title' : ''))),
-								new Submit('Search',array('class'=>'btn btn-primary'))
-							)
-							->render();
+							echo '<h4>Find a textbook by ISBN or title</h4>';
+							$FormA=new Form;
+							echo $FormA->init('','get',array('class'=>'form-inline'))
+								->group('',
+									new Text(array('class'=>'input-large','name'=>'srchText','value'=>$_GET['srchText'], 'placeholder'=>(empty($_GET['srchText']) ? 'Enter ISBN or title' : ''))),
+									new Submit('Search',array('class'=>'btn btn-primary'))
+								)
+								->render();
 						
-						echo '<b>OR</b>';
+							echo '<b>OR</b>';
 						
-						$FormB=new Form;
-						echo '<h4>Find a textbook by course</h4>';
-						echo $FormB->init('','get',array('class'=>'form-inline'))
-							->group('',
-								new Select($dbc->queryPairs('SELECT Abbreviation, Description FROM Department ORDER BY RowOrder,Abbreviation'),$_GET['srchDept'], array('class'=>'input-large','name'=>'srchDept')),
-								new Text(array('class'=>'input-medium','name'=>'srchCourse','value'=>$_GET['srchCourse'], 'placeholder'=>(empty($_GET['srchCourse']) ? 'Enter course number' : ''))),
-								new Submit('Search',array('class'=>'btn btn-primary'))
-							)
-							->render();
+							$FormB=new Form;
+							echo '<h4>Find a textbook by course</h4>';
+							echo $FormB->init('','get',array('class'=>'form-inline'))
+								->group('',
+									new Select($dbc->queryPairs('SELECT Abbreviation, Description FROM Department ORDER BY RowOrder,Abbreviation'),$_GET['srchDept'], array('class'=>'input-large','name'=>'srchDept')),
+									new Text(array('class'=>'input-medium','name'=>'srchCourse','value'=>$_GET['srchCourse'], 'placeholder'=>(empty($_GET['srchCourse']) ? 'Enter course number' : ''))),
+									new Submit('Search',array('class'=>'btn btn-primary'))
+								)
+								->render();
 							
-						?>
-                    </div>
-					<div class="row-fluid">
-						<?php
+							?>
+		                 </div>
+						<div class="row-fluid">
+							<?php
 							
-							if (isset($_GET['srchText'])) {
-								displayBookListings(array($_GET['srchText']),0);
-							}
-							else if (isset($_GET['srchCourse']) || isset($_GET['srchDept'])) {
-								$dept = trim($_GET['srchDept'] == 'ALL' ? '' : $_GET['srchDept']) .' ';
-								displayBookListings(array(trim($dept),trim($_GET['srchCourse'])),1);
-							}
-							else if (isset($_POST['postID'])) {
-								echo "An email has been sent to the seller on your behalf.";
-							}
-						?>
-					</div>
-                </div>
-            </div>
-        </div>
-        
+								if (isset($_GET['srchText'])) {
+									displayBookListings(array($_GET['srchText']),0);
+								}
+								else if (isset($_GET['srchCourse']) || isset($_GET['srchDept'])) {
+									$dept = trim($_GET['srchDept'] == 'ALL' ? '' : $_GET['srchDept']) .' ';
+									displayBookListings(array(trim($dept),trim($_GET['srchCourse'])),1);
+								}
+								else if (isset($_POST['postID'])) {
+									echo "An email has been sent to the seller on your behalf.";
+								}
+							?>
+						</div>
+		             </div>
+		         </div>
+		     </div>
+		 </div>
+		 <?php DisplayFooter(); ?>
     </body>
     <script src="holder/holder.js"></script>
     <!--<script src="http://code.jquery.com/jquery-latest.js"></script>-->

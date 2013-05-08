@@ -27,48 +27,49 @@
 		}
 	</style>
     <body>
+		<div id="wrap">
+			<!-- Navbar -->
+			<?php DisplayNavbar("buysell.php"); ?>
+				  <div class="container">
+				      <div class="row-fluid">
+					<!-- Sidebar -->
+					<?php DisplaySidebar(); ?>
+				          <div class="span9">
+				              <div class="row-fluid">
+				          	<?php BuySellReviewNav(false) ?>                  
+				                  <!--<div class="span6"><h2>Sell a Textbook</h2></div>-->
+				              </div>
+				              <div class="row-fluid">
+									<?php
+										// Book search form
+										$Form=new Form;
+										echo '<h4>Find a textbook by ISBN or title</h4>';
+										echo $Form->init('buyselladd.php','get',array('class'=>'form-inline'))
+											->group('',
+												new Text(array('class'=>'input-large','name'=>'srchText','placeholder'=>'Enter ISBN')),
+												new Submit('Search',array('class'=>'btn btn-primary'))
+											)
+											->render();
 
-	<!-- Navbar -->
-	<?php DisplayNavbar("buysell.php"); ?>
-        <div class="container">
-            <div class="row-fluid">
-			<!-- Sidebar -->
-			<?php DisplaySidebar(); ?>
-                <div class="span9">
-                    <div class="row-fluid">
-                	<?php BuySellReviewNav(false) ?>                  
-                        <!--<div class="span6"><h2>Sell a Textbook</h2></div>-->
-                    </div>
-                    <div class="row-fluid">
-							<?php
-								// Book search form
-								$Form=new Form;
-								echo '<h4>Find a textbook by ISBN or title</h4>';
-								echo $Form->init('buyselladd.php','get',array('class'=>'form-inline'))
-									->group('',
-										new Text(array('class'=>'input-large','name'=>'srchText','placeholder'=>'Enter ISBN')),
-										new Submit('Search',array('class'=>'btn btn-primary'))
-									)
-									->render();
+									  $dbc = new dbw(DBSERVER,DBUSER,DBPASS,DBCATALOG);
 
-							  $dbc = new dbw(DBSERVER,DBUSER,DBPASS,DBCATALOG);
+									  // Display book informationm if user is not posting a book listing and search text is not empty
+									  if (!empty($_GET['srchText']) && !isset($_POST['isbn'])) {
+										$isbn = str_replace('-','',$_GET['srchText']);
+										 displayBookList($dbc, $isbn);
+									  }
 
-							  // Display book informationm if user is not posting a book listing and search text is not empty
-							  if (!empty($_GET['srchText']) && !isset($_POST['isbn'])) {
-								$isbn = str_replace('-','',$_GET['srchText']);
-								 displayBookList($dbc, $isbn);
-							  }
-
-							  // Create a book listing
-							  if (isset($_POST['isbn'])) {
-									postBookListing($dbc, $_POST['isbn'],$_POST['title'], $_POST['authors']);
-							  }
-							?>
+									  // Create a book listing
+									  if (isset($_POST['isbn'])) {
+											postBookListing($dbc, $_POST['isbn'],$_POST['title'], $_POST['authors']);
+									  }
+									?>
+							</div>
+						</div>
 					</div>
 				</div>
-			</div>
-		</div>
-        
+        </div>
+		<?php DisplayFooter(); ?>
     </body>
     <script src="holder/holder.js"></script>
     <script src="http://code.jquery.com/jquery-latest.js"></script>
