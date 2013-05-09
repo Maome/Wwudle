@@ -28,7 +28,9 @@
 								<?php
 									// Get the post data
 									$PostID = $_GET['PostID'];
-									ShowRideInfo($PostID);																										   																															
+									if(isset($PostID)){
+										ShowRideInfo($PostID);																										   																															
+									}
 								?>
 							
 		                     </div>
