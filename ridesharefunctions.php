@@ -15,12 +15,22 @@
 		// See if we are searching or homepage of rides
 		if ($isSearch)
 		{					
-
+			// validate the input
 			if(!is_numeric($maxPrice)){
 				$maxPrice = PHP_INT_MAX;
-			}																								
-			$departureDate = formatDate($departureDate);
-			$returnDate = formatDate($returnDate);				
+			}	
+			if(!preg_match('/^[0-9]{2}\/[0-9]{2}\/[0-9]{4}$/', $departureDate)){
+				$departureDate = '';
+			}
+			else {
+				$departureDate = formatDate($departureDate);
+			}
+			if(!preg_match("/^[0-9]{2}\/[0-9]{2}\/[0-9]{4}$/", $returnDate)){
+				$returnDate= '';
+			}
+			else {
+				$returnDate= formatDate($returnDate);
+			}																																												
 			
 			// **** THE SERVER CLOCK IS FAST BY 7 HOURS ****
 			$qry = "SELECT DepartureDate, SourceCity, DestCity, ReturnDate, SeatsRemaining, Price, PostID, MaxSeats " .

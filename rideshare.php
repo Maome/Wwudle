@@ -70,6 +70,7 @@
 		                 </div>		     
 		                             
 		                 <button id="advSearchBtn" class="btn btn-primary">Advanced Search</button>
+		                <a class="btn btn-primary" href="rideshare.php">Reset Search</a>
 		                 
 			             <div class="row-fluid">
 			             	<div class="span9">		                 
@@ -80,13 +81,13 @@
 			                        		<tbody>
 			                        		<tr>
 					                        	<td><label class="control-label" for="to">Departing </label></td>
-					                        	<td><input id="departingDate" name="departingDate" type="text" value="<?php echo date('m/d/Y'); ?>" data-date-format="mm/dd/yyyy" class="datepicker input-medium"></td>
+					                        	<td><input id="departingDate" name="departingDate" type="text" placeholder="Departing" data-date-format="mm/dd/yyyy" class="datepicker input-medium"></td>
 					                        	<td><label class="control-label" for="from">Leaving From </label></td>
 												<td><input class="input-medium" type="text" placeholder="Leaving From" name="from" id="from"></td>
 				                        	</tr>
 				                        	<tr>
 												<td><label class="control-label" for="to">Returning </label></td>
-												<td><input id="returningDate" name="returningDate" type="text" value="<?php echo date('m/d/Y', strtotime("+1 day")); ?>" data-date-format="mm/dd/yyyy" class="datepicker input-medium"></td>											
+												<td><input id="returningDate" name="returningDate" type="text"  placeholder="Returning" data-date-format="mm/dd/yyyy" class="datepicker input-medium"></td>											
 												<td><label class="control-label" for="to">Going To </label></td>
 												<td><input class="input-medium" type="text" placeholder="Going To" name="to" id="to"></td>
 				                        	</tr>
