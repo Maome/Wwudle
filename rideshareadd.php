@@ -19,11 +19,6 @@
 	$numSeats = $_POST['numSeats'];
 	$price = $_POST['price'];
 	
-	// Init the validation variables
-	//$pError = false;
-	//$departLocError = false;
-	//$sError = false;
-	
 	$today = date("Y-m-d H:i:s"); 
 	$tempDDate = date("Y-m-d H:i:s", strtotime($departureDate));
 	$tempRDate = date("Y-m-d H:i:s", strtotime($returnDate));																		
@@ -92,7 +87,13 @@
 		      	
 		   }
 		   google.maps.event.addDomListener(window, 'load', initialize);
-		</script>        
+		</script> 
+
+	<script>
+	      $(function(){
+		    $("#departureLocation").popover({trigger: "focus", content: "It's so simple to create a tooltop for my website!"});
+	      });
+	</script>
     </head>
     <body>
 		<div id="wrap">
@@ -229,7 +230,7 @@
 											<label class="control-label" for="departureLocation">Leaving From</label>
 											<div class="controls">										
 												<div class="controls">
-												<input id="departureLocation" name="departureLocation" type="text"autocomplete="on" value="<?php if(isset($departureLocation)){echo $departureLocation;} else echo "Bellingham, WA"; ?>"/>
+												<input id="departureLocation" name="departureLocation" type="text"autocomplete="on" rel="popover" value="<?php if(isset($departureLocation)){echo $departureLocation;} else echo "Bellingham, WA"; ?>"/>
 												<?php 
 												if($departLocError == true && !$isValid){
 													echo '<span class="help-inline">Please enter a valid city</span>';}
@@ -304,7 +305,7 @@
 											else echo '<div class="control-group ">';?> 		
 											<label class="control-label" for="numSeats">Number of Seats</label>
 											<div class="controls">										
-												<input id="numSeats" name="numSeats" type="text" value="<?php echo $numSeats; ?>"/>
+												<input id="numSeats" name="numSeats" type="text" placeholder="Enter number of empty seats" value="<?php echo $numSeats; ?>"/>
 												<?php 
 												if($sError == true && !$isValid){
 													echo '<span class="help-inline">Please enter the number of empty seats in your vehicle</span>';}
@@ -318,7 +319,7 @@
 											else echo '<div class="control-group ">';?> 		
 											<label class="control-label" for="price">Price</label>
 											<div class="controls">										
-												<input id="price" name="price" type="text" value="<?php echo $price; ?>"/>
+												<input id="price" name="price" type="text" placeholder="Enter price per person" value="<?php echo $price; ?>"/>
 												<?php 
 												if($pError == 1 && !$isValid){
 													echo '<span class="help-inline">Please enter a valid price</span>';

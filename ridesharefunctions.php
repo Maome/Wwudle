@@ -5,7 +5,7 @@
 	$dbc = new dbw(DBSERVER,DBUSER,DBPASS,DBCATALOG);
 	
 	// Function to show the most resent ride shares posted 	
-	function ShowRides($isSearch, $source, $destination)
+	function ShowRides($isSearch, $source, $destination, $departureDate, $returnDate, $maxPrice)
 	{
 		global $dbc;
 		
@@ -14,9 +14,25 @@
 		
 		// See if we are searching or homepage of rides
 		if ($isSearch)
-		{
-		// **** THE SERVER CLOCK IS FAST BY 7 HOURS ****
-			$qry = "SELECT DepartureDate, SourceCity, DestCity, ReturnDate, SeatsRemaining, Price, PostID, MaxSeats FROM RideShare WHERE RecordStatus != '3' AND SourceCity like '$source%' AND DestCity like '$destination%' AND DepartureDate >= CURRENT_TIMESTAMP - INTERVAL 7 HOUR ORDER BY PostID DESC;";
+		{					
+
+			if(!is_numeric($maxPrice)){
+				$maxPrice = PHP_INT_MAX;
+			}																								
+			$departureDate = formatDate($departureDate);
+			$returnDate = formatDate($returnDate);				
+			
+			// **** THE SERVER CLOCK IS FAST BY 7 HOURS ****
+			$qry = "SELECT DepartureDate, SourceCity, DestCity, ReturnDate, SeatsRemaining, Price, PostID, MaxSeats " .
+					"FROM RideShare " . 
+					"WHERE RecordStatus != '3' " .
+					"AND SourceCity like '$source%' " . 
+					"AND DestCity like '$destination%' " .					
+					"AND DepartureDate like '$departureDate%' " .					
+					"AND ReturnDate like '$returnDate%' " .										
+					"AND Price <= '$maxPrice' " .
+					"AND DepartureDate >= CURRENT_TIMESTAMP - INTERVAL 7 HOUR " .
+					"ORDER BY PostID DESC;";
 		}				
 		
 		$result = $dbc->query($qry);		
@@ -125,6 +141,13 @@
 		";																										
 						
 	}
+	
+	// Function to format date information into mysql DATETIME format
+	function formatDate($d){									
+		$date = date('Y-m-d', strtotime($d));									
+		return $date;
+	}
+	
 	
 	// Function to get the date from DATETIME
 	function getDateFunc($fromMYSQL){

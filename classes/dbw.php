@@ -19,7 +19,7 @@
 			$this->debug = $debug;
 			if (!$this->conn)  die("<p>The database server is unavailable.</p>");
 		}
-		
+						
 		// Set debug to true or false. If true debug information will be output for each query executed
 		function setDebug($debug) {
 			if (is_bool($debug)) $this->debug = $debug;
