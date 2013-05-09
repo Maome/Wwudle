@@ -51,7 +51,7 @@
 		echo "
 			<table id='table_id' class='table table-striped' data-provides='rowlink'>
 				<thead>
-				<tr>
+				<tr class='rowlink'>
 					<th>Leaving From <i class='icon-chevron-down'></i></th>
 					<th>Departing <i class='icon-chevron-down'></i></th>
 					<th>Departure Time <i class='icon-chevron-down'></i></th>
@@ -73,8 +73,8 @@
 			$returnTime = getTime($row[3]);
 			
 			echo "			
-				<tr class='rowlink'>
-					<td><a href ='rideinfo?PostID=$row[6]'> </a>$row[1]</td>
+				<tr id='$row[6]' class='rowlink'>
+					<td>$row[1]</td>
 					<td>$departDate</td>
 					<td>$departTime</td>
 					<td>$row[2]</td>

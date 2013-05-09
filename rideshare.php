@@ -20,7 +20,12 @@
 			$(document).ready(function() {
 				var oTable = $('#table_id').dataTable( {
 					"sPaginationType": "bootstrap"			
-				} );								
+				} );		
+				
+				$("#table_id tbody tr").on('click',function() {   
+				    var id = $(this).attr('id');
+				    document.location.href = "rideinfo?PostID=" + id;       
+				}); 										
 			} );
 			
 			// Toggles on/off the advanced search
@@ -103,7 +108,7 @@
 			                        </form>
 			                     </div>
 			                 </div>		                 	                 			                 		    
-		                 </div>		                     		                                         
+		                 </div>
 		                 <?php
 							// Check to see if we are doing a search or not														
 							$source = $_GET['from'];

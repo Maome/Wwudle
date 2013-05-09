@@ -26,23 +26,30 @@
 		                         <!-- MAIN CONTENT FOR RIDEINFO -->
 								<?php
 									$dbc = new dbw(DBSERVER,DBUSER,DBPASS,DBCATALOG);
-								
-									// Check to see if user is logged on/Valid user
-									$username = PHPCAS::GetUser();
-								
-									// See if the user is in the Users table
-									$username = $username . "@students.wwu.edu";
-									$sql = "Select * from User where Email = '$username';";
-								
-									$result = $dbc->query($sql);
-																
-									// Check if the name is in the table
-									$rows = $result->num_rows;					
-								
-									if ($rows == 0) {
-										echo "<h2>You must log in!</h2>";
+									
+									// Check if we are posting back
+									if(isset($_POST['postback'])){
+										// Get the post data
+										$PostID = $_POST['PostID'];
+										$Subject = $_POST['Subject'];
+										$MessageBody = $_POST['MessageBody'];
+									
+										// Get the email for the person who posted the ride
+										$sql = "SELECT Email FROM User INNER JOIN RideShare ON User.UserID=RideShare.UserID WHERE RideShare.PostID='$PostID';";
+										$result = $dbc->query($sql);
+										$row = $result->fetch_row();
+										$PostEmail = $row[0];
+									
+										// Constuct the email message
+										$headers = 'From: ' . $username . "\r\n" .
+											 'Reply-To: ' . $username . "\r\n" .
+											 'X-Mailer: PHP/' . phpversion();									
+								         mail($PostEmail,$Subject,$MessageBody,$headers);	
+								         
+										echo "<h2>Your email has been sent</h2>";	
 									}
-									else{															
+									else{
+																					
 										// Get the post data
 										$PostID = $_GET['PostID'];
 									
@@ -54,7 +61,8 @@
 									
 										// Create a form to get the message
 										echo "																												
-					                         <form class='form-inline' action='ridesharerequestRCV.php' method='post'>
+					                         <form class='form-inline' action='ridesharerequest.php' method='post'>
+					                         	<input type='hidden' name='postback' value='true'/>
 					                         	<div class='control-group'>
 						                          	<label class='control-label' for='Subject'>Subject</label>
 													<input class='field span12' type='text' name='Subject' id='Subject' value='Rideshare request from $Source to $Dest'> <br /><br />
@@ -65,7 +73,7 @@
 					                             </div>
 					                         </form>																				
 										";
-									}																   																											
+									}															   																											
 								?>
 							
 		                     </div>

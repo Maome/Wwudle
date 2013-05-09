@@ -197,14 +197,14 @@
 												 <div class="controls input-prepend">
 													<?php	
 														// Hour										    
-														 echo "<select id='departureHour' name='departureHour' style='width:60px'>";
+														 echo "<select id='departureHour' name='departureHour' style='width:73px'>";
 														 for ($h = 1; $h <= 12; $h++) {
 														echo "<option value='$h'>$h</option>";
 														 }
 														 echo "</select> : ";											    
 														 
 														 // Minute
-														 echo "<select id='departureMinute' name='departureMinute' style='width:60px'>";
+														 echo "<select id='departureMinute' name='departureMinute' style='width:73px'>";
 														 for ($m = 00; $m <= 59; $m++) {
 														 	// Add the leading 0
 														 	if ($m < 10){
@@ -215,7 +215,7 @@
 														 echo "</select>";
 														 
 														 // AM/PM
-														echo "<select id='departureAMPM' name='departureAMPM' style='width:75px'>";
+														echo "<select id='departureAMPM' name='departureAMPM' style='width:73px'>";
 														echo "<option value='AM'>AM</option>";
 														echo "<option value='PM'>PM</option>";
 														 echo "</select>";
@@ -257,14 +257,14 @@
 												 <div class="controls input-prepend">
 													<?php	
 														// Hour										    
-														 echo "<select id='returnHour' name='returnHour' style='width:60px'>";
+														 echo "<select id='returnHour' name='returnHour' style='width:73px'>";
 														 for ($h = 1; $h <= 12; $h++) {
 															echo "<option value='$h'>$h</option>";
 														 }
 														 echo "</select> : ";											    
 														 
 														 // Minute
-														 echo "<select id='returnMinute' name='returnMinute' style='width:60px'>";
+														 echo "<select id='returnMinute' name='returnMinute' style='width:73px'>";
 														 for ($m = 00; $m <= 59; $m++) {
 														 	// Add the leading 0
 														 	if ($m < 10){
@@ -275,7 +275,7 @@
 														 echo "</select>";
 														 
 														 // AM/PM
-														echo "<select id='returnAMPM' name='returnAMPM' style='width:75px'>";
+														echo "<select id='returnAMPM' name='returnAMPM' style='width:73px'>";
 														echo "<option value='AM'>AM</option>";
 														echo "<option value='PM'>PM</option>";
 														 echo "</select>";
