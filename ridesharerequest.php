@@ -33,6 +33,10 @@
 										$PostID = $_POST['PostID'];
 										$Subject = $_POST['Subject'];
 										$MessageBody = $_POST['MessageBody'];
+										
+										// Add the update link to the messagebody
+										$MessageBody .= "\n\n\n If you wish to accept this rideshare please click the link below to update the number of open seats in your vehicle";
+										$MessageBody .= "\n\n http://sw.cs.wwu.edu/~hieberk/cs492/managepostsrides.php?updateSeats=true&pid=$PostID";							   
 									
 										// Get the email for the person who posted the ride
 										$sql = "SELECT Email FROM User INNER JOIN RideShare ON User.UserID=RideShare.UserID WHERE RideShare.PostID='$PostID';";

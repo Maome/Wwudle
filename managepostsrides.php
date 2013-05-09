@@ -36,7 +36,7 @@
 								$result = $dbc->query($qry);
 								$row = $result->fetch_assoc();
 								$UserID = $row['UserID'];
-													
+																					
 								// Check to see if the user is deleting a post
 								if(isset($_POST['delete'])){
 									// Update the rideshare if the correct user is trying to remove the rideshare
@@ -82,7 +82,25 @@
 									// Update the information in the database		
 									$sql = "UPDATE RideShare SET RecordStatus='2', DepartureDate='$departureDate', SourceCity='$departureLocation', ReturnDate='$returnDate', DestCity='$destinationLocation', MaxSeats='$numSeats', Price='$price' WHERE PostID='$postID';";
 									$dbc->query($sql);								
-								}							
+								}		
+								
+								// Check to see if they are updating the seat count
+								if(isset($_GET['updateSeats']) && isset($_GET['pid'])){
+									$pid = $_GET['pid'];
+									if(is_numeric($pid)){										
+										// Update the count of open seats in this vehicle
+										$qry = "SELECT SeatsRemaining FROM RideShare WHERE PostID='$pid' AND UserID='$UserID';";
+										$result = $dbc->query($qry);
+										$row = $result->fetch_assoc();
+										
+										// Check if it is okay to update the number of seats remaining
+										if($row['SeatsRemaining'] > 0){
+											$qry = "UPDATE RideShare SET SeatsRemaining=SeatsRemaining-1 WHERE PostID='$pid' AND UserID='$UserID';";
+											$result = $dbc->query($qry);				
+											echo "<h3>Thank you for updating the seat count of your Rideshare</h3>";							
+										}
+									}
+								}					
 
 								// Populate a table with the rideshares the user currently has posted
 								// **** THE SERVER CLOCK IS FAST BY 7 HOURS ****
@@ -126,7 +144,6 @@
 													</form>	
 												</td>							
 											</tr>";		
-	//										<a href='?delete=true&pid=" . $row["PostID"] . "' role='button' class='btn btn-danger'>Delete</a>
 
 											// Create a modal to edit the rideshare
 											include('ridesharemodal.php');
@@ -136,14 +153,7 @@
 										}
 										echo "</tbody></table>";									
 								}
-								else echo "You currently have no rideshares pending";		
-							
-								// Function to format date information into mysql DATETIME format
-								function formatDate($d){									
-									$date = date('Y-m-d H:i:s', strtotime($d));									
-									return $date;
-								}
-																															
+								else echo "You currently have no rideshares pending";																																	
 							?>					
 		             </div>
 		         </div>

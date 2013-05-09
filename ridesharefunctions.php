@@ -98,16 +98,16 @@
 		$dbc->query("Update RideShare Set ViewCount=ViewCount+1 Where PostID='$PostID';");
 		
 		// Get the information about this rideshare
-		$sql = "SELECT DepartureDate, SourceCity, DestCity, ReturnDate, SeatsRemaining, Price, PostID, ViewCount FROM RideShare WHERE PostID=$PostID";
+		$sql = "SELECT DepartureDate, SourceCity, DestCity, ReturnDate, SeatsRemaining, MaxSeats, Price, PostID, ViewCount FROM RideShare WHERE PostID=$PostID";
 		$result = $dbc->query($sql);
-		$row = $result->fetch_row();									
+		$row = $result->fetch_assoc();									
 		
 		// Convert the date 
-		$departureDate = getDateFunc($row[0]);
-		$departureTime = getTime($row[0]);
+		$departureDate = getDateFunc($row['DepartureDate']);
+		$departureTime = getTime($row['DepartureDate']);
 		
-		$returnDate = getDateFunc($row[3]);
-		$returnTime = getTime($row[3]);
+		$returnDate = getDateFunc($row['ReturnDate']);
+		$returnTime = getTime($row['ReturnDate']);
 
 //echo "";
 											
@@ -115,7 +115,7 @@
 		echo "
 			<table id='table_id' class='table table-striped'>
 				<thead>
-					<th colspan='2'><h3>Ride Details: $row[7] Views</h3></th>																	
+					<th colspan='2'><h3>Ride Details: " . $row['ViewCount'] . " Views</h3></th>																	
 				</thead>
 				<tbody>
 					<tr>
@@ -125,7 +125,7 @@
 						<td><b>Departure Time</b></td><td>$departureTime</td>
 					</tr>
 					<tr>
-						<td><b>Departure Location</b></td><td>$row[1]</td>
+						<td><b>Departure Location</b></td><td>" . $row['SourceCity'] . "</td>
 					</tr>
 					<tr>
 						<td><b>Return Date</b></td><td>$returnDate</td>
@@ -134,13 +134,13 @@
 						<td><b>Return Time</b></td><td>$returnTime</td>
 					</tr>
 					<tr>
-						<td><b>Destination Location</b></td><td>$row[2]</td>
+						<td><b>Destination Location</b></td><td>" . $row['DestCity'] . "</td>
 					</tr>
 					<tr>
-						<td><b>Seats Remaining</b></td><td>$row[4]</td>
+						<td><b>Seats Remaining</b></td><td>" . $row['SeatsRemaining'] . "/" .$row['MaxSeats'] . "</td>
 					</tr>												
 					<tr>
-						<td><b>Price</b></td><td>$$row[5]</td>
+						<td><b>Price</b></td><td>$" . $row['Price'] . "</td>
 					</tr>													
 				</tbody>
 			</table>						
