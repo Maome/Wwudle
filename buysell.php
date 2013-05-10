@@ -60,14 +60,13 @@
 		                 <div class="row-fluid">
 						 
 		                 <h4>Find textbooks by 
-						 <select class="input-medium" id="searchType" style="width: 120px">
+						 <select class="input-medium" id="searchType" style="width: 130px">
 							 <option value="ISBN">ISBN or Title</option>
 						 	 <option value="Course">Course</option>
 						 </select>						 
 							<?php
 							$dbc = new dbw(DBSERVER,DBUSER,DBPASS,DBCATALOG);
-						
-							//echo '<h4>Find a textbook by ISBN or title</h4>';
+													
 							echo "<div id='isbnSearch'>";
 							$FormA=new Form;
 							echo $FormA->init('','get',array('class'=>'form-inline'))
@@ -76,13 +75,10 @@
 									new Submit('Search',array('class'=>'btn btn-primary'))
 								)
 								->render();
-							echo "</div>";
-						
-							//echo '<b>OR</b>';
+							echo "</div>";												
 						
 							echo "<div id='courseSearch'>";
-							$FormB=new Form;
-							//echo '<h4>Find a textbook by course</h4>';
+							$FormB=new Form;							
 							echo $FormB->init('','get',array('class'=>'form-inline'))
 								->group('',
 									new Select($dbc->queryPairs('SELECT Abbreviation, Description FROM Department ORDER BY RowOrder,Abbreviation'),$_GET['srchDept'], array('class'=>'input-large','name'=>'srchDept')),
