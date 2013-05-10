@@ -25,7 +25,19 @@
          <link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
          <link href="bootstrap/css/bootstrap-rowlink.css" rel="stylesheet">
          <link href="bootstrap/css/footer.css" rel="stylesheet">
-			<link href="datatables/media/css/bootstrap-dt.css" rel="stylesheet">   
+		 <link href="datatables/media/css/bootstrap-dt.css" rel="stylesheet"> 
+		 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>  
+		 <script>
+			$(document).ready(function() {
+				$("#profSearch").hide();
+				
+				$("#searchType").change(function(e){					
+					$("#profSearch").toggle();
+					$("#courseSearch").toggle();
+				});
+						
+			});				 
+		 </script>
     </head>
     <body>
 		<div id="wrap">
@@ -41,27 +53,38 @@
 		                 <?php ReviewNav(true) ?>
 		                 </div>
 		                 <div class="row-fluid">
+		                 
+		                 <h4>Find reviews by 
+						 <select class="input-medium" id="searchType" style="width: 120px">
+							 <option value="Course">Course</option>
+						 	 <option value="Professor">Professor</option>
+						 </select>
+						 
+						 </h4>
+
 		                     <?php
-		                  		$dbc = new dbw(DBSERVER,DBUSER,DBPASS,DBCATALOG);
-		                  		echo '<h4>Find reviews by course</h4>';
-		                  		$ReviewSearchCourseForm=new Form;
-										echo $ReviewSearchCourseForm->init('','get',array('class'=>'form-inline', 'name'=>'reviewSearchCourseForm', 'id'=>'reviewSearchCourseForm'))
-											->group('',
-												new Select($dbc->queryPairs('SELECT Abbreviation,Description FROM Department WHERE RowOrder = 1 ORDER BY RowOrder,Abbreviation'), 1, array('class'=>'input-xlarge','name'=>'courseDept', 'id'=>'courseDept')),
-												new Text(array('class'=>'input-small','name'=>'courseNumber', 'id'=>'courseNumber', 'placeholder'=>'Course #')),
-												new Submit('Search',array('class'=>'btn btn-primary'))
-											)
-											->render();
-										echo '<b>OR</b>';
-										echo '<h4>Find reviews by professor</h4>';
-										$ReviewSearchProfForm=new Form;
-										echo $ReviewSearchProfForm->init('','get',array('class'=>'form-inline', 'name'=>'reviewSearchProfForm', 'id'=>'reviewSearchProfForm'))
-											->group('',
-												new Select($dbc->queryPairs('SELECT Name,Name FROM Professor WHERE RowOrder = 1 ORDER BY RowOrder,Name'),1, array('class'=>'input-xlarge','name'=>'searchProf', 'id'=>'searchProf')),
-												new Submit('Search',array('class'=>'btn btn-primary'))
-											)
-											->render();
-									?>
+		                  		$dbc = new dbw(DBSERVER,DBUSER,DBPASS,DBCATALOG);		                  				                  				                  		
+		                  		echo "<div id='courseSearch'>";		                  			
+		                  			$ReviewSearchCourseForm=new Form;		                  						                  						                  				
+									echo $ReviewSearchCourseForm->init('','get',array('class'=>'form-inline', 'name'=>'reviewSearchCourseForm', 'id'=>'reviewSearchCourseForm'))
+										->group('',
+											new Select($dbc->queryPairs('SELECT Abbreviation,Description FROM Department WHERE RowOrder = 1 ORDER BY RowOrder,Abbreviation'), 1, array('class'=>'input-xlarge','name'=>'courseDept', 'id'=>'courseDept')),
+											new Text(array('class'=>'input-small','name'=>'courseNumber', 'id'=>'courseNumber', 'placeholder'=>'Course #')),
+											new Submit('Search',array('class'=>'btn btn-primary'))
+										)
+										->render();
+								echo "</div>";
+									
+								echo '<div id="profSearch">';
+									$ReviewSearchProfForm=new Form;
+									echo $ReviewSearchProfForm->init('','get',array('class'=>'form-inline', 'name'=>'reviewSearchProfForm', 'id'=>'reviewSearchProfForm'))
+										->group('',
+											new Select($dbc->queryPairs('SELECT Name,Name FROM Professor WHERE RowOrder = 1 ORDER BY RowOrder,Name'),1, array('class'=>'input-xlarge','name'=>'searchProf', 'id'=>'searchProf')),
+											new Submit('Search',array('class'=>'btn btn-primary'))
+										)
+										->render();	
+								echo "</div>";									
+							?>
 		                 </div>
 		                 <div class="row-fluid">
 				              <?php

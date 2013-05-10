@@ -129,11 +129,17 @@
 						</div>
 					</div>
 					<div class="control-group"> 								
-						<label class="control-label" for="numSeats">Number of Seats</label>
+						<label class="control-label" for="numSeats">Total Number of Seats</label>
 						<div class="controls">
 							<input id="numSeats' . $count . '" name="numSeats" type="text" value="' . $row['MaxSeats'] . '">
 						</div>
 					</div>
+					<div class="control-group"> 								
+						<label class="control-label" for="seatsRemaining">Seats Remaining</label>
+						<div class="controls">						
+							<input id="seatsRemaining' . $count . '" name="seatsRemaining" type="text" value="' . $row['SeatsRemaining'] . '">
+						</div>
+					</div>					
 					<div class="control-group"> 		
 						<label class="control-label" for="price">Price</label>
 						<div class="controls">

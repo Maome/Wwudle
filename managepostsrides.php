@@ -64,6 +64,7 @@
 									$destinationLocation = $_POST['destinationLocation'];		
 																					
 									$numSeats = $_POST['numSeats'];
+									$seatsRemaining = $_POST['seatsRemaining'];
 									$price = $_POST['price'];
 									$postID = $_POST['PostID'];		
 								
@@ -80,7 +81,7 @@
 									$source = $_POST['name'];																
 							
 									// Update the information in the database		
-									$sql = "UPDATE RideShare SET RecordStatus='2', DepartureDate='$departureDate', SourceCity='$departureLocation', ReturnDate='$returnDate', DestCity='$destinationLocation', MaxSeats='$numSeats', Price='$price' WHERE PostID='$postID';";
+									$sql = "UPDATE RideShare SET RecordStatus='2', DepartureDate='$departureDate', SourceCity='$departureLocation', ReturnDate='$returnDate', DestCity='$destinationLocation', MaxSeats='$numSeats', SeatsRemaining='$seatsRemaining', Price='$price' WHERE PostID='$postID';";
 									$dbc->query($sql);								
 								}		
 								
