@@ -22,7 +22,7 @@
 					<!-- Sidebar -->
 					<?php DisplaySidebar(); ?>
 		             <div class="span9">
-		                 <div class="row-fluid">
+		                 <div class="row-fluid">						 
                          <div id="myCarousel" class="carousel slide" data-pause="hover"> 
     								<ol class="carousel-indicators">
 											<li class="active" data-slide-to="0" data-target="#myCarousel"></li>
@@ -31,8 +31,8 @@
     									</ol>
     							<!-- Carousel items -->
     								<div class="carousel-inner">
-    									<div class="active item">
-    										<a href="rideshare.php"><img alt="" src="images/rideshare.jpg"></img></a>
+    									<div class="active item">										
+    										<a href="rideshare.php"><img alt="" src="images/rideshare.jpg"></img></a>											
     										<div class="carousel-caption" data>
     												<h4 style="color:#00aae9; text-shadow: 1px 1px 1px #000, 1px 1px 1px black;">Rideshare</h2>
     												<p>Look for or offer rides to other Western students.<p>    										

@@ -149,7 +149,7 @@
 			</div>
 			<div class="modal-footer">												
 				<input class="btn btn-success" type="submit" value="Save changes">
-				<button class="btn btn-primary" data-dismiss="modal" aria-hidden="true">Close</button>				
+				<button class="btn btn-primary" data-dismiss="modal" aria-hidden="true">Close</button>			
 			</div>
 		</div>
 		</form>

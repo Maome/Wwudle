@@ -27,13 +27,23 @@
 		<script type="text/javascript" language="javascript" src="datatables/media/js/jquery.js"></script>
 		<script type="text/javascript" language="javascript" src="datatables/media/js/jquery.dataTables.js"></script>
 		<script type="text/javascript" language="javascript" src="datatables/media/js/paging.js"></script>
+		<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>  	
 		<script>
-		$(document).ready(function() {
-			var oTable = $('#bookListings').dataTable( {
-				"sPaginationType": "bootstrap",
-				"bFilter": false
-			} );															
-		} );		
+			$(document).ready(function() {
+				$("#courseSearch").hide();
+				
+				$("#searchType").change(function(e){					
+					$("#isbnSearch").toggle();
+					$("#courseSearch").toggle();
+				});					
+			});			
+		
+			$(document).ready(function() {
+				var oTable = $('#bookListings').dataTable( {
+					"sPaginationType": "bootstrap",
+					"bFilter": false
+				} );															
+			} );		
 		</script> 
     </head>
     <body>
@@ -48,10 +58,17 @@
 		             <div class="span9">
 		             <?php BuySellReviewNav(true) ?>
 		                 <div class="row-fluid">
+						 
+		                 <h4>Find textbooks by 
+						 <select class="input-medium" id="searchType" style="width: 120px">
+							 <option value="ISBN">ISBN or Title</option>
+						 	 <option value="Course">Course</option>
+						 </select>						 
 							<?php
 							$dbc = new dbw(DBSERVER,DBUSER,DBPASS,DBCATALOG);
 						
-							echo '<h4>Find a textbook by ISBN or title</h4>';
+							//echo '<h4>Find a textbook by ISBN or title</h4>';
+							echo "<div id='isbnSearch'>";
 							$FormA=new Form;
 							echo $FormA->init('','get',array('class'=>'form-inline'))
 								->group('',
@@ -59,11 +76,13 @@
 									new Submit('Search',array('class'=>'btn btn-primary'))
 								)
 								->render();
+							echo "</div>";
 						
-							echo '<b>OR</b>';
+							//echo '<b>OR</b>';
 						
+							echo "<div id='courseSearch'>";
 							$FormB=new Form;
-							echo '<h4>Find a textbook by course</h4>';
+							//echo '<h4>Find a textbook by course</h4>';
 							echo $FormB->init('','get',array('class'=>'form-inline'))
 								->group('',
 									new Select($dbc->queryPairs('SELECT Abbreviation, Description FROM Department ORDER BY RowOrder,Abbreviation'),$_GET['srchDept'], array('class'=>'input-large','name'=>'srchDept')),
@@ -71,7 +90,7 @@
 									new Submit('Search',array('class'=>'btn btn-primary'))
 								)
 								->render();
-							
+							echo "</div>";
 							?>
 		                 </div>
 						<div class="row-fluid">
