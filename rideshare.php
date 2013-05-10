@@ -5,66 +5,137 @@
 <!DOCTYPE HTML>
 <html lang="en">
     <head>
-        <title><?php Woodle(); ?></title>
-        <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
-        <link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
-        <link href="bootstrap/css/bootstrap-rowlink.css" rel="stylesheet">
+		<title><?php Woodle(); ?></title>
+		<link href="bootstrap/css/bootstrap.css" rel="stylesheet">
+		<link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+		<link href="bootstrap/css/bootstrap-rowlink.css" rel="stylesheet">
+		<link href="bootstrap/css/footer.css" rel="stylesheet">
 		<link href="datatables/media/css/bootstrap-dt.css" rel="stylesheet">     
+        <link href="bootstrap/css/datepicker.css" rel="stylesheet">
 		<script type="text/javascript" language="javascript" src="datatables/media/js/jquery.js"></script>
 		<script type="text/javascript" language="javascript" src="datatables/media/js/jquery.dataTables.js"></script>
 		<script type="text/javascript" language="javascript" src="datatables/media/js/paging.js"></script>
 		<script>
+			// Pagination for the rideshare table
 			$(document).ready(function() {
 				var oTable = $('#table_id').dataTable( {
 					"sPaginationType": "bootstrap"			
-				} );								
-			} );						
-		</script>        
+				} );		
+				
+				$("#table_id tbody tr").on('click',function() {   
+				    var id = $(this).attr('id');
+				    document.location.href = "rideinfo?PostID=" + id;       
+				}); 										
+			} );
+			
+			// Toggles on/off the advanced search
+			$(document).ready(function() {
+				$("#advancedSearch").hide();
+				
+				$("#advSearchBtn").click(function(e){					
+					$("#advancedSearch").toggle();
+				});
+			});						
+		</script> 
+        <script src="http://maps.googleapis.com/maps/api/js?sensor=false&amp;libraries=places" type="text/javascript"></script>
+        <script type="text/javascript">
+		   	function initialize() {
+			   	var options = {
+				  types: ['(cities)'],
+				  componentRestrictions: {country: "us"},				  
+				};				
+		      	var departInput = document.getElementById('from');
+		      	var autocomplete = new google.maps.places.Autocomplete(departInput, options);
+		      	
+		      	var destInput = document.getElementById('to');
+		      	var autocomplete = new google.maps.places.Autocomplete(destInput, options);
+		      	
+		   }
+		   google.maps.event.addDomListener(window, 'load', initialize);
+		</script> 
+		<style>
+			.tableAdvSearch td{	
+				border-top:0px;
+			}			
+		</style>
+		       
     </head>
     <body>
-
-		<!-- Navbar -->
-		<?php DisplayNavbar(basename(__FILE__)); ?>
-        
-        <div class="container">
-            <div class="row-fluid">
-				<!-- Sidebar -->
-				<?php DisplaySidebar(); ?>
-                <div class="span9">
-                    <div class="row-fluid">
-                        <!--<div class="span4">
-                            <h2>Rideshare</h2>
-                        </div>-->
-						<?php RideshareNav(true); ?>                        
-                        
-                        
-                        <!--<div class="span4 offset4">
-                            <a class="btn btn-success" type="button" href="rideshareadd.php">Add a ride</a>
-                        </div>-->
-                    </div>
-                    <div class="row-fluid">
-                        <div class="span8 offset1">
-                            <form class="form-inline" action="ridesharesearch.php" method="get">
-                                <input class="input-medium" type="text" placeholder="From:" name="from">
-                                <input class="input-medium" type="text" placeholder="To:" name="to">
-                                <button type="submit" class="btn btn-primary">Search</button>
-                            </form>
-                        </div>
-                    </div>
-                        
-                                            
-                    <?php						
-                    	// Show the most resent ride shares posted 
-						ShowRides(false, null, null);
-                    ?>
-                </div>
-            </div>
+		<div id="wrap">
+			<!-- Navbar -->
+			<?php DisplayNavbar(basename(__FILE__)); ?>
+		     
+		     <div class="container">
+		         <div class="row-fluid">
+					<!-- Sidebar -->
+					<?php DisplaySidebar(); ?>
+		             <div class="span9">
+		                 <div class="row-fluid">
+							<?php RideshareNav(true); ?>                        		                     
+		                 </div>		     
+		                             
+		                 <button id="advSearchBtn" class="btn btn-primary">Advanced Search</button>
+		                <a class="btn btn-primary" href="rideshare.php">Reset Search</a>
+		                 
+			             <div class="row-fluid">
+			             	<div class="span9">		                 
+		                 		<div id="advancedSearch">	
+			                    	<form class="offset1 form-inline" action="rideshare.php" method="get">
+			                    		<input type="hidden" name="search" value="true"/>
+			                        	<table class='table tableAdvSearch'>
+			                        		<tbody>
+			                        		<tr>
+					                        	<td><label class="control-label" for="to">Departing </label></td>
+					                        	<td><input id="departingDate" name="departingDate" type="text" placeholder="Departing" data-date-format="mm/dd/yyyy" class="datepicker input-medium"></td>
+					                        	<td><label class="control-label" for="from">Leaving From </label></td>
+												<td><input class="input-medium" type="text" placeholder="Leaving From" name="from" id="from"></td>
+				                        	</tr>
+				                        	<tr>
+												<td><label class="control-label" for="to">Returning </label></td>
+												<td><input id="returningDate" name="returningDate" type="text"  placeholder="Returning" data-date-format="mm/dd/yyyy" class="datepicker input-medium"></td>											
+												<td><label class="control-label" for="to">Going To </label></td>
+												<td><input class="input-medium" type="text" placeholder="Going To" name="to" id="to"></td>
+				                        	</tr>
+				                        	<tr>											
+												<td><label class="control-label" for="to">Max Price </label></td>
+												<td><input class="input-medium" type="text" placeholder="Max Price" name="maxPrice" id="maxPrice"></td>	
+											</tr>
+											<tr>
+				                            	<td><button type="submit" class="btn btn-primary">Search</button></td>
+				                            </tr>
+				                            </tbody>
+			                            </table>
+			                        </form>
+			                     </div>
+			                 </div>		                 	                 			                 		    
+		                 </div>
+		                 <?php
+							// Check to see if we are doing a search or not														
+							$source = $_GET['from'];
+							$destination = $_GET['to'];	
+							$departingDate = $_GET['departingDate'];
+							$returningDate = $_GET['returningDate'];
+							$maxPrice = $_GET['maxPrice'];
+							
+							if(isset($_GET['search'])){
+								ShowRides(true, $source, $destination, $departingDate, $returningDate, $maxPrice);			                 
+							}
+							else{						
+		                 		// Show the most resent ride shares posted 
+								ShowRides(false, null, null, null, null, null, null);
+							}
+		                 ?>
+		             </div>
+		         </div>
+		     </div>
         </div>
-        
+    	<?php DisplayFooter(); ?>
     </body>
     <script src="holder/holder.js"></script>
     <!--<script src="http://code.jquery.com/jquery-latest.js"></script>-->
     <script src="bootstrap/js/bootstrap.js"></script>    
     <script src="bootstrap/js/bootstrap-rowlink.js"></script>
+    <script src="bootstrap/js/bootstrap-datepicker.js"></script>
+    <script>$('.datepicker').datepicker();</script>    
 </html>
 

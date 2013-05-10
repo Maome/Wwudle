@@ -7,6 +7,7 @@
 	<head>
 		<link href="bootstrap/css/bootstrap.css" rel="stylesheet">
 		<link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+		<link href="bootstrap/css/footer.css" rel="stylesheet">
 		<link href="datatables/media/css/bootstrap-dt.css" rel="stylesheet">
 		<script type="text/javascript" language="javascript" src="datatables/media/js/jquery.js"></script>
 		<script type="text/javascript" language="javascript" src="datatables/media/js/jquery.dataTables.js"></script>
@@ -82,50 +83,51 @@
                 <p>Oops I'm broken..</p>
             </div>
         </div>
-
-	<!-- Navbar -->
-	<?php DisplayNavbar("buysell.php"); ?>
-        <div class="container">
-            <div class="row-fluid">
-			<!-- Sidebar -->
-			<?php DisplaySidebar(); ?>
-                <div class="span9">
-                    <div class="row-fluid">
-                        <div class="span6"><h2>Site Settings</h2></div>
-                    </div>
-                    <div class="row-fluid">
-					<?php
-						/*echo '
-						<table id="table_id" class="table">
-						<thead>
-							<tr>
-								<th>Abbreviation</th>
-								<th>Description</th>
-								<!--<th>Edit</th>-->
-							</tr>
-						</thead>
-						<tbody>';
-							$dbc = new dbw(DBSERVER,DBUSER,DBPASS,DBCATALOG);
-							$data = $dbc->query('SELECT Abbreviation, Description FROM Department ORDER BY Description');
-							while ($row = $data->fetch_assoc()) {
-								echo '
+	<div id="wrap">
+		<!-- Navbar -->
+		<?php DisplayNavbar("buysell.php"); ?>
+		     <div class="container">
+		         <div class="row-fluid">
+				<!-- Sidebar -->
+				<?php DisplaySidebar(); ?>
+		             <div class="span9">
+		                 <div class="row-fluid">
+		                     <div class="span6"><h2>Site Settings</h2></div>
+		                 </div>
+		                 <div class="row-fluid">
+						<?php
+							/*echo '
+							<table id="table_id" class="table">
+							<thead>
 								<tr>
-									<td>' .$row['Abbreviation'] .'</td>
-									<td>' .$row['Description'] .'</td>';
-									//<td><a class="edit" href="">Edit</a></td>
-								echo '</tr>';
-							}
-					echo '
-						</tbody>
-					</table>';*/
-					$dbc = new dbw(DBSERVER,DBUSER,DBPASS,DBCATALOG);
-					$dbc->queryToTable('SELECT Abbreviation, Description FROM Department ORDER BY Description','table_id');
-					?>
+									<th>Abbreviation</th>
+									<th>Description</th>
+									<!--<th>Edit</th>-->
+								</tr>
+							</thead>
+							<tbody>';
+								$dbc = new dbw(DBSERVER,DBUSER,DBPASS,DBCATALOG);
+								$data = $dbc->query('SELECT Abbreviation, Description FROM Department ORDER BY Description');
+								while ($row = $data->fetch_assoc()) {
+									echo '
+									<tr>
+										<td>' .$row['Abbreviation'] .'</td>
+										<td>' .$row['Description'] .'</td>';
+										//<td><a class="edit" href="">Edit</a></td>
+									echo '</tr>';
+								}
+						echo '
+							</tbody>
+						</table>';*/
+						$dbc = new dbw(DBSERVER,DBUSER,DBPASS,DBCATALOG);
+						$dbc->queryToTable('SELECT Abbreviation, Description FROM Department ORDER BY Description','table_id');
+						?>
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-        
+    </div>
+    <?php DisplayFooter(); ?>
     </body>
     <script src="holder/holder.js"></script>
     <!--<script src="http://code.jquery.com/jquery-latest.js"></script>-->

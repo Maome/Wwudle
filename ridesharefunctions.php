@@ -5,7 +5,7 @@
 	$dbc = new dbw(DBSERVER,DBUSER,DBPASS,DBCATALOG);
 	
 	// Function to show the most resent ride shares posted 	
-	function ShowRides($isSearch, $source, $destination)
+	function ShowRides($isSearch, $source, $destination, $departureDate, $returnDate, $maxPrice)
 	{
 		global $dbc;
 		
@@ -14,9 +14,35 @@
 		
 		// See if we are searching or homepage of rides
 		if ($isSearch)
-		{
-		// **** THE SERVER CLOCK IS FAST BY 7 HOURS ****
-			$qry = "SELECT DepartureDate, SourceCity, DestCity, ReturnDate, SeatsRemaining, Price, PostID, MaxSeats FROM RideShare WHERE RecordStatus != '3' AND SourceCity like '$source%' AND DestCity like '$destination%' AND DepartureDate >= CURRENT_TIMESTAMP - INTERVAL 7 HOUR ORDER BY PostID DESC;";
+		{					
+			// validate the input
+			if(!is_numeric($maxPrice)){
+				$maxPrice = PHP_INT_MAX;
+			}	
+			if(!preg_match('/^[0-9]{2}\/[0-9]{2}\/[0-9]{4}$/', $departureDate)){
+				$departureDate = '';
+			}
+			else {
+				$departureDate = formatDate($departureDate);
+			}
+			if(!preg_match("/^[0-9]{2}\/[0-9]{2}\/[0-9]{4}$/", $returnDate)){
+				$returnDate= '';
+			}
+			else {
+				$returnDate= formatDate($returnDate);
+			}																																												
+			
+			// **** THE SERVER CLOCK IS FAST BY 7 HOURS ****
+			$qry = "SELECT DepartureDate, SourceCity, DestCity, ReturnDate, SeatsRemaining, Price, PostID, MaxSeats " .
+					"FROM RideShare " . 
+					"WHERE RecordStatus != '3' " .
+					"AND SourceCity like '$source%' " . 
+					"AND DestCity like '$destination%' " .					
+					"AND DepartureDate like '$departureDate%' " .					
+					"AND ReturnDate like '$returnDate%' " .										
+					"AND Price <= '$maxPrice' " .
+					"AND DepartureDate >= CURRENT_TIMESTAMP - INTERVAL 7 HOUR " .
+					"ORDER BY PostID DESC;";
 		}				
 		
 		$result = $dbc->query($qry);		
@@ -25,7 +51,7 @@
 		echo "
 			<table id='table_id' class='table table-striped' data-provides='rowlink'>
 				<thead>
-				<tr>
+				<tr class='rowlink'>
 					<th>Leaving From <i class='icon-chevron-down'></i></th>
 					<th>Departing <i class='icon-chevron-down'></i></th>
 					<th>Departure Time <i class='icon-chevron-down'></i></th>
@@ -47,8 +73,8 @@
 			$returnTime = getTime($row[3]);
 			
 			echo "			
-				<tr class='rowlink'>
-					<td><a href ='rideinfo?PostID=$row[6]'> </a>$row[1]</td>
+				<tr id='$row[6]' class='rowlink'>
+					<td>$row[1]</td>
 					<td>$departDate</td>
 					<td>$departTime</td>
 					<td>$row[2]</td>
@@ -72,16 +98,16 @@
 		$dbc->query("Update RideShare Set ViewCount=ViewCount+1 Where PostID='$PostID';");
 		
 		// Get the information about this rideshare
-		$sql = "SELECT DepartureDate, SourceCity, DestCity, ReturnDate, SeatsRemaining, Price, PostID, ViewCount FROM RideShare WHERE PostID=$PostID";
+		$sql = "SELECT DepartureDate, SourceCity, DestCity, ReturnDate, SeatsRemaining, MaxSeats, Price, PostID, ViewCount FROM RideShare WHERE PostID=$PostID";
 		$result = $dbc->query($sql);
-		$row = $result->fetch_row();									
+		$row = $result->fetch_assoc();									
 		
 		// Convert the date 
-		$departureDate = getDateFunc($row[0]);
-		$departureTime = getTime($row[0]);
+		$departureDate = getDateFunc($row['DepartureDate']);
+		$departureTime = getTime($row['DepartureDate']);
 		
-		$returnDate = getDateFunc($row[3]);
-		$returnTime = getTime($row[3]);
+		$returnDate = getDateFunc($row['ReturnDate']);
+		$returnTime = getTime($row['ReturnDate']);
 
 //echo "";
 											
@@ -89,7 +115,7 @@
 		echo "
 			<table id='table_id' class='table table-striped'>
 				<thead>
-					<th colspan='2'><h3>Ride Details: $row[7] Views</h3></th>																	
+					<th colspan='2'><h3>Ride Details: " . $row['ViewCount'] . " Views</h3></th>																	
 				</thead>
 				<tbody>
 					<tr>
@@ -99,7 +125,7 @@
 						<td><b>Departure Time</b></td><td>$departureTime</td>
 					</tr>
 					<tr>
-						<td><b>Departure Location</b></td><td>$row[1]</td>
+						<td><b>Departure Location</b></td><td>" . $row['SourceCity'] . "</td>
 					</tr>
 					<tr>
 						<td><b>Return Date</b></td><td>$returnDate</td>
@@ -108,13 +134,13 @@
 						<td><b>Return Time</b></td><td>$returnTime</td>
 					</tr>
 					<tr>
-						<td><b>Destination Location</b></td><td>$row[2]</td>
+						<td><b>Destination Location</b></td><td>" . $row['DestCity'] . "</td>
 					</tr>
 					<tr>
-						<td><b>Seats Remaining</b></td><td>$row[4]</td>
+						<td><b>Seats Remaining</b></td><td>" . $row['SeatsRemaining'] . "/" .$row['MaxSeats'] . "</td>
 					</tr>												
 					<tr>
-						<td><b>Price</b></td><td>$$row[5]</td>
+						<td><b>Price</b></td><td>$" . $row['Price'] . "</td>
 					</tr>													
 				</tbody>
 			</table>						
@@ -125,6 +151,13 @@
 		";																										
 						
 	}
+	
+	// Function to format date information into mysql DATETIME format
+	function formatDate($d){									
+		$date = date('Y-m-d', strtotime($d));									
+		return $date;
+	}
+	
 	
 	// Function to get the date from DATETIME
 	function getDateFunc($fromMYSQL){

@@ -23,31 +23,34 @@
          <title><?php Woodle(); ?></title>
          <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
          <link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
-         <link href="bootstrap/css/bootstrap-rowlink.css" rel="stylesheet">   
+         <link href="bootstrap/css/bootstrap-rowlink.css" rel="stylesheet">
+         <link href="bootstrap/css/footer.css" rel="stylesheet">
 			<link href="datatables/media/css/bootstrap-dt.css" rel="stylesheet">   
     </head>
     <body>
-
-		<!-- Navbar -->
-		<?php DisplayNavbar(basename(__FILE__)); ?>
-        
-        <div class="container">
-            <div class="row-fluid">
-				<!-- Sidebar -->
-				<?php DisplaySidebar(); ?>
-                <div class="span9">
-                    <div class="row-fluid">
-                    <?php ReviewNav(true) ?>
-                    </div>
-                    <div class="span5">
-                        <?php
-                     		$PostID = $_GET['PostID'];
-                     		ShowReviewInfo($PostID);
-								?>
-                    </div>
-                </div>
-            </div>
+		<div id="wrap">
+			<!-- Navbar -->
+			<?php DisplayNavbar(basename(__FILE__)); ?>
+		     
+		     <div class="container">
+		         <div class="row-fluid">
+					<!-- Sidebar -->
+					<?php DisplaySidebar(); ?>
+		             <div class="span9">
+		                 <div class="row-fluid">
+		                 <?php ReviewNav(true) ?>
+		                 </div>
+		                 <div class="span5">
+		                     <?php
+		                  		$PostID = $_GET['PostID'];
+		                  		ShowReviewInfo($PostID);
+									?>
+		                 </div>
+		             </div>
+		         </div>
+		     </div>
         </div>
+        <?php DisplayFooter(); ?>
     </body>
     <script src="holder/holder.js"></script>
     <script src="http://code.jquery.com/jquery-latest.js"></script>
