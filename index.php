@@ -10,7 +10,7 @@
     <head>
         <title><?php Woodle(); ?></title>
         <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
-        <link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet">        
+        <link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet">   
     </head>
     <body>
 		
@@ -27,7 +27,7 @@
                             <h1 style="color:#00aae9; text-shadow: 1px 1px 1px #000, 1px 1px 1px black;">Woooooooooodle</h1>                            
                             <p style="color:#00aae9; text-shadow: 1px 1px 1px #000, 1px 1px 1px black;">Rides, Reviews, and Textbook Exchange.</p>
                         </div>
-                        <h2>Textbook Exchange</h2>
+                        <!-- h2>Textbook Exchange</h2>
                         <p>Have an old textbook that you don't need anymore? Or maybe you're trying to find an alternative route to save money from the high costs of books? Well look no further, here on woodle you can buy and sell old textbooks with other Western Students in a nice, easy fashion that will avoid the hassel of the bookstore or shopping online, all while saving money in the process! Easily search for books posted by ISBN or title and send off a quick easy email to the seller. Easy, right?!</p>
                         <a class="btn btn-primary pull-right" type="button" href="buysell.php">Search Textbooks</a>
                         </br></br>
@@ -38,7 +38,45 @@
                         <h2>Rideshare</h2>
                         <p>Cost of transportation isn't cheap these days, but we all have to do it. So why not find a ride with another Western student and save all a bunch of money, all while going green in the process by carpooling! Rideshare makes that all easier to do, by giving Western students the ability to post rides they are offering to their destinations, along with the price they're asking for and how many seats they have available. From there, students can actively search the listings and get into quick contact via email with the driver. So save some money and maybe make a new friend in the process.</p>
                         <a class="btn btn-primary pull-right" type="button" href="rideshare.php">Search Rideshares</a>
-                        </br></br>
+                        </br></br>																																																	-->
+                        
+                        <div id="myCarousel" class="carousel slide" data-pause="hover"> 
+    								<ol class="carousel-indicators">
+											<li class="active" data-slide-to="0" data-target="#myCarousel"></li>
+											<li class="" data-slide-to="1" data-target="#myCarousel"></li>
+											<li class="" data-slide-to="2" data-target="#myCarousel"></li>
+    									</ol>
+    							<!-- Carousel items -->
+    								<div class="carousel-inner">
+    									<div class="active item">
+    										<a href="rideshare.php"><img alt="" src="images/rideshare.jpg"></img></a>
+    										<div class="carousel-caption" data>
+    												<h4 style="color:#00aae9; text-shadow: 1px 1px 1px #000, 1px 1px 1px black;">Rideshare</h2>
+    												<p>Look for or offer rides to other Western students.<p>    										
+    										</div>
+    									</div>
+    									<div class="item">
+    										<a href="reviews.php"><img alt="" src="images/reviews.jpg"></img></a>
+    										<div class="carousel-caption">
+    												<h4 style="color:#00aae9; text-shadow: 1px 1px 1px #000, 1px 1px 1px black;">Reviews</h2>
+    												<p>Post a review on Western professors to help others decide which professor suits their learning style.<p>    	    										
+    										</div>
+    									</div>
+    									<div class="item">
+    										<a href="buysell.php"><img alt="" src="images/exchange.jpg"></img></a>
+    										<div class="carousel-caption">
+													<h4 style="color:#00aae9; text-shadow: 1px 1px 1px #000, 1px 1px 1px black;">Textbook Exchange</h2>
+    												<p>Buy and sell used textbooks with other Western students.<p>										
+    										</div>
+    									</div>
+    								</div>
+    							<!-- Carousel nav -->
+    								<a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
+    								<a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
+    							</div>
+                        
+                        
+                        
                     </div>
                 </div>
             </div>
@@ -46,7 +84,20 @@
         
     </body>
     <script src="holder/holder.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
     <script src="http://code.jquery.com/jquery-latest.js"></script>
     <script src="bootstrap/js/bootstrap.js"></script>
+    <script src="bootstrap/js/bootstrap-carousel.js"></script>
+
+    
+    <script type="text/javascript">
+        $(document).ready(function() {
+				 $('.carousel').carousel({
+				 	interval: 4500
+				 });
+				 $('.carousel').carousel();
+		  		 $('.carousel').carousel('cycle');				 
+		  })
+   </script>  
 </html>
 
