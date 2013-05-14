@@ -30,14 +30,17 @@
 			}
 			else {
 				$returnDate= formatDate($returnDate);
-			}																																												
+			}		
+			
+			// Get a list of possible ending cities that could pass by the desitination
+			$destCities = cityOnPath($source, $destination);			
 			
 			// **** THE SERVER CLOCK IS FAST BY 7 HOURS ****
 			$qry = "SELECT DepartureDate, SourceCity, DestCity, ReturnDate, SeatsRemaining, Price, PostID, MaxSeats " .
 					"FROM RideShare " . 
 					"WHERE RecordStatus != '3' " .
 					"AND SourceCity like '$source%' " . 
-					"AND DestCity like '$destination%' " .					
+					"AND DestCity like $destCities" .					
 					"AND DepartureDate like '$departureDate%' " .					
 					"AND ReturnDate like '$returnDate%' " .										
 					"AND Price <= '$maxPrice' " .
@@ -167,6 +170,92 @@
 	// Function to get the time from DATETIME
 	function getTime($fromMYSQL){									
 		return date("g:i A", strtotime($fromMYSQL));
+	}
+	
+	// Function to tell if a city is along a path
+	function cityOnPath($start, $end){
+		// Array with all the cities along the i5
+		$i5Cities = array(
+			1 => "Blaine, WA",
+			2 => "Birch Bay, WA",
+			3 => "Custer, WA",
+			4 => "Ferndale, WA",
+			5 => "Bellingham, WA",
+			6 => "Burlington, WA",
+			7 => "Mt Vernon, WA",
+			8 => "Conway, WA",
+			9 => "Arlington, WA",
+			10 => "Marysville, WA",
+			11 => "Everett, WA",
+			12 => "Mukilteo, WA",
+			13 => "Mill Creek, WA",
+			14 => "Lynnwood, WA",
+			15 => "Mountlake Terrace, WA",
+			16 => "Shoreline, WA",
+			17 => "Seattle, WA",
+			18 => "Skyway, WA",
+			19 => "Tukwila, WA",
+			20 => "Seatac, WA",
+			21 => "Des Moines, WA",
+			22 => "Federal Way, WA",
+			23 => "Milton, WA",
+			24 => "Fife, WA",
+			25 => "Tacoma, WA",
+			26 => "Lakewoood, WA",
+			27 => "DuPont, WA",
+			28 => "Lacey, WA",
+			29 => "Olympia, WA",
+			30 => "Tumwater, WA",
+			31 => "Fords Prairie, WA",
+			32 => "Centralia, WA",
+			33 => "Chehalis, WA",
+			34 => "Napavine, WA",
+			35 => "Winlock, WA",
+			36 => "Toledo, WA",
+			37 => "Vader, WA",
+			38 => "Castle Rock, WA",
+			39 => "Kelso, WA",
+			40 => "Longview, WA",
+			41 => "Kalama, WA",
+			42 => "Woodland, WA",
+			43 => "La Center, WA",
+			44 => "Ridgefield, WA",
+			45 => "Salmon Creek, WA",
+			46 => "Hazel Dell, WA",
+			47 => "Minnehaha, WA",
+			48 => "Vancouver, WA",
+			49 => "Portland, OR",
+		);
+		
+		
+		// String to hold possible cities
+		$citiesList = "'" . $end . "%' ";
+		
+	
+		// Check if the cities are along the path
+		if(in_array($start, $i5Cities) && in_array($end, $i5Cities)){
+			// decide if traveling north to south or not
+			$startKey = array_search($start, $i5Cities);
+			$endKey = array_search($end, $i5Cities);
+						
+			// Travelling southwards
+			if($startKey < $endKey){				
+				// create string of possible places
+				for($i=$endKey+1; $i<=count($i5Cities); $i++){
+					$citiesList .= "OR DestCity like '" . $i5Cities[$i] . "%' ";
+				}
+			}
+			// Traveling nothwards
+			else{
+				// create string of possible places
+				for($i=$endKey-1; $i>0; $i--){
+					$citiesList .= "OR DestCity like '" . $i5Cities[$i] . "%' ";
+				}
+			
+			}
+		}
+		return $citiesList;
+				
 	}
 
 ?>

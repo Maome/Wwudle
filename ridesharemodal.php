@@ -2,14 +2,16 @@
 // Modal for the rideshare
 	
 	echo '
+	
 		<div id="edit' . $count . '" class="modal hide" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<form class="form-horizontal" name="EditRideshareAjax" id="EditRideshareAjax" action="managepostsrides.php" method="POST">	
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
 				<h3 id="myModalLabel">Edit Rideshare</h3>
 			</div>
 			<div class="modal-body">											
 			
-				<form class="form-horizontal" name="EditRideshareAjax" id="EditRideshareAjax" action="managepostsrides.php" method="POST">	
+				
 					<input type="hidden" name="PostID" id="PostID' . $count . '" value="' . $row['PostID'] . '">
 					<input type="hidden" name="Edit" id="Edit" value="true">
 					<div class="control-group">
@@ -151,8 +153,9 @@
 				<input class="btn btn-success" type="submit" value="Save changes">
 				<button class="btn btn-primary" data-dismiss="modal" aria-hidden="true">Close</button>			
 			</div>
+			</form>
 		</div>
-		</form>
+		
 	';
 	
 	function GetHour($d){		

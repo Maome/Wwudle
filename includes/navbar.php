@@ -16,7 +16,7 @@
 							<span class="icon-bar"></span>
 							<span class="icon-bar"></span>
 						</a>
-						<a class="brand" href="home.php" style="font-size: 26px">Woodle</a>
+						<a class="brand" href="home.php" style="font-size: 26px">Wwudle</a>
 						<div class="nav-collapse collapse navbar-responsive-collapse">
 							<ul class="nav" style = "font-size: 16px">
 								' .li_type($filename,"home.php") .'<a href="home.php">Home</a></li>

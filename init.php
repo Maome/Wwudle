@@ -10,6 +10,6 @@
 	require_once('pagenavs.php');
 	
 	function Woodle() {
-		echo "Woodle";
+		echo "Wwudle";
 	}
 ?>
