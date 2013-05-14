@@ -40,7 +40,7 @@
 					"FROM RideShare " . 
 					"WHERE RecordStatus != '3' " .
 					"AND SourceCity like '$source%' " . 
-					"AND DestCity like $destCities" .					
+					"AND (DestCity like $destCities)" .					
 					"AND DepartureDate like '$departureDate%' " .					
 					"AND ReturnDate like '$returnDate%' " .										
 					"AND Price <= '$maxPrice' " .
