@@ -3,7 +3,7 @@
 ?>
 <!DOCTYPE HTML>
 <html lang-"en">
-	<?php /*printHead('Western List');*/ ?>
+	<?php printHead('Wwudle'); ?>
 	<head>
 		<link href="bootstrap/css/bootstrap.css" rel="stylesheet">
 		<link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet">

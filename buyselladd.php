@@ -16,7 +16,7 @@
 ?>
 <!DOCTYPE HTML>
 <html lang-"en">
-	<?php printHead('Western List'); ?>
+	<?php printHead('Wwudle'); ?>
 	<style type = "text/css">
 		.bookImg {
 			float: left;
