@@ -109,11 +109,11 @@
     
     <script type="text/javascript">
         $(document).ready(function() {
-				 $('.carousel').carousel({
-				 	interval: 4500
-				 });
-				 $('.carousel').carousel();
-		  		 $('.carousel').carousel('cycle');				 
-		  })
+		 $('.carousel').carousel({
+			interval: 7500
+		 });
+	 $('.carousel').carousel();
+	 $('.carousel').carousel('cycle');				 
+	 })
    </script>  
     </html>

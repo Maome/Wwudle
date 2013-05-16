@@ -5980,7 +5980,6 @@ a.badge:focus {
   margin-bottom: 20px;
   height: 100%;
   width: 100%;
-  overflow: hidden;
   line-height: 1;
 }
 
@@ -6126,23 +6125,6 @@ a.badge:focus {
   margin-bottom: 0;
 }
 
-.carousel .item {
-    -webkit-transition: opacity 1s;
-    -moz-transition: opacity 1s;
-    -ms-transition: opacity 1s;
-    -o-transition: opacity 1s;
-    transition: opacity 1s;
-}
-.carousel .active.left, .carousel .active.right {
-    left:0;
-    opacity:0;
-    z-index:2;
-}
-.carousel .next, .carousel .prev {
-    left:0;
-    opacity:1;
-    z-index:1;
-}
 
 .hero-unit {
   padding: 60px;

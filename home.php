@@ -75,17 +75,17 @@
     <script src="holder/holder.js"></script>
     <script src="http://code.jquery.com/jquery-latest.js"></script>
     <script src="bootstrap/js/bootstrap.js"></script>
-                <script src="bootstrap/js/bootstrap-carousel.js"></script>
+    <script src="bootstrap/js/bootstrap-carousel.js"></script>
 
     
     <script type="text/javascript">
         $(document).ready(function() {
-				 $('.carousel').carousel({
-				 	interval: 4500
-				 });
-				 $('.carousel').carousel();
-		  		 $('.carousel').carousel('cycle');				 
-		  })
+	    $('.carousel').carousel({
+		interval: 7500
+	    });
+	  $('.carousel').carousel();
+          $('.carousel').carousel('cycle');				 
+         })
    </script>  
 </html>
 
