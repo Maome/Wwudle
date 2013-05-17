@@ -99,8 +99,8 @@
 							</div>
 		             </div>
 		         </div>
+		         <div id="push"></div>
 		     </div>
-        </div>
         </div>
         <?php DisplayFooter(); ?>
     </body>

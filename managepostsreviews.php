@@ -119,6 +119,7 @@
 		             </div>
 		         </div>
 		     </div>
+		     <div id="push"></div>
         </div>
     	<?php DisplayFooter(); ?>
     </body>
