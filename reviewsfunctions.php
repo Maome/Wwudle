@@ -7,7 +7,7 @@
 	// Function to show the most resent ride shares posted 	
 	function ShowReviews($data, $courseNum, $isCourse)
 	{
-		$dbc = new dbw(DBSERVER,DBUSER,DBPASS,DBCATALOG,true);
+		$dbc = new dbw(DBSERVER,DBUSER,DBPASS,DBCATALOG);
 		if (!$isCourse) {
 			$qry = "SELECT CourseDept, CourseNumber, Professor, Workload, LectureQuality, TestRelevance, RelevanceToProgram, Enjoyable, BookNecessity, Comments, Overall, PostID FROM Review WHERE Professor = '$data' ORDER BY PostID DESC;";	
 		}
