@@ -1,6 +1,13 @@
 <?php
 	require_once('init.php');
 	require_once('ridesharefunctions.php');
+
+	$source = $_GET['from'];
+	$destination = $_GET['to'];	
+	$departingDate = $_GET['departingDate'];
+	$returningDate = $_GET['returningDate'];
+	$maxPrice = $_GET['maxPrice'];
+	$ridesAlongTheWay = $_GET['ridesAlongTheWay'];	
 ?>
 <!DOCTYPE HTML>
 <html lang="en">
@@ -87,20 +94,20 @@
 			                        		<tbody>
 			                        		<tr>
 					                        	<td><label class="control-label" for="to">Departing </label></td>
-					                        	<td><input id="departingDate" name="departingDate" type="text" placeholder="Departing" data-date-format="mm/dd/yyyy" class="datepicker input-medium"></td>
+					                        	<td><input id="departingDate" name="departingDate" type="text" data-date-format="mm/dd/yyyy" class="datepicker input-medium" <?php if(isset($_GET['departingDate'])){echo "value='$departingDate'"; } else {echo "placeholder='Departing'";} ?>></td>
 					                        	<td><label class="control-label" for="from">Leaving From </label></td>
-												<td><input class="input-medium" type="text" placeholder="Leaving From" name="from" id="from"></td>
+												<td><input class="input-medium" type="text" name="from" id="from" <?php if(isset($_GET['from'])){echo "value='$source'"; } else {echo "placeholder='Leaving From'";} ?>></td>
 				                        	</tr>
 				                        	<tr>
 												<td><label class="control-label" for="to">Returning </label></td>
-												<td><input id="returningDate" name="returningDate" type="text"  placeholder="Returning" data-date-format="mm/dd/yyyy" class="datepicker input-medium"></td>											
+												<td><input id="returningDate" name="returningDate" type="text"  data-date-format="mm/dd/yyyy" class="datepicker input-medium" <?php if(isset($_GET['returningDate'])){echo "value='$returningDate'"; } else {echo "placeholder='Returning'";} ?>></td>											
 												<td><label class="control-label" for="to">Going To </label></td>
-												<td><input class="input-medium" type="text" placeholder="Going To" name="to" id="to"></td>
+												<td><input class="input-medium" type="text" name="to" id="to" <?php if(isset($_GET['to'])){echo "value='$destination'"; } else {echo "placeholder='Going To'";} ?>></td>
 				                        	</tr>
 				                        	<tr>											
 												<td><label class="control-label" for="to">Max Price </label></td>
-												<td><input class="input-medium" type="text" placeholder="Max Price" name="maxPrice" id="maxPrice"></td>	
-												<td style="text-align: right;"><input type="checkbox" name="ridesAlongTheWay" value="true"></td>
+												<td><input class="input-medium" type="text" name="maxPrice" id="maxPrice" <?php if(isset($_GET['maxPrice'])){echo "value='$maxPrice'"; } else {echo "placeholder='Max Price'";} ?>></td>	
+												<td style="text-align: right;"><input type="checkbox" name="ridesAlongTheWay" <?php if($ridesAlongTheWay){echo "checked='checked'";} ?> value="true"></td>
 												<td>Include rides along the way*</td>
 											</tr>
 											<tr>
@@ -114,14 +121,7 @@
 			                 </div>		                 	                 			                 		    
 		                 </div>
 		                 <?php
-							// Check to see if we are doing a search or not														
-							$source = $_GET['from'];
-							$destination = $_GET['to'];	
-							$departingDate = $_GET['departingDate'];
-							$returningDate = $_GET['returningDate'];
-							$maxPrice = $_GET['maxPrice'];
-							$ridesAlongTheWay = $_GET['ridesAlongTheWay'];							
-							
+							// Check to see if we are doing a search or not																												
 							if(isset($_GET['search'])){
 								ShowRides(true, $source, $destination, $departingDate, $returningDate, $maxPrice, $ridesAlongTheWay);			                 
 							}
@@ -133,7 +133,6 @@
 		             </div>
 		         </div>
 		     </div>
-		     <div id="push"></div>
         </div>
     	<?php DisplayFooter(); ?>
     </body>
