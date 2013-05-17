@@ -98,13 +98,14 @@
                                  </div>
                              </div>
                          </div>
+                         <div id="push"></div>
                       </div>
             <?php DisplayFooter(); ?>
         </body>
         <script src="holder/holder.js"></script>
         <script src="http://code.jquery.com/jquery-latest.js"></script>
         <script src="bootstrap/js/bootstrap.js"></script>
-            <script src="bootstrap/js/bootstrap-carousel.js"></script>
+        <script src="bootstrap/js/bootstrap-carousel.js"></script>
 
     
     <script type="text/javascript">
