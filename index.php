@@ -5,7 +5,7 @@
     <!DOCTYPE HTML>
     <html lang-"en">
         <head>
-            <title>Woodle</title>
+            <title>Wwudle</title>
             <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
             <link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
             <link href="bootstrap/css/footer.css" rel="stylesheet">
@@ -21,7 +21,7 @@
                                                                     <span class="icon-bar"></span>
                                                                     <span class="icon-bar"></span>
                                                             </a>
-                                                            <a class="brand" href="home.php" style="font-size: 26px">Woodle</a>
+                                                            <a class="brand" href="home.php" style="font-size: 26px">Wwudle</a>
                                                             <div class="nav-collapse collapse navbar-responsive-collapse">
                                                                     <ul class="nav" style = "font-size: 16px">
                                                                             <li class='active'><a href="home.php">Home</a></li>
