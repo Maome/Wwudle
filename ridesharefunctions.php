@@ -5,7 +5,7 @@
 	$dbc = new dbw(DBSERVER,DBUSER,DBPASS,DBCATALOG);
 	
 	// Function to show the most resent ride shares posted 	
-	function ShowRides($isSearch, $source, $destination, $departureDate, $returnDate, $maxPrice)
+	function ShowRides($isSearch, $source, $destination, $departureDate, $returnDate, $maxPrice, $ridesAlongTheWay)
 	{
 		global $dbc;
 		
@@ -33,7 +33,13 @@
 			}		
 			
 			// Get a list of possible ending cities that could pass by the desitination
-			$destCities = cityOnPath($source, $destination);			
+			if($ridesAlongTheWay){
+				$destCities = cityOnPath($source, $destination);				
+			}
+			else{
+				$destCities = "'" . $destination . "%' ";
+			}
+			
 			
 			// **** THE SERVER CLOCK IS FAST BY 7 HOURS ****
 			$qry = "SELECT DepartureDate, SourceCity, DestCity, ReturnDate, SeatsRemaining, Price, PostID, MaxSeats " .

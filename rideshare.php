@@ -19,14 +19,15 @@
 			// Pagination for the rideshare table
 			$(document).ready(function() {
 				var oTable = $('#table_id').dataTable( {
-					"sPaginationType": "bootstrap"			
-				} );		
-				
-				$("#table_id tbody tr").on('click',function() {   
-				    var id = $(this).attr('id');
-				    document.location.href = "rideinfo?PostID=" + id;       
-				}); 										
-			} );
+					"sPaginationType": "bootstrap",
+					 "fnDrawCallback": function() {				      
+						$("#table_id tbody tr").on('click',function() {   
+						    var id = $(this).attr('id');
+						    document.location.href = "rideinfo?PostID=" + id;       
+						}); 
+				    }							
+				});													
+			});
 			
 			// Toggles on/off the advanced search
 			$(document).ready(function() {
@@ -99,12 +100,15 @@
 				                        	<tr>											
 												<td><label class="control-label" for="to">Max Price </label></td>
 												<td><input class="input-medium" type="text" placeholder="Max Price" name="maxPrice" id="maxPrice"></td>	
+												<td style="text-align: right;"><input type="checkbox" name="ridesAlongTheWay" value="true"></td>
+												<td>Include rides along the way*</td>
 											</tr>
 											<tr>
 				                            	<td><button type="submit" class="btn btn-primary">Search</button></td>
 				                            </tr>
 				                            </tbody>
 			                            </table>
+			                            * Note that this option is only available for those travelling along the i5 in Washington
 			                        </form>
 			                     </div>
 			                 </div>		                 	                 			                 		    
@@ -116,9 +120,10 @@
 							$departingDate = $_GET['departingDate'];
 							$returningDate = $_GET['returningDate'];
 							$maxPrice = $_GET['maxPrice'];
+							$ridesAlongTheWay = $_GET['ridesAlongTheWay'];							
 							
 							if(isset($_GET['search'])){
-								ShowRides(true, $source, $destination, $departingDate, $returningDate, $maxPrice);			                 
+								ShowRides(true, $source, $destination, $departingDate, $returningDate, $maxPrice, $ridesAlongTheWay);			                 
 							}
 							else{						
 		                 		// Show the most resent ride shares posted 
