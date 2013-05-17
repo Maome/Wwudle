@@ -36,7 +36,7 @@
 					$("#courseSearch").toggle();
 				});
 						
-			});				 
+			});
 		 </script>
     </head>
     <body>
@@ -101,6 +101,7 @@
 		         </div>
 		     </div>
         </div>
+        </div>
         <?php DisplayFooter(); ?>
     </body>
     <script src="holder/holder.js"></script>
@@ -113,8 +114,14 @@
 	 <script>
 		$(document).ready(function() {
 			var oTable = $('#table_id').dataTable( {
-				"sPaginationType": "bootstrap", 
-				"bFilter": false
+				"sPaginationType": "bootstrap",
+				"bFilter": false,
+				"fnDrawCallback": function() {
+					$("#table_id tbody tr").on('click',function() {
+						var id = $(this).attr('id');
+						document.location.href = "reviewinfo?PostID=" + id;
+					});
+				}
 			} );
 		} );
 	</script>

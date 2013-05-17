@@ -20,14 +20,14 @@
 					<?php DisplaySidebar(); ?>
 		             <div class="span6">
 		                 <h2>About the site</h2>
-		                 <p>This website was created by five Computer Science undergrads as a part of their senior project. Our goal was to create a website that would be very useful to students.</p>
+		                 <p>This website was created by five Computer Science undergrads as a part of their senior project. The goal was to create a website that would be very useful to students.</p>
 		                 <h4>The creators:</h4>
 		                 <p>Nicholas Beichley</p>
 		                 <p>Kyle Hiebert</p>
 		                 <p>Beau Ritter</p>
 		                 <p>Reilly Steele</p>
 		                 <p>Nick Tarter</p>
-		                 <p>Special thanks to Professor James Hearne for advising us through the process of the creation of this project and Professor Kendra Douglas for design suggestions.</p>
+		                 <p>Special thanks to Professor James Hearne for advising through the process of the creation of this project and Professor Kendra Douglas for design suggestions.</p>
 		             </div>
 		         </div>
 		     </div>
