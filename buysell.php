@@ -27,21 +27,29 @@
 		<script type="text/javascript" language="javascript" src="datatables/media/js/jquery.js"></script>
 		<script type="text/javascript" language="javascript" src="datatables/media/js/jquery.dataTables.js"></script>
 		<script type="text/javascript" language="javascript" src="datatables/media/js/paging.js"></script>
-		<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>  	
 		<script>
+			function get(name){
+			   if(name=(new RegExp('[?&]'+encodeURIComponent(name)+'=([^&]*)')).exec(location.search))
+				  return decodeURIComponent(name[1]);
+			}
 			$(document).ready(function() {
-				$("#courseSearch").hide();
+				var courseSearch = get("srchCourse");
+				if (courseSearch == null) {
+					$("#courseSearch").hide();
+				}
+				else $("#isbnSearch").hide();
 				
 				$("#searchType").change(function(e){					
 					$("#isbnSearch").toggle();
 					$("#courseSearch").toggle();
 				});					
-			});			
+			});	
 		
 			$(document).ready(function() {
 				var oTable = $('#bookListings').dataTable( {
 					"sPaginationType": "bootstrap",
-					"bFilter": false
+					"bFilter": false, // Disable filtering
+					"aaSorting": [] // Disable auto sort first column
 				} );															
 			} );		
 		</script> 
@@ -59,34 +67,37 @@
 		             <?php BuySellReviewNav(true) ?>
 		                 <div class="row-fluid">
 						 
-		                 <h4>Find textbooks by 
-						 <select class="input-medium" id="searchType" style="width: 130px">
-							 <option value="ISBN">ISBN or Title</option>
-						 	 <option value="Course">Course</option>
-						 </select>						 
 							<?php
-							$dbc = new dbw(DBSERVER,DBUSER,DBPASS,DBCATALOG);
-													
-							echo "<div id='isbnSearch'>";
-							$FormA=new Form;
-							echo $FormA->init('','get',array('class'=>'form-inline'))
-								->group('',
-									new Text(array('class'=>'input-large','name'=>'srchText','value'=>$_GET['srchText'], 'placeholder'=>(empty($_GET['srchText']) ? 'Enter ISBN or title' : ''))),
-									new Submit('Search',array('class'=>'btn btn-primary'))
-								)
-								->render();
-							echo "</div>";												
-						
-							echo "<div id='courseSearch'>";
-							$FormB=new Form;							
-							echo $FormB->init('','get',array('class'=>'form-inline'))
-								->group('',
-									new Select($dbc->queryPairs('SELECT Abbreviation, Description FROM Department ORDER BY RowOrder,Abbreviation'),$_GET['srchDept'], array('class'=>'input-large','name'=>'srchDept')),
-									new Text(array('class'=>'input-medium','name'=>'srchCourse','value'=>$_GET['srchCourse'], 'placeholder'=>(empty($_GET['srchCourse']) ? 'Enter course number' : ''))),
-									new Submit('Search',array('class'=>'btn btn-primary'))
-								)
-								->render();
-							echo "</div>";
+								 echo '
+								 <h4>Find textbooks by
+								 <select class="input-medium" id="searchType" style="width: 130px">
+									 <option value="ISBN">ISBN or Title</option>
+									 <option value="Course" ' .(isset($_GET['srchCourse']) ? 'selected' : '') .'>Course</option>
+								 </select>
+								</h4>
+								';
+								$dbc = new dbw(DBSERVER,DBUSER,DBPASS,DBCATALOG);
+														
+								echo "<div id='isbnSearch'>";
+								$FormA=new Form;
+								echo $FormA->init('','get',array('class'=>'form-inline'))
+									->group('',
+										new Text(array('class'=>'input-large','name'=>'srchText','value'=>$_GET['srchText'], 'placeholder'=>(empty($_GET['srchText']) ? 'Enter ISBN or title' : ''))),
+										new Submit('Search',array('class'=>'btn btn-primary'))
+									)
+									->render();
+								echo "</div>";												
+							
+								echo "<div id='courseSearch'>";
+								$FormB=new Form;							
+								echo $FormB->init('','get',array('class'=>'form-inline'))
+									->group('',
+										new Select($dbc->queryPairs('SELECT Abbreviation, Description FROM Department ORDER BY RowOrder,Abbreviation'),$_GET['srchDept'], array('class'=>'input-large','name'=>'srchDept')),
+										new Text(array('class'=>'input-medium','name'=>'srchCourse','value'=>$_GET['srchCourse'], 'placeholder'=>(empty($_GET['srchCourse']) ? 'Enter course number' : ''))),
+										new Submit('Search',array('class'=>'btn btn-primary'))
+									)
+									->render();
+								echo "</div>";
 							?>
 		                 </div>
 						<div class="row-fluid">

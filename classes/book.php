@@ -5,28 +5,28 @@
 		private $keyName;
 		private $keyValue;
 		private $bookID;
-		private $ISBN;
+		private $isbn;
 		private $authors;
 		private $Title;
 		private $edition;
 		private $bookCategoryID;
 		
-		function book($dbc, $ISBN = null, $title = null) {
+		function book($dbc, $isbn = null, $title = null) {
 			$this->dbc = $dbc;
-			if (is_null($title)) {
-				$keyName = 'ISBN';
-				$keyValue = $ISBN;
+			if (!is_null($isbn)) {
+				$this->keyName = 'isbn';
+				$this->keyValue = $isbn;
 			}
 			else {
-				$keyName = 'Title';
-				$keyValue = '\'' .$title .'\'';
+				$this->keyName = 'Title';
+				$this->keyValue = '\'' .$title .'\'';
 			}
 			
-			$data = $dbc->query('SELECT BookID, ISBN, Authors, Title, Edition, BookCategoryID FROM Book WHERE ' .$keyName .' = ' .$keyValue);
+			$data = $dbc->query('SELECT BookID, isbn, Authors, Title, Edition, BookCategoryID FROM Book WHERE ' .$this->keyName .' = ' .$this->keyValue);
 			if ($data->num_rows == 1) {
 				$row = $data->fetch_assoc();
 				$this->bookID = $row['BookID'];
-				$this->ISBN = $row['ISBN'];
+				$this->isbn = $row['isbn'];
 				$this->authors = $row['Authors'];
 				$this->title = $row['Title'];
 				$this->edition = $row['Edition'];
@@ -38,8 +38,8 @@
 			return !is_null($this->bookID);
 		}
 		
-		function createBook($ISBN,$authors, $title, $edition, $bookCategoryID) {
-			$ISBN = dbw::nullIfEmpty($ISBN);
+		function createBook($isbn,$authors, $title, $edition, $bookCategoryID) {
+			$isbn = dbw::nullIfEmpty($isbn);
 			$title = empty($title) ? 'NULL' : dbw::singleQuote($title);
 			$authors = empty($authors) ? 'NULL' : dbw::singleQuote($authors);
 			$edition = empty($edition) ? 'NULL' : dbw::singleQuote($edition);
@@ -47,8 +47,8 @@
 			
 			if (!$this->exists()) {
 				$sql = "INSERT INTO Book
-					  (ISBN, Authors, Title, Edition, BookCategoryID, ChangeSource, RecordStatus, RecordStatusDate)
-					  VALUES(" .$ISBN  ."," .$authors  ."," .$title  ."," .$edition  ."," .$bookCategoryID .", 0, 1, NOW())";
+					  (isbn, Authors, Title, Edition, BookCategoryID, ChangeSource, RecordStatus, RecordStatusDate)
+					  VALUES(" .$isbn  ."," .$authors  ."," .$title  ."," .$edition  ."," .$bookCategoryID .", 0, 1, NOW())";
 				$this->dbc->query($sql);
 				$this->userID = $this->getBookID(true);
 				return true;
@@ -58,14 +58,14 @@
 		
 		function getBookID($fromDB = false) {
 			if ($fromDB) {
-				$this->bookID = $this->dbc->queryUnique('Book','BookID',$keyName .' = ' .$keyValue);
+				$this->bookID = $this->dbc->queryUnique('Book','BookID',$this->keyName .' = ' .$this->keyValue);
 			}
 			return $this->bookID;
 		}
 		
 		function getKeyName() { return $this->keyName; }
 		function getKeyValue() { return $this->keyValue; }
-		function getISBN() { return $this->ISBN; }
+		function getisbn() { return $this->isbn; }
 		function getAuthors() { return $this->authors; }
 		function getTitle() { return $this->title; }
 		function getEdition() { return $this->edition; }

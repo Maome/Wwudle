@@ -36,33 +36,45 @@
 					<?php DisplaySidebar(); ?>
 				          <div class="span9">
 				              <div class="row-fluid">
-				          	<?php BuySellReviewNav(false) ?>                  
-				                  <!--<div class="span6"><h2>Sell a Textbook</h2></div>-->
+								<?php BuySellReviewNav(false) ?>                  
 				              </div>
 				              <div class="row-fluid">
 									<?php
+										
+										// Get errors if this has been called via get or post
+										$submitErrors = getSubmitErrors();
+									
 										// Book search form
 										$Form=new Form;
-										echo '<h4>Find a textbook by ISBN or title</h4>';
-										echo $Form->init('buyselladd.php','get',array('class'=>'form-inline'))
+										echo '<h4>Find a textbook by ISBN</h4>';
+										echo $Form->init('buyselladd.php','get',array('class'=>'form-inline','name'=>'bookSearch'))
 											->group('',
-												new Text(array('class'=>'input-large','name'=>'srchText','placeholder'=>'Enter ISBN')),
-												new Submit('Search',array('class'=>'btn btn-primary'))
+												new Text(array('class'=>'input-large','name'=>'srchText','placeholder'=>'Enter ISBN'))
+											)
+											->group('',
+												new Submit('Search',array('class'=>'btn btn-primary')),
+												new Custom(in_array('srchText',$submitErrors) ? '<span class="help-inline"><p class="text-warning">Please enter a valid ISBN</p></span>' : '')
 											)
 											->render();
 
-									  $dbc = new dbw(DBSERVER,DBUSER,DBPASS,DBCATALOG);
+										if (in_array('srchText',$submitErrors)) return;
+										else {
+											$dbc = new dbw(DBSERVER,DBUSER,DBPASS,DBCATALOG);
 
-									  // Display book informationm if user is not posting a book listing and search text is not empty
-									  if (!empty($_GET['srchText']) && !isset($_POST['isbn'])) {
-										$isbn = str_replace('-','',$_GET['srchText']);
-										 displayBookList($dbc, $isbn);
-									  }
+											$searching = isset($_GET['srchText']) && !isset($_POST['isbn']);
+											$posting = isset($_POST['isbn']);
 
-									  // Create a book listing
-									  if (isset($_POST['isbn'])) {
-											postBookListing($dbc, $_POST['isbn'],$_POST['title'], $_POST['authors']);
-									  }
+											// Display book information if user is not posting book information
+											// except for if the user is posting with errors
+											if ($searching || !empty($submitErrors)) {											
+												$isbn = ($searching ? str_replace('-','',$_GET['srchText']) : $_POST['isbn']);
+												displayBookList($dbc, $isbn, $submitErrors);
+											}
+											// Create a book listing
+											else if ($posting) {
+												postBookListing($dbc, $_POST['isbn'],$_POST['title'], $_POST['authors']);
+											}
+										}
 									?>
 							</div>
 						</div>

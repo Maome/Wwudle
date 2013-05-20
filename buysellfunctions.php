@@ -18,7 +18,7 @@
 		$sql = "INSERT INTO BookListing
 			(PostDate, UserID, BookID, BookConditionID, Price, ViewCount, ChangeSource, RecordStatus, RecordStatusDate, Course)
 			VALUES(NOW()," .$_SESSION['userID'] ."," .$bookID ."," .$conditionID ."," .$price .", 0, 0, 1, NOW(), " .$dbc::singleQuote($course) .");";
-		$result = $dbc->query($sql);
+		return $dbc->query($sql);
 	}
 
 	// Display book listing based on user search
@@ -45,12 +45,14 @@
 				}
 			}
 		}
+		$where .= ' AND b.RecordStatus <> 3 AND bl.RecordStatus <> 3 ORDER BY bl.PostDate DESC';
 	
 		$qry = "SELECT
 					CONCAT(CONCAT(CONCAT(CONCAT('<a href=\"buysellview.php?postID=',bl.PostID),'\">'),b.Title),'</a>') \"Title\",
 					bl.Price Price,
 					bc.Description \"Condition\",
-					bl.Course
+					CASE WHEN bl.Course = '' OR bl.Course LIKE '%UNKN%' THEN 'Unknown' ELSE bl.Course END Course,
+					DATE_FORMAT(bl.PostDate,'%b %d %Y %h:%i %p') PostDate
 					FROM BookListing bl
 					JOIN Book b
 					ON (b.BookID = bl.BookID)
@@ -61,9 +63,9 @@
 			"Title&nbsp;<i class='icon-chevron-down'>",
 			"Price&nbsp;<i class='icon-chevron-down'>",
 			"Description&nbsp;<i class='icon-chevron-down'>",
-			"Course&nbsp;<i class='icon-chevron-down'>"
+			"Course&nbsp;<i class='icon-chevron-down'>",
+			"Posted&nbsp;<i class='icon-chevron-down'>"
 		);
-		//$dbc->setDebug(true);
 		$result = $dbc->query($qry);
 	
 		if ($result->num_rows > 0) {
@@ -72,7 +74,19 @@
 		else echo "No results found";
 	}
 	
-	function displaySaleForm($dbc,$isbn, $title) {
+	function displaySaleForm($dbc,$isbn, $title, $submitErrors) {
+		// Check if user tried to post with invalid data
+		$invalidPrice = in_array('price',$submitErrors);
+		$invalidCourseNumber = in_array('courseNumber',$submitErrors);
+		
+		$subjects = $dbc->queryPairs("
+		SELECT 
+			CASE WHEN Abbreviation = 'ALL' THEN 'UNKN' ELSE Abbreviation END Abbreviation,
+			CASE WHEN Abbreviation = 'ALL' THEN 'Choose a Subject' ELSE Description END Description 
+		FROM Department 
+		ORDER BY RowOrder, Abbreviation
+		");
+
 		echo '<div class="bookForm">';
 		$bookForm = new Form;
 		echo $bookForm->init('','post',array('class'=>'form-horizontal','style'=>'margin-left: -80px; margin-top: 25px;','name'=>'bookAdd'))
@@ -80,21 +94,27 @@
 			new Select($dbc->queryPairs('SELECT BookConditionID, Description FROM BookCondition ORDER BY BookConditionID'),1, array('class'=>'input-large','name'=>'bookCondition'))
 		)
 		->group('Subject',
-			new Select($dbc->queryPairs('SELECT Abbreviation,Description FROM Department WHERE RowOrder=1 ORDER BY RowOrder, Abbreviation'), 1, array('class'=>'input-large','name'=>'subject'))
+			new Select($subjects, 1, array('class'=>'input-large','name'=>'subject'))
 		)
 		->group('Course',
-			new Text(array('class'=>'input-small','name'=>'courseNumber', 'placeholder'=>'Course #'))
+			($invalidCourseNumber ? 'warning' : ''),
+			new Text(array('class'=>'input-small','name'=>'courseNumber', 'placeholder'=>'Course #')),
+			new Custom($invalidCourseNumber ? '<span class="help-inline">Please enter a valid course number</span>' : '')
 		)
 		->group('Price',
-			new Text(array('class'=>'input-small','name'=>'price','placeholder'=>'$'))
+			($invalidPrice ? 'warning' : ''),
+			new Text(array('class'=>'input-small','name'=>'price','placeholder'=>'$')),
+			new Custom($invalidPrice ? '<span class="help-inline"><p class="text-warning">Please enter a valid price</p></span>' : '')
 		)
-		->hidden(array('name'=>'isbn','value'=>$isbn)
-		)
+		->hidden(array('name'=>'isbn','value'=>$isbn))
+		->hidden(array('name'=>'title','value'=>$title))
 		->group('',
 			new Submit('Submit', array('class' => 'btn btn-primary'))
 		)
 		->render();
 		echo '</div>';
+		
+		echo '</div>'; // This ends the span12 div from the displayBookList function
 	}
 	
 	function displayManualSaleForm() {
@@ -131,13 +151,11 @@
 		if (!$book->exists()) $book->createBook($isbn,$authors,$title,null,null);
 
 		// Insert book listing
-		createBookListing($dbc,$book->getBookID(),$_POST['bookCondition'],$_POST['price'], $_POST['subject'] .' ' .$_POST['courseNumber']);
-
-		echo "
-		  <div>
-			<b> Your book has been listed! </b>
-		  </div>
-		";
+		 if (createBookListing($dbc,$book->getBookID(),$_POST['bookCondition'],$_POST['price'], $_POST['subject'] .' ' .$_POST['courseNumber'])) {
+			echo "<div><b>Your book has been listed! <i class='icon-thumbs-up'></i></b></div>";
+		} else {
+			echo "<div><b>We're sorry! An unexpected error has occurred.</b></div>";
+		}
 	}
 	
 	function getBookInformation($srchText) {
@@ -153,44 +171,45 @@
 	}
 	
 	// Display book list based on search for book to put for sale
-	function displayBookList($dbc, $isbn) {
+	function displayBookList($dbc, $isbn, $submitErrors) {
 		$results = getBookInformation('isbn:' .$isbn);
 		
 		if ($results['items'] != NULL) {
-			foreach ($results['items'] as $result) {
-				$volumeInfo = $result['volumeInfo'];
-				$title = $volumeInfo['title'];
-				if (isset($volumeInfo['imageLinks']['thumbnail'])) {
-					$thumbnail = $volumeInfo['imageLinks']['thumbnail'];
-				} 
-				else $thumbnail = null;
+			// Note: If the Google Books lookup searched by something other than ISBN, it could return more than one result
+			// in which case results['items'] would be an array of book info for each book returned from the search
+			$result = $results['items'][0];
+			$volumeInfo = $result['volumeInfo'];
+			$title = $volumeInfo['title'];
+			if (isset($volumeInfo['imageLinks']['thumbnail'])) {
+				$thumbnail = $volumeInfo['imageLinks']['thumbnail'];
+			} 
+			else $thumbnail = null;
 
-				if (isset($volumeInfo['authors'])) {
-					$creators = implode(" / ", $volumeInfo['authors']);
-				}
-
-				echo '<div class="span9">';
-				echo '<div class="bookInfo">';
-				echo '<br /><b>' .$title .'</b>';
-				echo '<br />Author(s): ' .$creators;
-				echo '<br />';
-				$identifiers = $volumeInfo['industryIdentifiers'];
-				$isbn = string;
-				for($i = 0; $i < count($identifiers); $i++) {
-					if ($identifiers[$i]['type'] == 'ISBN_10') echo "ISBN 10: " .$identifiers[$i]['identifier'] ."<br />";
-					else if ($identifiers[$i]['type'] == 'ISBN_13') {
-						echo "ISBN 13: " .$identifiers[$i]['identifier'] ."<br />";
-						$isbn = $identifiers[$i]['identifier'];
-					}
-				}
-				echo '<div class="bookImg" >';
-				$thumbnailImg = ($thumbnail) ? "<a href='${preview}'><img alt='$title' src='${thumbnail}' style='border: 1px solid black; height: 300px; width: auto;' /></a>" : ' ';
-				echo '<br />' .$thumbnailImg;
-				echo '</div>';
-				echo '</div>';
-
-				displaySaleForm($dbc, $isbn, $title);
+			if (isset($volumeInfo['authors'])) {
+				$creators = implode(" / ", $volumeInfo['authors']);
 			}
+
+			echo '<div class="span12">';
+			echo '<div>';
+			echo '<br /><b>' .$title .'</b>';
+			echo '<br />Author(s): ' .$creators;
+			echo '<br />';
+			$identifiers = $volumeInfo['industryIdentifiers'];
+			$isbn = string;
+			for($i = 0; $i < count($identifiers); $i++) {
+				if ($identifiers[$i]['type'] == 'ISBN_10') echo "ISBN 10: " .$identifiers[$i]['identifier'] ."<br />";
+				else if ($identifiers[$i]['type'] == 'ISBN_13') {
+					echo "ISBN 13: " .$identifiers[$i]['identifier'] ."<br />";
+					$isbn = $identifiers[$i]['identifier'];
+				}
+			}
+			echo '<div class="bookImg" >';
+			$thumbnailImg = ($thumbnail) ? "<a href='${preview}'><img alt='$title' src='${thumbnail}' style='border: 1px solid black; height: 300px; width: auto;' /></a>" : ' ';
+			echo '<br />' .$thumbnailImg;
+			echo '</div>';
+			echo '</div>';
+
+			displaySaleForm($dbc, $isbn, $title, $submitErrors);
 		}
 		else {
 			$book = new book($dbc,$isbn,$title);
@@ -201,5 +220,34 @@
 			}
 			else	echo '<b>No results found</b>';
 		}
+	}
+	
+	function getSubmitErrors() {
+		$srchText = $_GET['srchText'];
+		$price = $_POST['price'];
+		$courseNumber = $_POST['courseNumber'];
+		$errorResults = array();
+		
+		if (isset($srchText) && !is_numeric(str_replace('-','',$srchText))) {
+			array_push($errorResults,'srchText');
+		}
+		
+		if (isset($price) && (!is_numeric($price) || $price < 0)) {
+			array_push($errorResults,'price');
+		}
+		
+		if (
+			isset($courseNumber) && 
+			!empty($courseNumber) && (
+				strlen($courseNumber) < 3 ||
+				strlen($courseNumber) > 4 ||
+				!is_numeric(substr($courseNumber,1,3)) ||
+				(strlen($courseNumber) == 4 && is_numeric($courseNumber[3]))
+			)
+		) {
+			array_push($errorResults,'courseNumber');
+		}
+		
+		return $errorResults;
 	}
 ?>

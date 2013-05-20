@@ -26,7 +26,7 @@
 								$dbc = new dbw(DBSERVER,DBUSER,DBPASS,DBCATALOG);
 
 								// Get the UserID
-								$email = phpcas::GetUser() . "@students.wwu.edu";
+								$email = phpcas::GetUser() . "@" .$dbc->configValue('DefaultStudentEmailDomain');
 							
 								// Display all of the current rides that the user has posted 
 								$qry = "SELECT UserID FROM User WHERE Email='$email';";
@@ -47,7 +47,7 @@
 								Course = '" .$_POST['subject'] ." " .$_POST['course'] ."',
 								Price = " .$_POST['price'] ."
 								WHERE PostID = " .$_POST['PostID'];
-							$dbc->queryToEditableTable($qry,'PostID','bookPosts','managepostsbooks.php','booksmodal.php', $updateQry);											
+							$dbc->queryToEditableTable($qry,'BookListing','PostID','bookPosts','managepostsbooks.php','booksmodal.php', $updateQry);											
 						?>
                 </div>
             </div>

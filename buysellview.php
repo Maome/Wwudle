@@ -49,11 +49,15 @@
 								echo '<div class="row-fluid">';
 								$dbc = new dbw(DBSERVER,DBUSER,DBPASS,DBCATALOG);
 								$post = $dbc->querySingleRow(
-									'SELECT DATE_FORMAT(bl.PostDate, "%m/%d/%Y %h:%m %p") "Post Date", b.ISBN, b.Title, b.Authors, b.Edition, bl.Course, bl.Price
+									"SELECT 
+										DATE_FORMAT(bl.PostDate,'%b %d %Y %h:%i %p') 'Post Date', 
+										b.ISBN, b.Title, b.Authors, b.Edition, 
+										CASE WHEN bl.Course = '' OR bl.Course LIKE '%UNKN%' THEN 'Unknown' ELSE bl.Course END Course, 
+										bl.Price
 									FROM BookListing bl 
 									JOIN Book b 
 									ON (b.BookID = bl.BookID) 
-									WHERE bl.PostID = ' .$_GET['postID'], 
+									WHERE bl.PostID = " .$_GET['postID'], 
 								true);							
 								echo '<h4>' .$post['Title'] .'</h4>';	
 								echo '</div>';
@@ -79,7 +83,7 @@
 								<form class='form-inline' action='buysellview.php' method='post'>
 									<div class='control-group'>
 										<label class='control-label' for='Subject'>Subject</label>
-										<input class='field span12' type='text' name='Subject' id='Subject' value='Western List Book Sale for " .$post['Title'] ."'> <br /><br />
+										<input class='field span12' type='text' name='Subject' id='Subject' value='" .$dbc->configValue('SiteName') ." Book Sale for " .$post['Title'] ."'> <br /><br />
 										<label class='control-label' for='MessageBody'>Message</label>
 										<textarea class='field span12' rows='10' placeholder='Type your message here' name='MessageBody' id='MessageBody'></textarea><br /><br />
 										<input type='hidden' name='PostID' value='$PostID'>

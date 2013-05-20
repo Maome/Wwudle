@@ -77,6 +77,11 @@
 			}
 			return $rv;
 		}
+		
+		// Return value from configuration table
+		function configValue($name) {
+			return $this->queryUnique('Configuration','Value','Name = ' .$this->singleQuote($name) .' AND RecordStatus <> 3');
+		}
 
 		// Output a table based on the results of a query
 		function queryToTable($qry, $name, $headers = NULL, $classOverride = NULL) {
@@ -106,7 +111,7 @@
 		}
 
 		// Output a table based on the results of a query
-		function queryToEditableTable($qry, $keyColumn, $name, $action, $modalFile, $updateQry, $headers = NULL) {
+		function queryToEditableTable($qry, $tableToEdit, $keyColumn, $name, $action, $modalFile, $updateQry, $headers = NULL) {
 			// Delete record
 			if (isset($_POST['delete'])) {
 				$delQry = 'UPDATE ' .$tableToEdit .' SET RecordStatus = 3, RecordStatusDate = NOW() WHERE ' .$keyColumn .' = ' .$_POST[$keyColumn];
@@ -142,7 +147,7 @@
 				}
 				echo "
 				<form class='form-inline' action='" .$action ."' method='POST'>
-				<input type='hidden' name='key' id='key' value='" . $row[$keyColumn] . "'>
+				<input type='hidden' name='" .$keyColumn ."' id='" .$keyColumn ."' value='" . $row[$keyColumn] . "'>
 				<input type='hidden' name='delete' id='delete' value='true'>												
 				<td><a href='#edit" . $count . "' role='button' class='btn btn-primary' data-toggle='modal'>Edit</a>
 				<input class='btn btn-danger' type='submit' value='Delete'></td>
@@ -164,7 +169,7 @@
 		function printDebug($qry) {
 			$error = $this->getError();
 			echo '<b>Query:</b> ' .htmlentities($qry) .'<br />';
-			echo '<b>Error: </b>' .(empty($error) ? 'N/A' : $error);
+			echo '<b>Error: </b>' .(empty($error) ? 'N/A' : $error) .'<br />';
 		}
 	}
 ?>
