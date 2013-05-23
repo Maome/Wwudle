@@ -1,6 +1,21 @@
 <?php
 	require_once('init.php');
 	require_once('ridesharefunctions.php');	
+	require_once('managepostsridesfunctions.php');
+	use JasonKaz\FormBuild\Form as Form;
+	use JasonKaz\FormBuild\Text as Text;
+	use JasonKaz\FormBuild\Help as Help;
+	use JasonKaz\FormBuild\Checkbox as Checkbox;
+	use JasonKaz\FormBuild\Submit as Submit;
+	use JasonKaz\FormBuild\Password as Password;
+	use JasonKaz\FormBuild\Select as Select;
+	use JasonKaz\FormBuild\Radio as Radio;			
+	use JasonKaz\FormBuild\Button as Button;		
+	use JasonKaz\FormBuild\Reset as Reset;
+	use JasonKaz\FormBuild\Custom as Custom;
+	use JasonKaz\FormBuild\Textarea as Textarea;
+	use JasonKaz\FormBuild\Hidden as Hidden;
+	use JasonKaz\FormBuild\Email as Email;		
 ?>
 <!DOCTYPE HTML>
 <html lang-"en">
@@ -10,8 +25,24 @@
 		<link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
 		<link href="bootstrap/css/datepicker.css" rel="stylesheet">
 		<link href="bootstrap/css/bootstrap-modal.css" rel="stylesheet">
-		<link href="bootstrap/css/footer.css" rel="stylesheet">
+		<link href="bootstrap/css/footer.css" rel="stylesheet">		
 		<script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js'></script>
+		<script src="http://maps.googleapis.com/maps/api/js?sensor=false&amp;libraries=places" type="text/javascript"></script>		
+        <script type="text/javascript">
+		   	function initialize() {
+			   	var options = {
+				  types: ['(cities)'],
+				  componentRestrictions: {country: "us"},				  
+				};				
+		      	var departInput = document.getElementById('departureLocation');
+		      	var autocomplete = new google.maps.places.Autocomplete(departInput, options);
+		      	
+		      	var destInput = document.getElementById('destinationLocation');
+		      	var autocomplete = new google.maps.places.Autocomplete(destInput, options);
+		      	
+		   }
+		   google.maps.event.addDomListener(window, 'load', initialize);
+		</script> 		
     </head>
     <body>
 		<div id="wrap">
@@ -24,138 +55,243 @@
 					<?php DisplaySidebar(); ?>
 		             <div class="span9">
 						<?php							
-								ManagePostsNav(true, false);
-														
-								$dbc = new dbw(DBSERVER,DBUSER,DBPASS,DBCATALOG);
+							ManagePostsNav(true, false);
+													
+							$dbc = new dbw(DBSERVER,DBUSER,DBPASS,DBCATALOG);
+							$user = new user($dbc, phpcas::GetUser());								
+							// Get the user information
+							$email = $user->getEmail();
+							$UserID = $user->getUserID();
+																				
+							/* 
+							 * Check to see if the user is deleting a post
+							 */
+							if(isset($_POST['delete'])){
+								DeleteRideSharePost($_POST['pid'], $UserID, $dbc);							
+							}
+
+							/*
+							 *Check to see if they are updating the seat count
+							 */
+							if(isset($_GET['updateSeats']) && isset($_GET['pid'])){
+								UpdateSeatCount($_GET['pid'], $UserID, $row['SeatsRemaining'], $dbc);
+							}								
+						
+							/*
+							 * Check to see if the user is editing a post
+							 */
+							if(isset($_GET['edit']) && isset($_GET['pid'])){	
+								// Get the post data
+								$departureDate = $_POST['departureDate'];									
+								$departureHour = $_POST['departureHour'];
+								$departureMinute = $_POST['departureMinute'];
+								$departureAMPM = $_POST['departureAMPM'];	
 							
-								// Get the UserID
-								$email = phpcas::GetUser() . "@students.wwu.edu";															
-							
-								// Display all of the current rides that the user has posted 
-								$qry = "SELECT UserID FROM User WHERE Email='$email';";
-								$result = $dbc->query($qry);
-								$row = $result->fetch_assoc();
-								$UserID = $row['UserID'];
-																					
-								// Check to see if the user is deleting a post
-								if(isset($_POST['delete'])){
-									// Update the rideshare if the correct user is trying to remove the rideshare
-									$postID = $_POST['pid'];
-									if (isset($postID)){
-										$qry = "UPDATE RideShare SET RecordStatus='3' WHERE PostID='$postID' AND UserID='$UserID';";
-										$dbc->query($qry);
-									}								
-								}
-							
-								// Check to see if the user is editing a post
-								if(isset($_POST['Edit'])){
-									$departureDate = $_POST['departureDate'];									
-									$departureHour = $_POST['departureHour'];
-									$departureMinute = $_POST['departureMinute'];
-									$departureAMPM = $_POST['departureAMPM'];	
-								
-									$departureLocation = $_POST['departureLocation'];	
-														
-									$returnDate = $_POST['returnDate'];
-									$returnHour = $_POST['returnHour'];
-									$returnMinute = $_POST['returnMinute'];			
-									$returnAMPM = $_POST['returnAMPM'];	
+								$departureLocation = $_POST['departureLocation'];	
+													
+								$returnDate = $_POST['returnDate'];
+								$returnHour = $_POST['returnHour'];
+								$returnMinute = $_POST['returnMinute'];			
+								$returnAMPM = $_POST['returnAMPM'];	
+																
+								$destinationLocation = $_POST['destinationLocation'];		
+																				
+								$numSeats = $_POST['numSeats'];
+								$seatsRemaining = $_POST['seatsRemaining'];
+								$price = $_POST['price'];
+								$postID = $_POST['PostID'];	
+
+								$isValid = true;							
+
+								// Validate the Post data
+								$today = date("Y-m-d H:i:s"); 
+								$tempDDate = date("Y-m-d H:i:s", strtotime($departureDate));
+								$tempRDate = date("Y-m-d H:i:s", strtotime($returnDate));																		
 																	
-									$destinationLocation = $_POST['destinationLocation'];		
-																					
-									$numSeats = $_POST['numSeats'];
-									$seatsRemaining = $_POST['seatsRemaining'];
-									$price = $_POST['price'];
-									$postID = $_POST['PostID'];		
-								
-									$dbc = new dbw(DBSERVER,DBUSER,DBPASS,DBCATALOG);
-								
-								
-									// The data will only get passed if it has been validated client side
+								// Check for the validation variables						
+								// Check to departure date										
+								if (isset($departureDate) && (($tempDDate < $today) || ($tempDDate > $tempRDate)))
+								{
+									// Date is before today
+									$isValid = false;
+									$dDateError = true;
+									
+								}
+								// Check to return date
+								if (isset($returnDate) && (($tempRDate > date('Y-m-d', strtotime("+3 months", strtotime($tempRDate)))) || ($tempRDate <= $tempDDate)))
+								{
+									// Date is before today
+									$isValid = false;
+									$rDateError = true;								
+									
+								}
+								// Check the numSeats 
+								if (isset($numSeats) && !is_numeric($numSeats))
+								{
+									$isValid = false;	
+									$sError = true;
+								}
+								// Check the numSeats 
+								if (isset($seatsRemaining) && !is_numeric($seatsRemaining))
+								{
+									$isValid = false;	
+									$srError = true;
+								}	
+								// Check the return price 
+								if(isset($price) && !is_numeric($price)){
+									$isValid = false;
+									$pError = true;
+								}	
+								// Check the departure location	
+								if(isset($departureLocation) && !preg_match(@"(^[\w\s]+,\s\w{2}$)", $departureLocation)){
+									$isValid = false;
+									$departLocError = true;		
+								}
+								// Check the destination location
+								if(isset($destinationLocation ) && !preg_match(@"(^[\w\s]+,\s\w{2}$)", $destinationLocation)){
+									$isValid = false;
+									$destLocError = true;
+								}									
+
+
+								// Check if valid and posting back
+								if(isset($_POST['postback']) && $isValid){									
+									// Write the information to the database 
 									// Convert the departure and return dates to store 
 									$departureDate = $departureDate . " " . $departureHour . ":" . $departureMinute . ":00" .  $departureAMPM;
-									$returnDate = $returnDate . " " . $returnHour . ":" . $returnMinute . ":00" .  $returnAMPM;
-									$departureDate = formatDate($departureDate);
-									$returnDate = formatDate($returnDate);					
-								
-									$source = $_POST['name'];																
-							
+									$returnDate = $returnDate . " " . $returnHour . ":" . $returnMinute . ":00" .  $returnAMPM;									
+									$departureDate = date('Y-m-d H:i:s', strtotime($departureDate));									
+									$returnDate = date('Y-m-d H:i:s', strtotime($returnDate));										
+
 									// Update the information in the database		
-									$sql = "UPDATE RideShare SET RecordStatus='2', DepartureDate='$departureDate', SourceCity='$departureLocation', ReturnDate='$returnDate', DestCity='$destinationLocation', MaxSeats='$numSeats', SeatsRemaining='$seatsRemaining', Price='$price' WHERE PostID='$postID';";
-									$dbc->query($sql);								
-								}		
-								
-								// Check to see if they are updating the seat count
-								if(isset($_GET['updateSeats']) && isset($_GET['pid'])){
-									$pid = $_GET['pid'];
-									if(is_numeric($pid)){										
-										// Update the count of open seats in this vehicle
-										$qry = "SELECT SeatsRemaining FROM RideShare WHERE PostID='$pid' AND UserID='$UserID';";
-										$result = $dbc->query($qry);
-										$row = $result->fetch_assoc();
-										
-										// Check if it is okay to update the number of seats remaining
-										if($row['SeatsRemaining'] > 0){
-											$qry = "UPDATE RideShare SET SeatsRemaining=SeatsRemaining-1 WHERE PostID='$pid' AND UserID='$UserID';";
-											$result = $dbc->query($qry);				
-											echo "<h3>Thank you for updating the seat count of your Rideshare</h3>";							
-										}
-									}
-								}					
+									$sql = "UPDATE RideShare " .
+											"SET RecordStatus='2', " .
+											"DepartureDate='$departureDate', " .
+											"SourceCity='$departureLocation', " .
+											"ReturnDate='$returnDate', " .
+											"DestCity='$destinationLocation', " .
+											"MaxSeats='$numSeats', " .
+											"SeatsRemaining='$seatsRemaining', " .
+											"Price='$price' WHERE PostID='$postID';";
+									$dbc->query($sql);
 
-								// Populate a table with the rideshares the user currently has posted
-								// **** THE SERVER CLOCK IS FAST BY 7 HOURS ****
-								$qry = "SELECT * FROM RideShare WHERE RecordStatus != '3' AND UserID='$UserID' AND DepartureDate >= CURRENT_TIMESTAMP - INTERVAL 7 HOUR ORDER BY PostID DESC;";
-								$result = $dbc->query($qry);
-								$row = $result->fetch_assoc();														
-
-								if ($result->num_rows > 0) {
-									$headers = array("Leaving From", "Departing", "Departure Time", "Going To", "Return Date", "Return Time", "Edit");
-									echo "<table class='table table-striped'>";
-										// Display header
-										echo "<thead>";
-											foreach ($headers as $i) echo "<th>" .$i ."</th>";
-										echo "</thead><tbody>";
-									
-										$count = 0;
-									
-										// Display rows
-										while($row){			            
-									
-											// Convert the date/time info
-											$departDate = getDateFunc($row['DepartureDate']);
-											$departTime = getTime($row['DepartureDate']);
-											$returnDate = getDateFunc($row['ReturnDate']);
-											$returnTime = getTime($row['ReturnDate']);																				
-										
-											echo "<tr>
-												<td>" . $row['SourceCity'] . "</td>
-												<td>" . $departDate . "</td>
-												<td>" . $departTime . "</td>
-												<td>" . $row['DestCity'] . "</td>
-												<td>" . $returnDate . "</td>
-												<td>" . $returnTime . "</td>
-												<td>
-												
-													<form class='form-inline' action='managepostsrides.php' method='POST'>
-														<input type='hidden' name='pid' id='pid' value='" . $row["PostID"] . "'>
-														<input type='hidden' name='delete' id='delete' value='true'>												
-														<a href='#edit" . $count . "' role='button' class='btn btn-primary' data-toggle='modal'>Edit</a>
-														<input class='btn btn-danger' type='submit' value='Delete' >
-													</form>	
-												</td>							
-											</tr>";		
-
-											// Create a modal to edit the rideshare
-											include('ridesharemodal.php');
-										
-											$row = $result->fetch_assoc(); 
-											$count++;
-										}
-										echo "</tbody></table>";									
+									// Display the table with the updated data
+									ManageRideShareTable($dbc, $UserID);
 								}
-								else echo "You currently have no rideshares pending";																																	
-							?>					
+								// Show the form with the rideshare data in it
+								else{
+									// Get the information about the rideshare from the db
+									$pid = $_GET['pid'];
+									$qry = "Select * from RideShare where PostID='$pid'";
+									$result = $dbc->query($qry);
+									$row = $result->fetch_assoc();
+									// The basic form the edit a rideshare 
+									$editRideShareForm=new Form;								
+									for($i=1; $i<=12; $i++){
+										if ($i < 10){
+											$i = '0' . $i;
+										}
+										$hours[$i] = $i;
+									}								
+									for($i=0; $i<=60; $i++){
+										if ($i < 10){
+											$i = '0' . $i;
+										}									
+										$minutes[$i] = $i;
+									}		
+									$AMPM = array("AM"=>"AM", "PM"=>"PM");
+									// Get the default values to set
+									if (!isset($_POST['departureDate'])) {
+										$departureDate = getDateFunc($row['DepartureDate']);
+										$departureHour = GetHour($row['DepartureDate']);
+										$departureMinute = GetMinute($row['DepartureDate']);
+										$departureAMPM = GetAMPM($row['DepartureDate']);
+									}			
+									if (!isset($_POST['returnDate'])) {
+										$returnDate = getDateFunc($row['ReturnDate']);
+										$returnHour = GetHour($row['ReturnDate']);
+										$returnMinute = GetMinute($row['ReturnDate']);
+										$returnAMPM = GetAMPM($row['ReturnDate']);
+									}								
+									if(!isset($_POST['departureLocation'])){
+										$departureLocation = $row['SourceCity'];
+									}
+									if(!isset($_POST['destinationLocation'])){
+										$destinationLocation = $row['DestCity'];
+									}	
+									if(!isset($_POST['numSeats'])){
+										$numSeats = $row['MaxSeats'];
+									}
+									if(!isset($_POST['seatsRemaining'])){
+										$seatsRemaining = $row['SeatsRemaining'];
+									}	
+									if(!isset($_POST['price'])){
+										$price = $row['Price'];
+									}																													
+									echo $editRideShareForm->init('managepostsrides.php?edit=truee&pid=' . $pid,'post',array('class'=>'form-horizontal', 'name'=>'editRideShareForm', 'id'=>'editRideShareForm'))
+										->group('Departing',										
+											new Text(array('class'=>'datepicker input-medium','name'=>'departureDate', 'id'=>'departureDate', 'data-date-format'=>'mm/dd/yyyy', 'value'=>$departureDate))
+										)
+										->group('Departing Time',
+											new Select($hours, false, array('class'=>'input-mini','name'=>'departureHour', 'id'=>'departureHour', 'value'=>$departureHour)),
+											new Select($minutes, false, array('class'=>'input-mini','name'=>'departureMinute', 'id'=>'departureMinute', 'value'=>$departureMinute)),
+											new Select($AMPM, false, array('class'=>'input-mini','name'=>'departureAMPM', 'id'=>'departureAMPM', 'value'=>$departureAMPM))
+										)
+										->group('Leaving From', 
+											new Text(array('class'=>'input-medium','name'=>'departureLocation', 'id'=>'departureLocation', 'value'=>$departureLocation))
+										)
+										->group('Returning',
+											new Text(array('class'=>'datepicker input-medium','name'=>'returnDate', 'id'=>'returnDate', 'data-date-format'=>"mm/dd/yyyy", 'value'=>$returnDate))
+										)
+										->group('Return Time',
+											new Select($hours, false, array('class'=>'input-mini','name'=>'returnHour', 'id'=>'returnHour', 'value'=>$returnHour)),
+											new Select($minutes, false, array('class'=>'input-mini','name'=>'returnMinute', 'id'=>'returnMinute', 'value'=>$returnHour)),
+											new Select($AMPM, false, array('class'=>'input-mini','name'=>'returnAMPM', 'id'=>'returnAMPM', 'value'=>$returnHour))
+										)
+										->group('Going To', 
+											new Text(array('class'=>'input-medium','name'=>'destinationLocation', 'id'=>'destinationLocation', 'value'=>$destinationLocation))
+										)
+										->group('Number of Seats', 
+											new Text(array('class'=>'input-medium','name'=>'numSeats', 'id'=>'numSeats', 'value'=>$numSeats))
+										)
+										->group('Remaining Seats', 
+											new Text(array('class'=>'input-medium','name'=>'seatsRemaining', 'id'=>'seatsRemaining', 'value'=>$seatsRemaining))
+										)									
+										->group('Price', 
+											new Text(array('class'=>'input-medium','name'=>'price', 'id'=>'price', 'value'=>$price))
+										)										
+										->group('',
+											new Submit('Submit', array('class' => 'btn btn-primary'))
+										)
+										->group('', 
+											new Hidden(array('name'=>'PostID', 'id'=>'PostID', 'value'=>$pid))
+										)																											
+										->group('', 
+											new Hidden(array('name'=>'postback', 'id'=>'postback', 'value'=>'true'))
+										)											
+										->render();	
+								}								
+							}
+
+							/*
+							 * The user is not editing, display the table to the user
+							 */										
+							else{					
+								//DisplayEditRideShare($dbc, $UserID);
+								ManageRideShareTable($dbc, $UserID);
+							}
+							function GetHour($d){		
+								return date("g", strtotime($d));		
+							}
+							
+							function GetMinute($d){
+								return date("i", strtotime($d));		
+							}
+							
+							function GetAMPM($d){
+								return date("A", strtotime($d));
+							}																																					
+						?>					
 		             </div>
 		         </div>
 		     </div>

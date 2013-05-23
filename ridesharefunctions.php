@@ -146,7 +146,7 @@
 						<td><b>Destination Location</b></td><td>" . $row['DestCity'] . "</td>
 					</tr>
 					<tr>
-						<td><b>Seats Remaining</b></td><td>" . $row['SeatsRemaining'] . "/" .$row['MaxSeats'] . "</td>
+						<td><b>Seats Remaining</b></td><td>" . $row['SeatsRemaining'] . " of " .$row['MaxSeats'] . "</td>
 					</tr>												
 					<tr>
 						<td><b>Price</b></td><td>$" . $row['Price'] . "</td>
