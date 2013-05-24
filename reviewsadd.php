@@ -16,6 +16,36 @@
 	use JasonKaz\FormBuild\Email as Email;
 	use JasonKaz\FormBuild\Star as Star;
 ?>
+<?php								
+	// Get the post data
+	$CourseDept = $_POST['courseDept'];									
+	$CourseNumber = $_POST['courseNumber'];
+	$Professor = $_POST['professor'];
+	$Workload = $_POST['workload'];
+	$LectureQuality = number_format($_POST['lectureQuality'], 2);
+	$TestRelevance = number_format($_POST['testRelevance'], 2);
+	$RelevanceToProgram = number_format($_POST['relevanceToProgram'], 2);
+	$Enjoyable = number_format($_POST['enjoyable'], 2);
+	$BookNecessity = $_POST['bookNecessity'];			
+	$Overall = number_format((($LectureQuality + $TestRelevance + $RelevanceToProgram + $Enjoyable) / 4), 2);
+	$Comments = $_POST['comments'];
+	$postback = $_POST['postback'];
+	$errorResults = array();
+							
+	// Validate the data									
+	if (
+		!isset($CourseNumber) || 
+		empty($CourseNumber) || (
+		strlen($CourseNumber) < 3 ||
+		strlen($CourseNumber) > 4 ||
+		!is_numeric(substr($CourseNumber,0,3)))
+	) {
+		$isValid = false;
+	}
+	else {
+		$isValid = true;
+	}
+?>
 <!DOCTYPE HTML>
 <html lang-"en">
     <head>
@@ -40,41 +70,116 @@
 		                 <div class="row-fluid">           
 		                  	<?php
 		                  		$dbc = new dbw(DBSERVER,DBUSER,DBPASS,DBCATALOG);
-						
-										$ReviewForm=new Form;
-										echo $ReviewForm->init('reviewsaddRCV.php','post',array('class'=>'form-horizontal', 'name'=>'reviewForm', 'id'=>'reviewForm'))
-											->group('Course',
-												new Select($dbc->queryPairs('SELECT Abbreviation,Description FROM Department WHERE RowOrder=1 ORDER BY RowOrder,Abbreviation'), 1, array('class'=>'input-xlarge','name'=>'courseDept', 'id'=>'courseDept')),
-												new Text(array('class'=>'input-small','name'=>'courseNumber', 'id'=>'courseNumber', 'placeholder'=>'Course #'))
-											)
-											->group('Professor',
-												new Select($dbc->queryPairs('SELECT Name,Name FROM Professor WHERE RowOrder=1 ORDER BY RowOrder,Name'),false, array('class'=>'input-xlarge','name'=>'professor', 'id'=>'professor'))
-											)
-											->group('Workload', 
-												new Select(array('Light', 'Moderate', 'Heavy'), false, array('class'=>'input-xlarge', 'name'=>'workload', 'id'=>'workload'))
-											)
-											->group('Lecture quality',
-												new Star('lq')
-											)
-											->group('Test relevance',
-												new Star('tr')
-											)
-											->group('Relevance to program',
-												new Star('rtp')
-											)
-											->group('Enjoyable',
-												new Star('enj')
-											)
-											->group('Book necessity',
-												new Select(array('Absolutely necessary', 'Somewhat necessary', 'Not necessary'), 0, array('class'=>'input-xlarge', 'name'=>'bookNecessity', 'id'=>'bookNecessity'))
-											)
-											->group('Additional comments',
-												new Textarea('', array('class'=>'input-xlarge', 'rows'=>'8', 'name'=>'comments', 'id'=>'comments'))
-											)
-											->group('',
-												new Submit('Submit', array('class' => 'btn btn-primary'))
-											)
-											->render();
+		                  		
+		                  		$errorResults = array();
+		                  		if (!$isValid && $postback) {
+		                  			array_push($errorResults, 'courseNum');
+		                  		}
+										
+										if ($isValid && $postback) {
+											$username = PHPCAS::GetUser();
+								
+											// See if the user is in the Users table
+											$username = $username . "@students.wwu.edu";
+											$sql = "Select * from User where Email = '$username';";
+											$result = $dbc->query($sql);								
+											// Check if the name is in the table
+											$rows = $result->num_rows;																					
+								
+											if ($rows == 0) {
+												echo "<h2>You must log in!</h2>";
+											}
+											else {						
+												// Set the user id
+												$getData = $result->fetch_row();									
+												$UserID = $getData[0];									
+												// Get the post data
+													
+												$sql = "INSERT INTO Review (PostDate, UserID, CourseDept, CourseNumber, Professor, Workload, LectureQuality, TestRelevance, RelevanceToProgram, Enjoyable, BookNecessity, Overall, Comments, ViewCount, ChangeSource, RecordStatus, RecordStatusDate) VALUES (CURDATE(), $UserID, '$CourseDept', '$CourseNumber', '$Professor', $Workload, $LectureQuality, $TestRelevance, $RelevanceToProgram, $Enjoyable, $BookNecessity, $Overall, '$Comments', 0, 0, 1, CURDATE());"; 
+												//$dbc->setDebug(true);
+												$dbc->query($sql);
+									
+									
+												echo "<h3>Your information has been submitted</h3>";
+								
+												// Show the user all of the info that has been recieved 
+												echo "
+													<table id='table_id' class='table table-striped'>
+														<tbody>
+															<tr>
+																<td><b>Course</b></td><td>$CourseDept $CourseNumber</td>
+															</tr>
+															<tr>
+																<td><b>Professor</b></td><td>$Professor</td>
+															</tr>
+															<tr>
+																<td><b>Workload</b></td><td>"; if($Workload == 0) echo "Light"; else if($Workload == 1) echo "Moderate"; else echo "Heavy"; echo "</td>
+															</tr>
+															<tr>
+																<td><b>Lecture Quality</b></td><td>$LectureQuality</td>
+															</tr>
+															<tr>
+																<td><b>Test Relevance</b></td><td>$TestRelevance</td>
+															</tr>
+															<tr>
+																<td><b>Relevance To Program</b></td><td>$RelevanceToProgram</td>
+															</tr>
+															<tr>
+																<td><b>Enjoyable</b></td><td>$Enjoyable</td>
+															</tr>												
+															<tr>
+																<td><b>Book necessity</b></td><td>"; if($BookNecessity == 0) echo "Absolutely necessary"; else if($BookNecessity == 1) echo "Somewhat necessary"; else echo "Not necessary"; echo "</td>
+															</tr>
+															<tr>
+																<td><b>Overall</b></td><td>$Overall</td>
+															</tr>	
+															<tr>
+																<td><b>Comments</b></td><td>$Comments</td>
+															</tr>												
+														</tbody>
+													</table>";											
+											}
+										}
+										else {
+											$ReviewForm=new Form;
+											echo $ReviewForm->init('reviewsadd.php','post',array('class'=>'form-horizontal', 'name'=>'reviewForm', 'id'=>'reviewForm'))
+												->group('Course',
+													new Select($dbc->queryPairs('SELECT Abbreviation,Description FROM Department WHERE RowOrder=1 ORDER BY RowOrder,Abbreviation'), 1, array('class'=>'input-xlarge','name'=>'courseDept', 'id'=>'courseDept')),
+													new Text(array('class'=>'input-small','name'=>'courseNumber', 'id'=>'courseNumber', 'placeholder'=>'Course #')),
+													new Custom(in_array('courseNum',$errorResults) ? '<span class="help-inline"><p class="text-warning">Please enter a valid course number</p></span>' : '')
+												)
+												->group('Professor',
+													new Select($dbc->queryPairs('SELECT Name,Name FROM Professor WHERE RowOrder=1 ORDER BY RowOrder,Name'),false, array('class'=>'input-xlarge','name'=>'professor', 'id'=>'professor'))
+												)
+												->group('Workload', 
+													new Select(array('Light', 'Moderate', 'Heavy'), false, array('class'=>'input-xlarge', 'name'=>'workload', 'id'=>'workload'))
+												)
+												->group('Lecture quality',
+													new Star('lq')
+												)
+												->group('Test relevance',
+													new Star('tr')
+												)
+												->group('Relevance to program',
+													new Star('rtp')
+												)
+												->group('Enjoyable',
+													new Star('enj')
+												)
+												->group('Book necessity',
+													new Select(array('Absolutely necessary', 'Somewhat necessary', 'Not necessary'), 0, array('class'=>'input-xlarge', 'name'=>'bookNecessity', 'id'=>'bookNecessity'))
+												)
+												->group('Additional comments',
+													new Textarea('', array('class'=>'input-xlarge', 'rows'=>'8', 'name'=>'comments', 'id'=>'comments'))
+												)
+												->group('',
+													new Submit('Submit', array('class' => 'btn btn-primary'))
+												)
+												->group('',
+													new Hidden(array('name'=>'postback', 'id'=>'postback', 'value'=>'true'))
+												)
+												->render();
+										}
 		                  	?>
 		                 </div>
 		             </div>

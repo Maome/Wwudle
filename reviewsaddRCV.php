@@ -53,14 +53,20 @@
 												$Enjoyable = number_format($_POST['enjoyable'], 2);
 												$BookNecessity = $_POST['bookNecessity'];			
 												$Overall = number_format((($LectureQuality + $TestRelevance + $RelevanceToProgram + $Enjoyable) / 4), 2);
-												$Comments = $_POST['comments'];										
+												$Comments = $_POST['comments'];
 																		
 												// Validate the data									
-												if($CourseNumber != '') {
-													$isValid = true;
+												if (
+													!isset($CourseNumber) || 
+													empty($CourseNumber) || (
+													strlen($CourseNumber) < 3 ||
+													strlen($CourseNumber) > 4 ||
+													!is_numeric(substr($CourseNumber,0,3)))
+												) {
+													$isValid = false;
 												}
 												else {
-													$isValid = false;
+													$isValid = true;
 												}
 											
 												if($isValid) {

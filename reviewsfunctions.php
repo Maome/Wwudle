@@ -147,4 +147,24 @@
 				</tbody>
 			</table>";	
 	}
+	
+	//
+	function getSubmitErrors() {
+		$courseNumber = $_POST['courseNumber'];
+		$errorResults = array();
+		
+		if (
+			isset($courseNumber) && 
+			!empty($courseNumber) && (
+				strlen($courseNumber) < 3 ||
+				strlen($courseNumber) > 4 ||
+				!is_numeric(substr($courseNumber,1,3)) ||
+				(strlen($courseNumber) == 4 && is_numeric($courseNumber[3]))
+			)
+		) {
+			array_push($errorResults,'courseNumber');
+		}
+		
+		return $errorResults;
+	}
 ?>
