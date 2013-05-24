@@ -106,51 +106,52 @@
 								// Validate the Post data
 								$today = date("Y-m-d H:i:s"); 
 								$tempDDate = date("Y-m-d H:i:s", strtotime($departureDate));
-								$tempRDate = date("Y-m-d H:i:s", strtotime($returnDate));																		
+								$tempRDate = date("Y-m-d H:i:s", strtotime($returnDate));	
+
+								$errorResults = array();									
 																	
 								// Check for the validation variables						
 								// Check to departure date										
 								if (isset($departureDate) && (($tempDDate < $today) || ($tempDDate > $tempRDate)))
 								{
 									// Date is before today
-									$isValid = false;
-									$dDateError = true;
-									
+									 $isValid = false;									
+									array_push($errorResults,'departDateError');
 								}
 								// Check to return date
 								if (isset($returnDate) && (($tempRDate > date('Y-m-d', strtotime("+3 months", strtotime($tempRDate)))) || ($tempRDate <= $tempDDate)))
 								{
 									// Date is before today
-									$isValid = false;
-									$rDateError = true;								
+									 $isValid = false;														
+									array_push($errorResults,'returnDateError');
 									
 								}
 								// Check the numSeats 
 								if (isset($numSeats) && !is_numeric($numSeats))
 								{
 									$isValid = false;	
-									$sError = true;
+									array_push($errorResults,'seatError');
 								}
 								// Check the numSeats 
-								if (isset($seatsRemaining) && !is_numeric($seatsRemaining))
+								if (isset($seatsRemaining) && (!is_numeric($seatsRemaining)) || $seatsRemaining > $numSeats)
 								{
 									$isValid = false;	
-									$srError = true;
+									array_push($errorResults,'seatsRemianingError');
 								}	
 								// Check the return price 
 								if(isset($price) && !is_numeric($price)){
 									$isValid = false;
-									$pError = true;
+									array_push($errorResults,'priceError');
 								}	
 								// Check the departure location	
 								if(isset($departureLocation) && !preg_match(@"(^[\w\s]+,\s\w{2}$)", $departureLocation)){
-									$isValid = false;
-									$departLocError = true;		
+									$isValid = false;	
+									array_push($errorResults,'departLocError');
 								}
 								// Check the destination location
 								if(isset($destinationLocation ) && !preg_match(@"(^[\w\s]+,\s\w{2}$)", $destinationLocation)){
 									$isValid = false;
-									$destLocError = true;
+									array_push($errorResults,'destLocError');
 								}									
 
 
@@ -201,14 +202,14 @@
 									}		
 									$AMPM = array("AM"=>"AM", "PM"=>"PM");
 									// Get the default values to set
-									if (!isset($_POST['departureDate'])) {
-										$departureDate = getDateFunc($row['DepartureDate']);
+									if (!isset($_POST['departureDate'])) {										
+										$departureDate = date('m/d/Y', strtotime($row['DepartureDate']));
 										$departureHour = GetHour($row['DepartureDate']);
 										$departureMinute = GetMinute($row['DepartureDate']);
 										$departureAMPM = GetAMPM($row['DepartureDate']);
 									}			
 									if (!isset($_POST['returnDate'])) {
-										$returnDate = getDateFunc($row['ReturnDate']);
+										$returnDate = date('m/d/Y', strtotime($row['ReturnDate']));
 										$returnHour = GetHour($row['ReturnDate']);
 										$returnMinute = GetMinute($row['ReturnDate']);
 										$returnAMPM = GetAMPM($row['ReturnDate']);
@@ -228,9 +229,10 @@
 									if(!isset($_POST['price'])){
 										$price = $row['Price'];
 									}																													
-									echo $editRideShareForm->init('managepostsrides.php?edit=truee&pid=' . $pid,'post',array('class'=>'form-horizontal', 'name'=>'editRideShareForm', 'id'=>'editRideShareForm'))
+									echo $editRideShareForm->init('managepostsrides.php?edit=true&pid=' . $pid,'post',array('class'=>'form-horizontal', 'name'=>'editRideShareForm', 'id'=>'editRideShareForm'))
 										->group('Departing',										
-											new Text(array('class'=>'datepicker input-medium','name'=>'departureDate', 'id'=>'departureDate', 'data-date-format'=>'mm/dd/yyyy', 'value'=>$departureDate))
+											new Text(array('class'=>'datepicker input-medium','name'=>'departureDate', 'id'=>'departureDate', 'data-date-format'=>'mm/dd/yyyy', 'value'=>$departureDate)),
+											new Custom(in_array('departDateError',$errorResults) ? '<span class="help-inline"><p class="text-warning">Please enter a valid date</p></span>' : '')
 										)
 										->group('Departing Time',
 											new Select($hours, false, array('class'=>'input-mini','name'=>'departureHour', 'id'=>'departureHour', 'value'=>$departureHour)),
@@ -238,10 +240,12 @@
 											new Select($AMPM, false, array('class'=>'input-mini','name'=>'departureAMPM', 'id'=>'departureAMPM', 'value'=>$departureAMPM))
 										)
 										->group('Leaving From', 
-											new Text(array('class'=>'input-medium','name'=>'departureLocation', 'id'=>'departureLocation', 'value'=>$departureLocation))
+											new Text(array('class'=>'input-medium','name'=>'departureLocation', 'id'=>'departureLocation', 'value'=>$departureLocation)),
+											new Custom(in_array('departLocError',$errorResults) ? '<span class="help-inline"><p class="text-warning">City must be in format City, ST</p></span>' : '')
 										)
 										->group('Returning',
-											new Text(array('class'=>'datepicker input-medium','name'=>'returnDate', 'id'=>'returnDate', 'data-date-format'=>"mm/dd/yyyy", 'value'=>$returnDate))
+											new Text(array('class'=>'datepicker input-medium','name'=>'returnDate', 'id'=>'returnDate', 'data-date-format'=>"mm/dd/yyyy", 'value'=>$returnDate)),
+											new Custom(in_array('returnDateError',$errorResults) ? '<span class="help-inline"><p class="text-warning">Please enter a valid date</p></span>' : '')
 										)
 										->group('Return Time',
 											new Select($hours, false, array('class'=>'input-mini','name'=>'returnHour', 'id'=>'returnHour', 'value'=>$returnHour)),
@@ -249,19 +253,24 @@
 											new Select($AMPM, false, array('class'=>'input-mini','name'=>'returnAMPM', 'id'=>'returnAMPM', 'value'=>$returnHour))
 										)
 										->group('Going To', 
-											new Text(array('class'=>'input-medium','name'=>'destinationLocation', 'id'=>'destinationLocation', 'value'=>$destinationLocation))
+											new Text(array('class'=>'input-medium','name'=>'destinationLocation', 'id'=>'destinationLocation', 'value'=>$destinationLocation)),
+											new Custom(in_array('destLocError',$errorResults) ? '<span class="help-inline"><p class="text-warning">City must be in format City, ST</p></span>' : '')
 										)
 										->group('Number of Seats', 
-											new Text(array('class'=>'input-medium','name'=>'numSeats', 'id'=>'numSeats', 'value'=>$numSeats))
+											new Text(array('class'=>'input-medium','name'=>'numSeats', 'id'=>'numSeats', 'value'=>$numSeats)),
+											new Custom(in_array('seatError',$errorResults) ? '<span class="help-inline"><p class="text-warning">Please enter a valid number</p></span>' : '')
 										)
 										->group('Remaining Seats', 
-											new Text(array('class'=>'input-medium','name'=>'seatsRemaining', 'id'=>'seatsRemaining', 'value'=>$seatsRemaining))
+											new Text(array('class'=>'input-medium','name'=>'seatsRemaining', 'id'=>'seatsRemaining', 'value'=>$seatsRemaining)),
+											new Custom(in_array('seatsRemianingError',$errorResults) ? '<span class="help-inline"><p class="text-warning">Please enter a valid number</p></span>' : '')
 										)									
 										->group('Price', 
-											new Text(array('class'=>'input-medium','name'=>'price', 'id'=>'price', 'value'=>$price))
+											new Text(array('class'=>'input-medium','name'=>'price', 'id'=>'price', 'value'=>$price)),
+											new Custom(in_array('priceError',$errorResults) ? '<span class="help-inline"><p class="text-warning">Please enter a valid price</p></span>' : '')
 										)										
 										->group('',
-											new Submit('Submit', array('class' => 'btn btn-primary'))
+											new Submit('Submit', array('class' => 'btn btn-primary')),
+											new Custom('<a href="managepostsrides.php" class="btn btn-danger">Cancel</a>')
 										)
 										->group('', 
 											new Hidden(array('name'=>'PostID', 'id'=>'PostID', 'value'=>$pid))
