@@ -14,10 +14,22 @@
 	use JasonKaz\FormBuild\Hidden as Hidden;
 	
 	// Insert a book listing into the database
-	function createBookListing($dbc, $bookID, $conditionID, $price, $course) {
+	function createBookListing($dbc, $bookID, $conditionID, $price, $courseDept, $courseNumber) {
 		$sql = "INSERT INTO BookListing
-			(PostDate, UserID, BookID, BookConditionID, Price, ViewCount, ChangeSource, RecordStatus, RecordStatusDate, Course)
-			VALUES(NOW()," .$_SESSION['userID'] ."," .$bookID ."," .$conditionID ."," .$price .", 0, 0, 1, NOW(), " .$dbc::singleQuote($course) .");";
+			(PostDate, UserID, BookID, BookConditionID, Price, ViewCount, ChangeSource, RecordStatus, RecordStatusDate, CourseDept, CourseNumber)
+			VALUES (
+				NOW()," .
+				$_SESSION['userID'] ."," .
+				$bookID ."," .
+				$conditionID ."," .
+				$price .", 
+				0, 
+				0, 
+				1, 
+				NOW(), " .
+				$dbc::singleQuote($courseDept) .", " .
+				$dbc::singleQuote($courseNumber) .", " .
+			");";
 		return $dbc->query($sql);
 	}
 
@@ -27,8 +39,8 @@
 
 		// Build SQL
 		if ($isCourseSearch) {
-			$where = "WHERE COALESCE(SUBSTRING_INDEX(bl.Course,' ',1),'') LIKE '%" .$srch[0] ."%'";
-			$where .= "AND COALESCE(SUBSTRING_INDEX(bl.Course,' ',-1),'') LIKE '%" .$srch[1] ."%'";
+			$where = "WHERE COALESCE(bl.CourseDept,'') LIKE '%" .$srch[0] ."%'";
+			$where .= "AND COALESCE(bl.CourseNumber,'') LIKE '%" .$srch[1] ."%'";
 		}
 		else {
 			if (is_numeric($srch)) {
@@ -47,11 +59,13 @@
 		}
 		$where .= ' AND b.RecordStatus <> 3 AND bl.RecordStatus <> 3 ORDER BY bl.PostDate DESC';
 	
+		//					--CONCAT(CONCAT(CONCAT(CONCAT('<a href=\"buysellview.php?postID=',bl.PostID),'\">'),b.Title),'</a>') \"Title\",
 		$qry = "SELECT
-					CONCAT(CONCAT(CONCAT(CONCAT('<a href=\"buysellview.php?postID=',bl.PostID),'\">'),b.Title),'</a>') \"Title\",
+					bl.PostID PostID,
+					b.Title Title,
 					bl.Price Price,
 					bc.Description \"Condition\",
-					CASE WHEN bl.Course = '' OR bl.Course LIKE '%UNKN%' THEN 'Unknown' ELSE bl.Course END Course,
+					CASE WHEN bl.CourseDept IS NULL THEN 'Unknown' ELSE CONCAT(CONCAT(bl.CourseDept, ' '), bl.CourseNumber) END Course,
 					DATE_FORMAT(bl.PostDate,'%b %d %Y %h:%i %p') PostDate
 					FROM BookListing bl
 					JOIN Book b
@@ -69,7 +83,7 @@
 		$result = $dbc->query($qry);
 	
 		if ($result->num_rows > 0) {
-			$dbc->queryToTable($qry,'bookListings',$headers);
+			$dbc->queryToTable($qry,'bookListings',$headers, NULL, 'rowlink', 0);
 		}
 		else echo "No results found";
 	}

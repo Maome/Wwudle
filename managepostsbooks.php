@@ -24,30 +24,42 @@
 							<?php
 								ManagePostsNav(false, true);
 								$dbc = new dbw(DBSERVER,DBUSER,DBPASS,DBCATALOG);
-
-								// Get the UserID
-								$email = phpcas::GetUser() . "@" .$dbc->configValue('DefaultStudentEmailDomain');
-							
-								// Display all of the current rides that the user has posted 
-								$qry = "SELECT UserID FROM User WHERE Email='$email';";
-								$result = $dbc->query($qry);
-								$row = $result->fetch_assoc();
-								$UserID = $row['UserID'];
+								$user = new user($dbc, phpcas::GetUser());
 
 							// Populate a table with the rideshares the user currently has posted
 							$qry = "
 								SELECT PostID, ISBN, Title, Price, Course 
-								FROM Book b INNER 
-								JOIN BookListing bl ON b.BookID=bl.BookID 
-								WHERE bl.UserID='$UserID' AND b.RecordStatus <> 3 AND bl.RecordStatus <> 3 
+								FROM Book b 
+								JOIN BookListing bl 
+								ON (b.BookID=bl.BookID) 
+								WHERE bl.UserID=" .dbw::singleQuote($user->getUserID()) ." AND b.RecordStatus <> 3 AND bl.RecordStatus <> 3 
 								ORDER BY PostID DESC;";
 							$updateQry = "
 								UPDATE BookListing SET
-								RecordStatus = 2, RecordStatusDate = NOW(),
+								RecordStatus = 2, 
+								RecordStatusDate = NOW(),
 								Course = '" .$_POST['subject'] ." " .$_POST['course'] ."',
 								Price = " .$_POST['price'] ."
 								WHERE PostID = " .$_POST['PostID'];
-							$dbc->queryToEditableTable($qry,'BookListing','PostID','bookPosts','managepostsbooks.php','booksmodal.php', $updateQry);											
+							$dbc->queryToEditableTable($qry,'BookListing','PostID','bookPosts','managepostsbooks.php','testFunction', $updateQry);
+
+							function testFunction($dbc, $id) {
+								$qry = 'SELECT Price, Course
+								FROM BookListing bl
+								WHERE bl.PostID = ' .$id;
+								$row = $dbc->querySingleRow($qry);
+								
+								$form=new Form;							
+								echo $form->init('','post',array('class'=>'form-inline'))
+									->group('',
+										new Select($dbc->queryPairs('SELECT Abbreviation, Description FROM Department ORDER BY RowOrder,Abbreviation'),$_GET['srchDept'], array('class'=>'input-large','name'=>'srchDept')),
+										new Text(array('class'=>'input-medium','name'=>'srchCourse','value'=>$_GET['srchCourse'], 'placeholder'=>(empty($_GET['srchCourse']) ? 'Enter course number' : ''))),
+										new Submit('Search',array('class'=>'btn btn-primary'))
+									)
+									->render();
+								
+								
+							}
 						?>
                 </div>
             </div>

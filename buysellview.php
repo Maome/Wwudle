@@ -52,7 +52,7 @@
 									"SELECT 
 										DATE_FORMAT(bl.PostDate,'%b %d %Y %h:%i %p') 'Post Date', 
 										b.ISBN, b.Title, b.Authors, b.Edition, 
-										CASE WHEN bl.Course = '' OR bl.Course LIKE '%UNKN%' THEN 'Unknown' ELSE bl.Course END Course, 
+										CASE WHEN bl.CourseDept IS NULL THEN 'Unknown' ELSE CONCAT(CONCAT(bl.CourseDept,' '), bl.CourseNumber) END Course, 
 										bl.Price
 									FROM BookListing bl 
 									JOIN Book b 

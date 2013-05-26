@@ -49,9 +49,15 @@
 				var oTable = $('#bookListings').dataTable( {
 					"sPaginationType": "bootstrap",
 					"bFilter": false, // Disable filtering
-					"aaSorting": [] // Disable auto sort first column
-				} );															
-			} );		
+					"aaSorting": [], // Disable auto sort first column
+					"fnDrawCallback": function() {				      
+						$("#bookListings tbody tr").on('click',function() {
+							var id = $(this).attr('id');
+							document.location.href = "buysellview.php?postID=" + id;       
+						});
+					}
+				});
+			});		
 		</script> 
     </head>
     <body>
@@ -69,7 +75,8 @@
 						 
 							<?php
 								 echo '
-								 <h4>Find textbooks by
+								 <h4>
+								 Find textbooks by
 								 <select class="input-medium" id="searchType" style="width: 130px">
 									 <option value="ISBN">ISBN or Title</option>
 									 <option value="Course" ' .(isset($_GET['srchCourse']) ? 'selected' : '') .'>Course</option>
@@ -77,7 +84,8 @@
 								</h4>
 								';
 								$dbc = new dbw(DBSERVER,DBUSER,DBPASS,DBCATALOG);
-														
+								
+								// Search by ISBN
 								echo "<div id='isbnSearch'>";
 								$FormA=new Form;
 								echo $FormA->init('','get',array('class'=>'form-inline'))
@@ -88,11 +96,13 @@
 									->render();
 								echo "</div>";												
 							
+								// Search by course
 								echo "<div id='courseSearch'>";
+								$subjectList = $dbc->queryPairs('SELECT Abbreviation, Description FROM Department ORDER BY RowOrder,Abbreviation');
 								$FormB=new Form;							
 								echo $FormB->init('','get',array('class'=>'form-inline'))
 									->group('',
-										new Select($dbc->queryPairs('SELECT Abbreviation, Description FROM Department ORDER BY RowOrder,Abbreviation'),$_GET['srchDept'], array('class'=>'input-large','name'=>'srchDept')),
+										new Select($subjectList, $_GET['srchDept'], array('class'=>'input-large','name'=>'srchDept')),
 										new Text(array('class'=>'input-medium','name'=>'srchCourse','value'=>$_GET['srchCourse'], 'placeholder'=>(empty($_GET['srchCourse']) ? 'Enter course number' : ''))),
 										new Submit('Search',array('class'=>'btn btn-primary'))
 									)
