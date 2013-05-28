@@ -10,6 +10,7 @@
 		private $Title;
 		private $edition;
 		private $bookCategoryID;
+		private $userID;
 		
 		function book($dbc, $isbn = null, $title = null) {
 			$this->dbc = $dbc;
@@ -22,7 +23,12 @@
 				$this->keyValue = '\'' .$title .'\'';
 			}
 			
-			$data = $dbc->query('SELECT BookID, isbn, Authors, Title, Edition, BookCategoryID FROM Book WHERE ' .$this->keyName .' = ' .$this->keyValue);
+			$data = $dbc->query('
+				SELECT BookID, ISBN, Authors, Title, Edition, BookCategoryID, UserID
+				FROM Book 
+				WHERE RecordStatus <> 3
+				AND ' .$this->keyName .' = ' .$this->keyValue
+			);
 			if ($data->num_rows == 1) {
 				$row = $data->fetch_assoc();
 				$this->bookID = $row['BookID'];
@@ -31,6 +37,7 @@
 				$this->title = $row['Title'];
 				$this->edition = $row['Edition'];
 				$this->bookCategoryID = $row['BookCategoryID'];
+				$this->userID = $row['UserID'];
 			}
 		}
 		
@@ -38,17 +45,18 @@
 			return !is_null($this->bookID);
 		}
 		
-		function createBook($isbn,$authors, $title, $edition, $bookCategoryID) {
+		function createBook($isbn, $authors, $title, $edition, $bookCategoryID, $userID = NULL) {
 			$isbn = dbw::nullIfEmpty($isbn);
 			$title = empty($title) ? 'NULL' : dbw::singleQuote($title);
 			$authors = empty($authors) ? 'NULL' : dbw::singleQuote($authors);
 			$edition = empty($edition) ? 'NULL' : dbw::singleQuote($edition);
 			$bookCategoryID = empty($bookCategoryID) ? 'NULL' : dbw::singleQuote($bookCategoryID);
+			$userID = is_null($userID) ? 'NULL' : $userID;
 			
 			if (!$this->exists()) {
 				$sql = "INSERT INTO Book
-					  (isbn, Authors, Title, Edition, BookCategoryID, ChangeSource, RecordStatus, RecordStatusDate)
-					  VALUES(" .$isbn  ."," .$authors  ."," .$title  ."," .$edition  ."," .$bookCategoryID .", 0, 1, NOW())";
+					  (ISBN, Authors, Title, Edition, BookCategoryID, UserID, ChangeSource, RecordStatus, RecordStatusDate)
+					  VALUES(" .$isbn  ."," .$authors  ."," .$title  ."," .$edition  ."," .$bookCategoryID ."," .$userID .", 0, 1, NOW())";
 				$this->dbc->query($sql);
 				$this->userID = $this->getBookID(true);
 				return true;

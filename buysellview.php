@@ -58,7 +58,8 @@
 									JOIN Book b 
 									ON (b.BookID = bl.BookID) 
 									WHERE bl.PostID = " .$_GET['postID'], 
-								true);							
+									true
+								);							
 								echo '<h4>' .$post['Title'] .'</h4>';	
 								echo '</div>';
 							

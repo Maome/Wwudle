@@ -1,5 +1,6 @@
 <?php
 	require_once('buysellfunctions.php');
+	require_once('classes/utils.php');
 	use JasonKaz\FormBuild\Form as Form;
 	use JasonKaz\FormBuild\Text as Text;
 	use JasonKaz\FormBuild\Help as Help;

@@ -6,11 +6,8 @@
 	use JasonKaz\FormBuild\Form as Form;
 	use JasonKaz\FormBuild\Text as Text;
 	use JasonKaz\FormBuild\Submit as Submit;
-	use JasonKaz\FormBuild\Password as Password;
 	use JasonKaz\FormBuild\Select as Select;	
-	use JasonKaz\FormBuild\Reset as Reset;
 	use JasonKaz\FormBuild\Custom as Custom;
-	use JasonKaz\FormBuild\Textarea as Textarea;
 	use JasonKaz\FormBuild\Hidden as Hidden;
 
 ?>
@@ -42,7 +39,12 @@
 									<?php
 										
 										// Get errors if this has been called via get or post
-										$submitErrors = getSubmitErrors();
+										$submitErrors = utils::getNonMatches(
+											(isset($_GET['srchText']) ? array('/^[0-9]{10}$|^[0-9]{13}$/',str_replace('-','',$_GET['srchText']),'srchText') : ''),
+											(isset($_POST['price']) ? array('/^(?=.)[0-9]{0,4}(\.[0-9]{2})?$/',$_POST['price'],'price') : ''),
+											(!empty($_POST['courseNumber']) && $_POST['subject'] == 'NULL' ? array('/^((?!NULL).)*$/',$_POST['subject'],'subject') : ''),
+											(!empty($_POST['courseNumber']) ? array('/^[1-6][0-9]{2}[A-Za-z]{0,1}$/',$_POST['courseNumber'],'courseNumber') : '')
+										);
 									
 										// Book search form
 										$Form=new Form;
@@ -66,7 +68,7 @@
 
 											// Display book information if user is not posting book information
 											// except for if the user is posting with errors
-											if ($searching || !empty($submitErrors)) {											
+											if ($searching || count($submitErrors) > 0) {
 												$isbn = ($searching ? str_replace('-','',$_GET['srchText']) : $_POST['isbn']);
 												displayBookList($dbc, $isbn, $submitErrors);
 											}

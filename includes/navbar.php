@@ -6,7 +6,7 @@
 	
 	
 	function DisplayNavbar($filename) {
-		CheckCreateUser(true);
+		CheckCreateUser(false);
 		echo '
 			<div class="navbar navbar-inverse navbar-fixed-top">
 				<div class="navbar-inner">
@@ -57,7 +57,7 @@
 		$dbc = new dbw(DBSERVER,DBUSER,DBPASS,DBCATALOG);
 		
 		if (!isset($_SESSION['userID']) || $reload) {
-			$email = PHPCAS::GetUser() ."@students.wwu.edu";
+			$email = PHPCAS::GetUser() ."@" .$dbc->configValue('DefaultStudentEmailDomain');
 			$user = new user($dbc,PHPCAS::GetUser());
 			
 			// Create user if they do not exist

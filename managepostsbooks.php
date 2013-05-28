@@ -1,5 +1,14 @@
 <?php
 	require_once('init.php');
+	require_once('classes/utils.php');
+	require_once('buysellfunctions.php');
+	use JasonKaz\FormBuild\Form as Form;
+	use JasonKaz\FormBuild\Text as Text;
+	use JasonKaz\FormBuild\Submit as Submit;
+	use JasonKaz\FormBuild\Password as Password;
+	use JasonKaz\FormBuild\Select as Select;	
+	use JasonKaz\FormBuild\Custom as Custom;
+	use JasonKaz\FormBuild\Hidden as Hidden;
 ?>
 <!DOCTYPE HTML>
 <html lang-"en">
@@ -26,39 +35,81 @@
 								$dbc = new dbw(DBSERVER,DBUSER,DBPASS,DBCATALOG);
 								$user = new user($dbc, phpcas::GetUser());
 
-							// Populate a table with the rideshares the user currently has posted
-							$qry = "
-								SELECT PostID, ISBN, Title, Price, Course 
-								FROM Book b 
-								JOIN BookListing bl 
-								ON (b.BookID=bl.BookID) 
-								WHERE bl.UserID=" .dbw::singleQuote($user->getUserID()) ." AND b.RecordStatus <> 3 AND bl.RecordStatus <> 3 
-								ORDER BY PostID DESC;";
-							$updateQry = "
-								UPDATE BookListing SET
-								RecordStatus = 2, 
-								RecordStatusDate = NOW(),
-								Course = '" .$_POST['subject'] ." " .$_POST['course'] ."',
-								Price = " .$_POST['price'] ."
-								WHERE PostID = " .$_POST['PostID'];
-							$dbc->queryToEditableTable($qry,'BookListing','PostID','bookPosts','managepostsbooks.php','testFunction', $updateQry);
+								// Populate a table with the rideshares the user currently has posted
+								$qry = "
+									SELECT bl.PostID, b.ISBN, b.Title, bl.Price,
+										CASE WHEN bl.CourseDept IS NULL THEN 'Unknown' ELSE CONCAT(CONCAT(bl.CourseDept, ' '), bl.CourseNumber) END Course
+									FROM Book b 
+									JOIN BookListing bl 
+									ON (b.BookID=bl.BookID) 
+									WHERE bl.UserID=" .dbw::singleQuote($user->getUserID()) ." AND b.RecordStatus <> 3 AND bl.RecordStatus <> 3 
+									ORDER BY PostID DESC;";
+								$updateQry = "
+									UPDATE BookListing SET
+									RecordStatus = 2, 
+									RecordStatusDate = NOW(),
+									CourseDept = " .dbw::singleQuote($_POST['subject']) .",
+									CourseNumber = " .dbw::singleQuote(strtoupper($_POST['courseNumber'])) .",
+									Price = " .dbw::zeroIfEmpty($_POST['price']) ."
+									WHERE PostID = " .$_POST['edit'];
+								$dbc->queryToEditableTable($qry,'BookListing','PostID','bookPosts','managepostsbooks.php','editFunction', $updateQry);
 
-							function testFunction($dbc, $id) {
-								$qry = 'SELECT Price, Course
-								FROM BookListing bl
-								WHERE bl.PostID = ' .$id;
-								$row = $dbc->querySingleRow($qry);
-								
-								$form=new Form;							
-								echo $form->init('','post',array('class'=>'form-inline'))
+								function editFunction($dbc, $id) {
+									$qry = 'SELECT BookConditionID, Price, CourseDept, CourseNumber
+									FROM BookListing bl
+									WHERE bl.RecordStatus <> 3 AND bl.PostID = ' .$id;
+									$row = $dbc->querySingleRow($qry, true);
+									$bookConditions = $dbc->queryPairs('SELECT BookConditionID, Description FROM BookCondition ORDER BY BookConditionID');
+									$subjects = $dbc->queryPairs("
+										SELECT 
+											CASE WHEN Abbreviation = 'ALL' THEN 'NULL' ELSE Abbreviation END Abbreviation,
+											CASE WHEN Abbreviation = 'ALL' THEN 'Choose a Subject' ELSE Description END Description 
+										FROM Department 
+										ORDER BY RowOrder, Abbreviation
+									");
+									
+									$submitErrors = utils::getNonMatches(
+											(isset($_POST['price']) ? array('/^(?=.)[0-9]{0,4}(\.[0-9]{2})?$/',$_POST['price'],'price') : ''),
+											(!empty($_POST['courseNumber']) && $_POST['subject'] == 'NULL' ? array('/^((?!NULL).)*$/',$_POST['subject'],'subject') : ''),
+											(!empty($_POST['courseNumber']) ? array('/^[1-6][0-9]{2}[A-Za-z]{0,1}$/',$_POST['courseNumber'],'courseNumber') : '')
+									);
+									
+									if (empty($submitErrors) && isset($_POST['edit'])) {
+										echo "<div><b>Your listing has been updated! <i class='icon-thumbs-up'></i></b></div>";
+										return;
+									}
+									
+									$invalidPrice = in_array('price',$submitErrors);
+									$invalidCourseNumber = in_array('courseNumber',$submitErrors);
+									$invalidSubject = in_array('subject',$submitErrors);
+									$selectedBookCondition = (isset($_POST['bookCondition']) ? $_POST['bookCondition'] : $row['BookConditionID']);
+									$selectedSubject = (isset($_POST['subject']) ? $_POST['subject'] : $row['CourseDept']);
+									$inputCourseNumber = (isset($_POST['courseNumber']) && !$invalidCourseNumber ? $_POST['courseNumber'] : $row['CourseNumber']);
+									$inputPrice = (isset($_POST['price']) && !$invalidPrice ? $_POST['price'] : $row['Price']);
+									
+									$bookForm = new Form;
+									echo $bookForm->init('','post',array('class'=>'form-horizontal','style'=>'margin-left: -80px; margin-top: 25px;','name'=>'bookAdd'))
+									->group('Condition',
+										new Select($bookConditions, (int)$selectedBookCondition, array('class'=>'input-large','name'=>'bookCondition'))
+									)
+									->group('Subject',
+										new Select($subjects, $selectedSubject, array('class'=>'input-large','name'=>'subject'))
+									)
+									->group('Course',
+										($invalidCourseNumber ? 'warning' : ''),
+										new Text(array('class'=>'input-small','name'=>'courseNumber', 'placeholder'=>'Course #','value'=>$inputCourseNumber)),
+										new Custom($invalidCourseNumber ? '<span class="help-inline">Please enter a valid course number</span>' : '')
+									)
+									->group('Price',
+										($invalidPrice ? 'warning' : ''),
+										new Text(array('class'=>'input-small','name'=>'price','placeholder'=>'$','value'=>$inputPrice)),
+										new Custom($invalidPrice ? '<span class="help-inline"><p class="text-warning">Please enter a valid price</p></span>' : '')
+									)
 									->group('',
-										new Select($dbc->queryPairs('SELECT Abbreviation, Description FROM Department ORDER BY RowOrder,Abbreviation'),$_GET['srchDept'], array('class'=>'input-large','name'=>'srchDept')),
-										new Text(array('class'=>'input-medium','name'=>'srchCourse','value'=>$_GET['srchCourse'], 'placeholder'=>(empty($_GET['srchCourse']) ? 'Enter course number' : ''))),
-										new Submit('Search',array('class'=>'btn btn-primary'))
+										new Hidden(array('name'=>'edit','value'=>$id)),
+										new Submit('Submit', array('class' => 'btn btn-primary'))
 									)
 									->render();
-								
-								
 							}
 						?>
                 </div>

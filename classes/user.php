@@ -13,14 +13,19 @@
 			$this->dbc = $dbc;
 			$this->userName = $userName;
 			
-			$data = $dbc->query('SELECT UserID, Email, FirstLoginDate, LastLoginDate, SecurityLevel FROM User WHERE UserName = ' .dbw::singleQuote($userName));
+			$data = $dbc->query('
+				SELECT UserID, Email, FirstLoginDate, LastLoginDate, SecurityLevel 
+				FROM User 
+				WHERE RecordStatus <> 3
+				AND UserName = ' .dbw::singleQuote($userName)
+			);
 			if ($data->num_rows == 1) {
 				$row = $data->fetch_assoc();
 				$this->userID = $row['UserID'];
 				$this->email = $row['Email'];
 				$this->firstLoginDate = $row['FirstLoginDate'];
 				$this->lastLoginDate = $row['LastLoginDate'];
-				$this->securityLevel = $row['securityLevel'];
+				$this->securityLevel = $row['SecurityLevel'];
 			}
 		}
 		
@@ -62,6 +67,15 @@
 			if ($this->exists()) {
 				$this->dbc->updateData('User',array('RecordStatus'=>'2','RecordStatusDate'=>'NOW()','Email'=>dbw::singleQuote($email)),'UserID = ' .$this->getUserID());
 				$this->email = $email;
+				return true;
+			}
+			else return false;
+		}
+		
+		function setSecurityLevel($securityLevel) {
+			if ($this->exists()) {
+				$this->dbc->updateData('User',array('RecordStatus'=>'2','RecordStatusDate'=>'NOW()','SecurityLevel'=>$securityLevel),'UserID = ' .$this->getUserID());
+				$this->securityLevel = $securityLevel;
 				return true;
 			}
 			else return false;

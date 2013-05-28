@@ -1,7 +1,8 @@
 <?php
 	require_once('init.php');
-	require_once 'google-api-php-client/src/Google_Client.php';
-	require_once 'google-api-php-client/src/contrib/Google_BooksService.php';
+	require_once('google-api-php-client/src/Google_Client.php');
+	require_once('google-api-php-client/src/contrib/Google_BooksService.php');
+	require_once('classes/utils.php');
 	
 	use JasonKaz\FormBuild\Form as Form;
 	use JasonKaz\FormBuild\Text as Text;
@@ -22,13 +23,13 @@
 				$_SESSION['userID'] ."," .
 				$bookID ."," .
 				$conditionID ."," .
-				$price .", 
+				dbw::zeroIfEmpty($price) .", 
 				0, 
 				0, 
 				1, 
 				NOW(), " .
-				$dbc::singleQuote($courseDept) .", " .
-				$dbc::singleQuote($courseNumber) .", " .
+				($courseDept == 'NULL' ? $courseDept : $dbc::singleQuote($courseDept)) .", " .
+				(empty($courseNumber) ? 'NULL' : $dbc::singleQuote(strtoupper($courseNumber))) .
 			");";
 		return $dbc->query($sql);
 	}
@@ -89,13 +90,20 @@
 	}
 	
 	function displaySaleForm($dbc,$isbn, $title, $submitErrors) {
-		// Check if user tried to post with invalid data
+		// Check user input data
 		$invalidPrice = in_array('price',$submitErrors);
 		$invalidCourseNumber = in_array('courseNumber',$submitErrors);
+		$invalidSubject = in_array('subject',$submitErrors);
+		$selectedBookCondition = (isset($_POST['bookCondition']) ? $_POST['bookCondition'] : 1);
+		$selectedSubject = (isset($_POST['subject']) ? $_POST['subject'] : 'NULL');
+		$inputCourseNumber = (isset($_POST['courseNumber']) && !$invalidCourseNumber ? $_POST['courseNumber'] : '');
+		$inputPrice = (isset($_POST['price']) && !$invalidPrice ? $_POST['price'] : '');
 		
+		// Array data for select boxes
+		$bookConditions = $dbc->queryPairs('SELECT BookConditionID, Description FROM BookCondition ORDER BY BookConditionID');
 		$subjects = $dbc->queryPairs("
 		SELECT 
-			CASE WHEN Abbreviation = 'ALL' THEN 'UNKN' ELSE Abbreviation END Abbreviation,
+			CASE WHEN Abbreviation = 'ALL' THEN 'NULL' ELSE Abbreviation END Abbreviation,
 			CASE WHEN Abbreviation = 'ALL' THEN 'Choose a Subject' ELSE Description END Description 
 		FROM Department 
 		ORDER BY RowOrder, Abbreviation
@@ -105,19 +113,20 @@
 		$bookForm = new Form;
 		echo $bookForm->init('','post',array('class'=>'form-horizontal','style'=>'margin-left: -80px; margin-top: 25px;','name'=>'bookAdd'))
 		->group('Condition',
-			new Select($dbc->queryPairs('SELECT BookConditionID, Description FROM BookCondition ORDER BY BookConditionID'),1, array('class'=>'input-large','name'=>'bookCondition'))
+			new Select($bookConditions, (int)$selectedBookCondition, array('class'=>'input-large','name'=>'bookCondition'))
 		)
 		->group('Subject',
-			new Select($subjects, 1, array('class'=>'input-large','name'=>'subject'))
+			new Select($subjects, $selectedSubject, array('class'=>'input-large','name'=>'subject')),
+			new Custom($invalidSubject ? '<span class="help-inline"><p class="text-warning">Please choose a subject</p></span>' : '')
 		)
 		->group('Course',
 			($invalidCourseNumber ? 'warning' : ''),
-			new Text(array('class'=>'input-small','name'=>'courseNumber', 'placeholder'=>'Course #')),
+			new Text(array('class'=>'input-small','name'=>'courseNumber', 'placeholder'=>'Course #','value'=>$inputCourseNumber)),
 			new Custom($invalidCourseNumber ? '<span class="help-inline">Please enter a valid course number</span>' : '')
 		)
 		->group('Price',
 			($invalidPrice ? 'warning' : ''),
-			new Text(array('class'=>'input-small','name'=>'price','placeholder'=>'$')),
+			new Text(array('class'=>'input-small','name'=>'price','placeholder'=>'$','value'=>$inputPrice)),
 			new Custom($invalidPrice ? '<span class="help-inline"><p class="text-warning">Please enter a valid price</p></span>' : '')
 		)
 		->hidden(array('name'=>'isbn','value'=>$isbn))
@@ -127,8 +136,6 @@
 		)
 		->render();
 		echo '</div>';
-		
-		echo '</div>'; // This ends the span12 div from the displayBookList function
 	}
 	
 	function displayManualSaleForm() {
@@ -162,10 +169,19 @@
 	function postBookListing($dbc,$isbn = null,$title = null, $authors = null) {
 		$dbc = new dbw(DBSERVER,DBUSER,DBPASS,DBCATALOG);
 		$book = new book($dbc,$isbn,$title);
+		$dbc->setDebug(true);
 		if (!$book->exists()) $book->createBook($isbn,$authors,$title,null,null);
 
 		// Insert book listing
-		 if (createBookListing($dbc,$book->getBookID(),$_POST['bookCondition'],$_POST['price'], $_POST['subject'] .' ' .$_POST['courseNumber'])) {
+		$bookListed = createBookListing(
+			$dbc,
+			$book->getBookID(),
+			$_POST['bookCondition'], 
+			$_POST['price'], 
+			$_POST['subject'], 
+			$_POST['courseNumber']
+		);
+		if ($bookListed) {
 			echo "<div><b>Your book has been listed! <i class='icon-thumbs-up'></i></b></div>";
 		} else {
 			echo "<div><b>We're sorry! An unexpected error has occurred.</b></div>";
@@ -224,6 +240,7 @@
 			echo '</div>';
 
 			displaySaleForm($dbc, $isbn, $title, $submitErrors);
+			echo '</div>'; // End span12 div
 		}
 		else {
 			$book = new book($dbc,$isbn,$title);

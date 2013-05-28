@@ -13,6 +13,10 @@
 			return empty($value) ? 'NULL' : $value;
 		}
 		
+		public static function zeroIfEmpty($value) {
+			return empty($value) ? 0: $value;
+		}
+		
 		// Constructor
 		function dbw($server, $user, $pass, $catalog,$debug = false) {
 			$this->conn = new mysqli($server, $user, $pass, $catalog);
@@ -118,15 +122,16 @@
 			// Delete record
 			if (isset($_GET['edit'])) {
 				$editFunction($this, $_GET['edit']);
-				return;
+				if (!isset($_POST['edit'])) return;
 			}
 			else if (isset($_POST['delete'])) {
 				$delQry = 'UPDATE ' .$tableToEdit .' SET RecordStatus = 3, RecordStatusDate = NOW() WHERE ' .$keyColumn .' = ' .$_POST[$keyColumn];
 				$this->query($delQry);
 			}
 			// Edit record
-			else if (isset($_POST['edit'])) {
+			if (isset($_POST['edit'])) {
 				$this->query($updateQry);
+				return;
 			}
 
 			echo '<table id="' .$name .'" class="table table-striped">';
