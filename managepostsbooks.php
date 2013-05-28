@@ -5,10 +5,10 @@
 	use JasonKaz\FormBuild\Form as Form;
 	use JasonKaz\FormBuild\Text as Text;
 	use JasonKaz\FormBuild\Submit as Submit;
-	use JasonKaz\FormBuild\Password as Password;
 	use JasonKaz\FormBuild\Select as Select;	
 	use JasonKaz\FormBuild\Custom as Custom;
 	use JasonKaz\FormBuild\Hidden as Hidden;
+	use JasonKaz\FormBuild\Validation as Validation;
 ?>
 <!DOCTYPE HTML>
 <html lang-"en">
@@ -55,9 +55,14 @@
 								$dbc->queryToEditableTable($qry,'BookListing','PostID','bookPosts','managepostsbooks.php','editFunction', $updateQry);
 
 								function editFunction($dbc, $id) {
-									$qry = 'SELECT BookConditionID, Price, CourseDept, CourseNumber
+									$qry = 'SELECT b.Title,
+										bl.BookConditionID, bl.Price, bl.CourseDept, bl.CourseNumber
 									FROM BookListing bl
-									WHERE bl.RecordStatus <> 3 AND bl.PostID = ' .$id;
+									JOIN Book b
+									ON (b.BookID = bl.BookID)
+									WHERE bl.RecordStatus <> 3 
+									AND b.RecordStatus <> 3
+									AND bl.PostID = ' .$id;
 									$row = $dbc->querySingleRow($qry, true);
 									$bookConditions = $dbc->queryPairs('SELECT BookConditionID, Description FROM BookCondition ORDER BY BookConditionID');
 									$subjects = $dbc->queryPairs("
@@ -76,40 +81,41 @@
 									
 									if (empty($submitErrors) && isset($_POST['edit'])) {
 										echo "<div><b>Your listing has been updated! <i class='icon-thumbs-up'></i></b></div>";
-										return;
 									}
-									
-									$invalidPrice = in_array('price',$submitErrors);
-									$invalidCourseNumber = in_array('courseNumber',$submitErrors);
-									$invalidSubject = in_array('subject',$submitErrors);
-									$selectedBookCondition = (isset($_POST['bookCondition']) ? $_POST['bookCondition'] : $row['BookConditionID']);
-									$selectedSubject = (isset($_POST['subject']) ? $_POST['subject'] : $row['CourseDept']);
-									$inputCourseNumber = (isset($_POST['courseNumber']) && !$invalidCourseNumber ? $_POST['courseNumber'] : $row['CourseNumber']);
-									$inputPrice = (isset($_POST['price']) && !$invalidPrice ? $_POST['price'] : $row['Price']);
-									
-									$bookForm = new Form;
-									echo $bookForm->init('','post',array('class'=>'form-horizontal','style'=>'margin-left: -80px; margin-top: 25px;','name'=>'bookAdd'))
-									->group('Condition',
-										new Select($bookConditions, (int)$selectedBookCondition, array('class'=>'input-large','name'=>'bookCondition'))
-									)
-									->group('Subject',
-										new Select($subjects, $selectedSubject, array('class'=>'input-large','name'=>'subject'))
-									)
-									->group('Course',
-										($invalidCourseNumber ? 'warning' : ''),
-										new Text(array('class'=>'input-small','name'=>'courseNumber', 'placeholder'=>'Course #','value'=>$inputCourseNumber)),
-										new Custom($invalidCourseNumber ? '<span class="help-inline">Please enter a valid course number</span>' : '')
-									)
-									->group('Price',
-										($invalidPrice ? 'warning' : ''),
-										new Text(array('class'=>'input-small','name'=>'price','placeholder'=>'$','value'=>$inputPrice)),
-										new Custom($invalidPrice ? '<span class="help-inline"><p class="text-warning">Please enter a valid price</p></span>' : '')
-									)
-									->group('',
-										new Hidden(array('name'=>'edit','value'=>$id)),
-										new Submit('Submit', array('class' => 'btn btn-primary'))
-									)
-									->render();
+									else {									
+										$invalidPrice = in_array('price',$submitErrors);
+										$invalidCourseNumber = in_array('courseNumber',$submitErrors);
+										$invalidSubject = in_array('subject',$submitErrors);
+										$selectedBookCondition = (isset($_POST['bookCondition']) ? $_POST['bookCondition'] : $row['BookConditionID']);
+										$selectedSubject = (isset($_POST['subject']) ? $_POST['subject'] : $row['CourseDept']);
+										$inputCourseNumber = (isset($_POST['courseNumber']) && !$invalidCourseNumber ? $_POST['courseNumber'] : $row['CourseNumber']);
+										$inputPrice = (isset($_POST['price']) && !$invalidPrice ? $_POST['price'] : $row['Price']);
+										
+										echo "<h3>Textbook Post for " .$row['Title'] ."</h3>";
+										$bookForm = new Form;
+										echo $bookForm->init('','post',array('class'=>'form-horizontal','style'=>'margin-left: -80px; margin-top: 25px;','name'=>'bookAdd'))
+										->group('Condition',
+											new Select($bookConditions, (int)$selectedBookCondition, array('class'=>'input-large','name'=>'bookCondition'))
+										)
+										->group('Subject',
+											new Select($subjects, $selectedSubject, array('class'=>'input-large','name'=>'subject'))
+										)
+										->group('Course',
+											($invalidCourseNumber ? 'warning' : ''),
+											new Text(array('class'=>'input-small','name'=>'courseNumber', 'placeholder'=>'Course #','value'=>$inputCourseNumber)),
+											new Validation($invalidCourseNumber, 'Please enter a valid course number')
+										)
+										->group('Price',
+											($invalidPrice ? 'warning' : ''),
+											new Text(array('class'=>'input-small','name'=>'price','placeholder'=>'$','value'=>$inputPrice)),
+											new Validation($invalidPrice, 'Please enter a valid price')
+										)
+										->group('',
+											new Hidden(array('name'=>'edit','value'=>$id)),
+											new Submit('Submit', array('class' => 'btn btn-primary'))
+										)
+										->render();
+									}
 							}
 						?>
                 </div>

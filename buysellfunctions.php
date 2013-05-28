@@ -13,6 +13,7 @@
 	use JasonKaz\FormBuild\Custom as Custom;
 	use JasonKaz\FormBuild\Textarea as Textarea;
 	use JasonKaz\FormBuild\Hidden as Hidden;
+	use JasonKaz\FormBuild\Validation as Validation;
 	
 	// Insert a book listing into the database
 	function createBookListing($dbc, $bookID, $conditionID, $price, $courseDept, $courseNumber) {
@@ -91,7 +92,6 @@
 	
 	function displaySaleForm($dbc,$isbn, $title, $submitErrors) {
 		// Check user input data
-		$invalidPrice = in_array('price',$submitErrors);
 		$invalidCourseNumber = in_array('courseNumber',$submitErrors);
 		$invalidSubject = in_array('subject',$submitErrors);
 		$selectedBookCondition = (isset($_POST['bookCondition']) ? $_POST['bookCondition'] : 1);
@@ -117,17 +117,17 @@
 		)
 		->group('Subject',
 			new Select($subjects, $selectedSubject, array('class'=>'input-large','name'=>'subject')),
-			new Custom($invalidSubject ? '<span class="help-inline"><p class="text-warning">Please choose a subject</p></span>' : '')
+			new Validation($invalidSubject, 'Please choose a subject')
 		)
 		->group('Course',
 			($invalidCourseNumber ? 'warning' : ''),
 			new Text(array('class'=>'input-small','name'=>'courseNumber', 'placeholder'=>'Course #','value'=>$inputCourseNumber)),
-			new Custom($invalidCourseNumber ? '<span class="help-inline">Please enter a valid course number</span>' : '')
+			new Validation($invalidCourseNumber, 'Please enter a valid course number')
 		)
 		->group('Price',
 			($invalidPrice ? 'warning' : ''),
 			new Text(array('class'=>'input-small','name'=>'price','placeholder'=>'$','value'=>$inputPrice)),
-			new Custom($invalidPrice ? '<span class="help-inline"><p class="text-warning">Please enter a valid price</p></span>' : '')
+			new Validation(in_array('price',$submitErrors), 'Please enter a valid price')
 		)
 		->hidden(array('name'=>'isbn','value'=>$isbn))
 		->hidden(array('name'=>'title','value'=>$title))
