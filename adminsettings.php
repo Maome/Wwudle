@@ -85,7 +85,7 @@
         </div>
 	<div id="wrap">
 		<!-- Navbar -->
-		<?php DisplayNavbar("buysell.php"); ?>
+		<?php DisplayNavbar("adminsettings.php"); ?>
 		     <div class="container">
 		         <div class="row-fluid">
 				<!-- Sidebar -->

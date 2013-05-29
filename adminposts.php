@@ -27,7 +27,7 @@
 
 	<div id="wrap">
 		<!-- Navbar -->
-		<?php DisplayNavbar("buysell.php"); ?>
+		<?php DisplayNavbar("adminposts.php"); ?>
 		     <div class="container">
 		         <div class="row-fluid">
 				<!-- Sidebar -->
