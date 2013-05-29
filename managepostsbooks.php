@@ -33,7 +33,11 @@
 							<?php
 								ManagePostsNav(false, true);
 								$dbc = new dbw(DBSERVER,DBUSER,DBPASS,DBCATALOG);
-								$user = new user($dbc, phpcas::GetUser());
+								
+								// Unset edit flag if user decided to cancel editing
+								if (isset($_POST['submit']) && $_POST['submit'] == 'Cancel') {
+									unset($_POST['edit']);
+								}
 
 								// Populate a table with the rideshares the user currently has posted
 								$qry = "
@@ -42,7 +46,7 @@
 									FROM Book b 
 									JOIN BookListing bl 
 									ON (b.BookID=bl.BookID) 
-									WHERE bl.UserID=" .dbw::singleQuote($user->getUserID()) ." AND b.RecordStatus <> 3 AND bl.RecordStatus <> 3 
+									WHERE bl.UserID=" .$_SESSION['userID'] ." AND b.RecordStatus <> 3 AND bl.RecordStatus <> 3 
 									ORDER BY PostID DESC;";
 								$updateQry = "
 									UPDATE BookListing SET
@@ -93,26 +97,26 @@
 										
 										echo "<h3>Textbook Post for " .$row['Title'] ."</h3>";
 										$bookForm = new Form;
-										echo $bookForm->init('','post',array('class'=>'form-horizontal','style'=>'margin-left: -80px; margin-top: 25px;','name'=>'bookAdd'))
+										echo $bookForm->init('managepostsbooks.php','post',array('class'=>'form-horizontal','style'=>'margin-left: -80px; margin-top: 25px;','name'=>'bookAdd'))
 										->group('Condition',
 											new Select($bookConditions, (int)$selectedBookCondition, array('class'=>'input-large','name'=>'bookCondition'))
 										)
 										->group('Subject',
-											new Select($subjects, $selectedSubject, array('class'=>'input-large','name'=>'subject'))
+											new Select($subjects, $selectedSubject, array('class'=>'input-large','name'=>'subject')),
+											new Validation($invalidSubject,'Please choose a valid subject')
 										)
 										->group('Course',
-											($invalidCourseNumber ? 'warning' : ''),
 											new Text(array('class'=>'input-small','name'=>'courseNumber', 'placeholder'=>'Course #','value'=>$inputCourseNumber)),
 											new Validation($invalidCourseNumber, 'Please enter a valid course number')
 										)
 										->group('Price',
-											($invalidPrice ? 'warning' : ''),
 											new Text(array('class'=>'input-small','name'=>'price','placeholder'=>'$','value'=>$inputPrice)),
 											new Validation($invalidPrice, 'Please enter a valid price')
 										)
 										->group('',
 											new Hidden(array('name'=>'edit','value'=>$id)),
-											new Submit('Submit', array('class' => 'btn btn-primary'))
+											new Submit('Cancel', array('class'=>'btn btn-danger','name'=>'submit')),
+											new Submit('Submit', array('class'=>'btn btn-primary','name'=>'submit'))
 										)
 										->render();
 									}

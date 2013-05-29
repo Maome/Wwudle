@@ -92,6 +92,7 @@
 	
 	function displaySaleForm($dbc,$isbn, $title, $submitErrors) {
 		// Check user input data
+		$invalidPrice = in_array('price',$submitErrors);
 		$invalidCourseNumber = in_array('courseNumber',$submitErrors);
 		$invalidSubject = in_array('subject',$submitErrors);
 		$selectedBookCondition = (isset($_POST['bookCondition']) ? $_POST['bookCondition'] : 1);
@@ -120,14 +121,12 @@
 			new Validation($invalidSubject, 'Please choose a subject')
 		)
 		->group('Course',
-			($invalidCourseNumber ? 'warning' : ''),
 			new Text(array('class'=>'input-small','name'=>'courseNumber', 'placeholder'=>'Course #','value'=>$inputCourseNumber)),
 			new Validation($invalidCourseNumber, 'Please enter a valid course number')
 		)
 		->group('Price',
-			($invalidPrice ? 'warning' : ''),
 			new Text(array('class'=>'input-small','name'=>'price','placeholder'=>'$','value'=>$inputPrice)),
-			new Validation(in_array('price',$submitErrors), 'Please enter a valid price')
+			new Validation($invalidPrice, 'Please enter a valid price')
 		)
 		->hidden(array('name'=>'isbn','value'=>$isbn))
 		->hidden(array('name'=>'title','value'=>$title))
@@ -169,7 +168,6 @@
 	function postBookListing($dbc,$isbn = null,$title = null, $authors = null) {
 		$dbc = new dbw(DBSERVER,DBUSER,DBPASS,DBCATALOG);
 		$book = new book($dbc,$isbn,$title);
-		$dbc->setDebug(true);
 		if (!$book->exists()) $book->createBook($isbn,$authors,$title,null,null);
 
 		// Insert book listing

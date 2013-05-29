@@ -9,6 +9,7 @@
 	use JasonKaz\FormBuild\Select as Select;	
 	use JasonKaz\FormBuild\Custom as Custom;
 	use JasonKaz\FormBuild\Hidden as Hidden;
+	use JasonKaz\FormBuild\Validation as Validation;
 
 ?>
 <!DOCTYPE HTML>
@@ -55,7 +56,7 @@
 											)
 											->group('',
 												new Submit('Search',array('class'=>'btn btn-primary')),
-												new Custom(in_array('srchText',$submitErrors) ? '<span class="help-inline"><p class="text-warning">Please enter a valid ISBN</p></span>' : '')
+												new Validation(in_array('srchText',$submitErrors),'Please enter a valid ISBN', true)
 											)
 											->render();
 

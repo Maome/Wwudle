@@ -51,6 +51,7 @@ class Form extends FormInput{
     public function group($Label=''){
         $Args=func_get_args();
         $Start=1;
+		$divClassIndex = 0;
 		
         if ($this->UseControlGroups){
         	$this->Code.='<div class="control-group';
@@ -60,6 +61,7 @@ class Form extends FormInput{
         		$Start=2; //Skip validation state when it comes to rendering the inputs
         		$this->Code.=' '.$Args[1];
         	}
+			$divClassIndex = strlen($this->Code);
 			
 			$this->Code.='">';
         }
@@ -83,8 +85,12 @@ class Form extends FormInput{
         if ($this->UseControlGroups){
             $this->Code.='<div class="controls">';
 		}
-
         for($i=$Start, $len=$InputCount + $Start; $i<$len; $i++){
+			// Add warning class to group if using control groups and 
+			// a validation class exists and it's condition value is true
+			if ($this->UseControlGroups && strpos(get_class($Args[$i]),'Validation') && $Args[$i]->getCondition()) {
+				$this->Code = substr_replace($this->Code,' warning',$divClassIndex,0);
+			}
             $this->Code.=$Args[$i]->render().' ';
 		}
 

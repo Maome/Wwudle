@@ -8,13 +8,14 @@
 		private $firstLoginDate;
 		private $lastLoginDate;
 		private $securityLevel;
+		private $enabled;
 		
 		function user($dbc, $userName) {
 			$this->dbc = $dbc;
 			$this->userName = $userName;
 			
 			$data = $dbc->query('
-				SELECT UserID, Email, FirstLoginDate, LastLoginDate, SecurityLevel 
+				SELECT UserID, Email, FirstLoginDate, LastLoginDate, SecurityLevel, Enabled
 				FROM User 
 				WHERE RecordStatus <> 3
 				AND UserName = ' .dbw::singleQuote($userName)
@@ -26,6 +27,7 @@
 				$this->firstLoginDate = $row['FirstLoginDate'];
 				$this->lastLoginDate = $row['LastLoginDate'];
 				$this->securityLevel = $row['SecurityLevel'];
+				$this->enabled = $row['Enabled'];
 			}
 		}
 		
@@ -57,7 +59,12 @@
 			else return false;
 		}
 		
-				
+		
+		function isEnabled() {
+			if ($this->exists()) return $this->enabled == 1;
+			else return false;
+		}
+		
 		function isAdmin() {
 			if ($this->exists()) return $this->securityLevel == 0;
 			else return false;
