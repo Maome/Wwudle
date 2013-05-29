@@ -8,12 +8,12 @@
 		private $firstLoginDate;
 		private $lastLoginDate;
 		private $securityLevel;
-		private $enabled;
+        private $enabled;
 		
 		function user($dbc, $userName) {
 			$this->dbc = $dbc;
-			$this->userName = $userName;
-			
+            $this->userName = $userName;
+            $this->userID = null;
 			$data = $dbc->query('
 				SELECT UserID, Email, FirstLoginDate, LastLoginDate, SecurityLevel, Enabled
 				FROM User 
@@ -27,20 +27,21 @@
 				$this->firstLoginDate = $row['FirstLoginDate'];
 				$this->lastLoginDate = $row['LastLoginDate'];
 				$this->securityLevel = $row['SecurityLevel'];
-				$this->enabled = $row['Enabled'];
+                $this->enabled = $row['Enabled'];
 			}
 		}
 		
-		function exists($fromDB = false) {
-			return !is_null($this->userID);
+        function exists($fromDB = false) {
+            return !is_null($this->userID);
+            //return $this->exist;
 		}
 		
-		function createUser($email,$securityLevel = 1) {
-			if (!$this->exists()) {
+        function createUser($email,$securityLevel = 1) {
+            if (!$this->exists()) {
 				$sql = "INSERT INTO User
-					  (UserName, Email, FirstLoginDate, LastLoginDate, SecurityLevel, ChangeSource, RecordStatus, RecordStatusDate)
-					  VALUES('" .$this->userName  ."','" .$email ."',NOW(), NOW(), " .$securityLevel ."0, 1, NOW())";
-				$this->dbc->query($sql);
+					  (UserName, Email, FirstLoginDate, LastLoginDate, SecurityLevel, ChangeSource, RecordStatus, RecordStatusDate, Enabled)
+					  VALUES('" .$this->userName  ."','" .$email ."',NOW(), NOW(), " .$securityLevel .",0, 1, NOW(), 1)";
+				$this->dbc->query($sql, true);
 				$this->userID = $this->getUserID(true);
 				return true;
 			}
