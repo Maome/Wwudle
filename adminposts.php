@@ -66,7 +66,12 @@
 										 <td>' .$row['UserID'] .'</td>
 										<td>' .$row['PostID'] .'</td>
 										<td>' .$row['ItemID'] .'</td>
-										<td><a class="edit" href="">Edit</a></td>
+                                        <td><a class="edit" href="';
+                                    //Depending on type, change edit link
+                                        if ($row['Type'] === "RideShare")
+                                            echo 'managepostsrides.php?edit=true&pid=' . $row['PostID'];
+                                        //add for prof and book listings when available
+                                        echo '">Edit</a></td>
 									</tr>';
 								}
 							?>
