@@ -121,17 +121,12 @@
 		function queryToEditableTable($qry, $tableToEdit, $keyColumn, $name, $action, $editFunction, $updateQry, $headers = NULL) {
 			// Delete record
 			if (isset($_GET['edit'])) {
-				$editFunction($this, $_GET['edit']);
+				$editFunction($this, $_GET['edit'], $updateQry);
 				if (!isset($_POST['edit'])) return;
 			}
 			else if (isset($_POST['delete'])) {
 				$delQry = 'UPDATE ' .$tableToEdit .' SET RecordStatus = 3, RecordStatusDate = NOW() WHERE ' .$keyColumn .' = ' .$_POST[$keyColumn];
 				$this->query($delQry);
-			}
-			// Edit record
-			if (isset($_POST['edit'])) {
-				$this->query($updateQry);
-				return;
 			}
 
 			echo '<table id="' .$name .'" class="table table-striped">';

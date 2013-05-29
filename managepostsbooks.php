@@ -58,7 +58,7 @@
 									WHERE PostID = " .$_POST['edit'];
 								$dbc->queryToEditableTable($qry,'BookListing','PostID','bookPosts','managepostsbooks.php','editFunction', $updateQry);
 
-								function editFunction($dbc, $id) {
+								function editFunction($dbc, $id, $updateQuery) {
 									$qry = 'SELECT b.Title,
 										bl.BookConditionID, bl.Price, bl.CourseDept, bl.CourseNumber
 									FROM BookListing bl
@@ -84,9 +84,10 @@
 									);
 									
 									if (empty($submitErrors) && isset($_POST['edit'])) {
-										echo "<div><b>Your listing has been updated! <i class='icon-thumbs-up'></i></b></div>";
+                    $dbc->query($updateQuery);
+										echo "<div><b>Your listing has been updated! <i class='icon-thumbs-up'></i></b></div><br />";
 									}
-									else {									
+									else {
 										$invalidPrice = in_array('price',$submitErrors);
 										$invalidCourseNumber = in_array('courseNumber',$submitErrors);
 										$invalidSubject = in_array('subject',$submitErrors);
@@ -97,7 +98,7 @@
 										
 										echo "<h3>Textbook Post for " .$row['Title'] ."</h3>";
 										$bookForm = new Form;
-										echo $bookForm->init('managepostsbooks.php','post',array('class'=>'form-horizontal','style'=>'margin-left: -80px; margin-top: 25px;','name'=>'bookAdd'))
+										echo $bookForm->init('managepostsbooks.php?edit=' .$_GET['edit'],'post',array('class'=>'form-horizontal','style'=>'margin-left: -80px; margin-top: 25px;','name'=>'bookAdd'))
 										->group('Condition',
 											new Select($bookConditions, (int)$selectedBookCondition, array('class'=>'input-large','name'=>'bookCondition'))
 										)
