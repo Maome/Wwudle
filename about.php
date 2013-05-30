@@ -22,7 +22,7 @@
 		                 <h2>About the site</h2>
 		                 <p>This website was created by five Computer Science undergrads as a part of their senior project. The goal was to create a website that would be very useful to students.</p>
 		                 <h4>The creators:</h4>
-		                 <p>Nicholas Beichley</p>
+		                 <p><a href="http://www.linkedin.com/profile/view?id=254182922&trk=tab_pro">Nicholas Beichley</a></p>
 		                 <p>Kyle Hiebert</p>
 		                 <p>Beau Ritter</p>
 		                 <p>Reilly Steele</p>
