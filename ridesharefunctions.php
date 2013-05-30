@@ -170,7 +170,7 @@
 	
 	// Function to get the date from DATETIME
 	function getDateFunc($fromMYSQL){
-		return date("F jS, Y", strtotime($fromMYSQL));
+		return date("M jS, Y", strtotime($fromMYSQL));
 	}
 	
 	// Function to get the time from DATETIME
