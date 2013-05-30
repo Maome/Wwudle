@@ -163,7 +163,7 @@
 									$returnDate = $returnDate . " " . $returnHour . ":" . $returnMinute . ":00" .  $returnAMPM;									
 									$departureDate = date('Y-m-d H:i:s', strtotime($departureDate));									
 									$returnDate = date('Y-m-d H:i:s', strtotime($returnDate));										
-
+  
 									// Update the information in the database		
 									$sql = "UPDATE RideShare " .
 											"SET RecordStatus='2', " .
@@ -173,7 +173,7 @@
 											"DestCity='$destinationLocation', " .
 											"MaxSeats='$numSeats', " .
 											"SeatsRemaining='$seatsRemaining', " .
-											"Price='$price' WHERE PostID='$postID';";
+											"Price='$price' WHERE PostID='$postID' AND UserID='$UserID';";
 									$dbc->query($sql);
 
 									// Display the table with the updated data
