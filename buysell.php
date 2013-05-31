@@ -114,16 +114,13 @@
 						<div class="row-fluid">
 							<?php
 							
-								if (isset($_GET['srchText'])) {
-									displayBookListings(array($_GET['srchText']),0);
-								}
-								else if (isset($_GET['srchCourse']) || isset($_GET['srchDept'])) {
+								if (isset($_GET['srchCourse']) || isset($_GET['srchDept'])) {
 									$dept = trim($_GET['srchDept'] == 'ALL' ? '' : $_GET['srchDept']) .' ';
 									displayBookListings(array(trim($dept),trim($_GET['srchCourse'])),1);
 								}
-								else if (isset($_POST['postID'])) {
-									echo "An email has been sent to the seller on your behalf.";
-								}
+                else {
+                  displayBookListings(array(isset($_GET['srchText']) ? $_GET['srchText'] : ''),0);
+                }
 							?>
 						</div>
 		             </div>
