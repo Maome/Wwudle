@@ -1,5 +1,6 @@
 <?php
 	require_once('init.php');
+	require_once('smtp.php');
 ?>
 <!DOCTYPE HTML>
 <html lang-"en">
@@ -44,12 +45,19 @@
 										$row = $result->fetch_row();
 										$PostEmail = $row[0];
 									
-										// Constuct the email message
-										$headers = 'From: ' . $username . "\r\n" .
-											 'Reply-To: ' . $username . "\r\n" .
-											 'X-Mailer: PHP/' . phpversion();									
-								         mail($PostEmail,$Subject,$MessageBody,$headers);	
-								         
+										// Check if using smtp
+										$useSMTP = false;
+										if ($useSMTP){
+										$SMTPMail = new SMTPClient ($username, $PostEmail, $Subject, $MessageBody);
+										$SMTPChat = $SMTPMail->SendMail();											
+										}
+										else{
+											// Constuct the email message
+											$headers = 'From: ' . $username . "\r\n" .
+												 'Reply-To: ' . $username . "\r\n" .
+												 'X-Mailer: PHP/' . phpversion();									
+											 mail($PostEmail,$Subject,$MessageBody,$headers);	
+								         }
 										echo "<h2>Your email has been sent</h2>";	
 									}
 									else{
