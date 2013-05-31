@@ -190,13 +190,13 @@
 									$editRideShareForm=new Form;								
 									for($i=1; $i<=12; $i++){
 										if ($i < 10){
-											$i = '0' . $i;
+											$i = '0' . (string)$i;
 										}
 										$hours[$i] = $i;
 									}								
 									for($i=0; $i<=60; $i++){
 										if ($i < 10){
-											$i = '0' . $i;
+											$i = '0' . (string)$i;
 										}									
 										$minutes[$i] = $i;
 									}		
@@ -204,14 +204,16 @@
 									// Get the default values to set
 									if (!isset($_POST['departureDate'])) {										
 										$departureDate = date('m/d/Y', strtotime($row['DepartureDate']));
-										$departureHour = GetHour($row['DepartureDate']);
-										$departureMinute = GetMinute($row['DepartureDate']);
+										(string)$departureHour = GetHour($row['DepartureDate']);
+										(string)$departureMinute = GetMinute($row['DepartureDate']);
 										$departureAMPM = GetAMPM($row['DepartureDate']);
 									}			
 									if (!isset($_POST['returnDate'])) {
 										$returnDate = date('m/d/Y', strtotime($row['ReturnDate']));
-										$returnHour = GetHour($row['ReturnDate']);
-										$returnMinute = GetMinute($row['ReturnDate']);
+										(string)$returnHour = GetHour($row['ReturnDate']);
+										(string)$returnMinute = GetMinute($row['ReturnDate']);
+										echo $returnMinute;
+echo $returnHour;
 										$returnAMPM = GetAMPM($row['ReturnDate']);
 									}								
 									if(!isset($_POST['departureLocation'])){
@@ -235,9 +237,9 @@
 											new Custom(in_array('departDateError',$errorResults) ? '<span class="help-inline"><p class="text-warning">Please enter a valid date</p></span>' : '')
 										)
 										->group('Departing Time',
-											new Select($hours, false, array('class'=>'input-mini','name'=>'departureHour', 'id'=>'departureHour', 'value'=>$departureHour)),
-											new Select($minutes, false, array('class'=>'input-mini','name'=>'departureMinute', 'id'=>'departureMinute', 'value'=>$departureMinute)),
-											new Select($AMPM, false, array('class'=>'input-mini','name'=>'departureAMPM', 'id'=>'departureAMPM', 'value'=>$departureAMPM))
+											new Select($hours, $departureHour, array('class'=>'input-mini','name'=>'departureHour', 'id'=>'departureHour')),
+											new Select($minutes, $departureMinute, array('class'=>'input-mini','name'=>'departureMinute', 'id'=>'departureMinute')),
+											new Select($AMPM, $departureAMPM, array('class'=>'input-mini','name'=>'departureAMPM', 'id'=>'departureAMPM'))
 										)
 										->group('Leaving From', 
 											new Text(array('class'=>'input-medium','name'=>'departureLocation', 'id'=>'departureLocation', 'value'=>$departureLocation)),
@@ -248,9 +250,9 @@
 											new Custom(in_array('returnDateError',$errorResults) ? '<span class="help-inline"><p class="text-warning">Please enter a valid date</p></span>' : '')
 										)
 										->group('Return Time',
-											new Select($hours, false, array('class'=>'input-mini','name'=>'returnHour', 'id'=>'returnHour', 'value'=>$returnHour)),
-											new Select($minutes, false, array('class'=>'input-mini','name'=>'returnMinute', 'id'=>'returnMinute', 'value'=>$returnHour)),
-											new Select($AMPM, false, array('class'=>'input-mini','name'=>'returnAMPM', 'id'=>'returnAMPM', 'value'=>$returnHour))
+											new Select($hours, $returnHour, array('class'=>'input-mini','name'=>'returnHour', 'id'=>'returnHour')),
+											new Select($minutes, $returnMinute, array('class'=>'input-mini','name'=>'returnMinute', 'id'=>'returnMinute')),
+											new Select($AMPM, $returnAMPM, array('class'=>'input-mini','name'=>'returnAMPM', 'id'=>'returnAMPM'))
 										)
 										->group('Going To', 
 											new Text(array('class'=>'input-medium','name'=>'destinationLocation', 'id'=>'destinationLocation', 'value'=>$destinationLocation)),
@@ -290,7 +292,7 @@
 								ManageRideShareTable($dbc, $UserID);
 							}
 							function GetHour($d){		
-								return date("g", strtotime($d));		
+								return date("h", strtotime($d));		
 							}
 							
 							function GetMinute($d){

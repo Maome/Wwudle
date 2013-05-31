@@ -31,8 +31,8 @@
 								<a class="btn btn-primary" href="#"><i class="icon-user icon-white"></i>&nbsp;Logged in as ' .phpCAS::getUser() .'</a>
 								<a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
 								<ul class="dropdown-menu">
-								<li><a href="managepostsrides.php"><i class="icon-th-list"></i> Manage Posts</a></li>
-								.(isset($_SESSION['isAdmin']) ? '<li><a href="admin.php"><i class="icon-wrench"></i> Admin</a></i>' : '')
+								<li><a href="managepostsrides.php"><i class="icon-th-list"></i> Manage Posts</a></li>' 
+								. (isset($_SESSION['isAdmin']) ? '<li><a href="admin.php"><i class="icon-wrench"></i> Admin</a></i>' : "") 
 								. '<li><a href="?logout"><i class="icon-off"></i> Logout</a></li>
 								</ul>
 								</div>
