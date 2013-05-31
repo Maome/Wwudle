@@ -22,11 +22,11 @@
 		                 <h2>About the site</h2>
 		                 <p>This website was created by five Computer Science undergrads as a part of their senior project. The goal was to create a website that would be very useful to students.</p>
 		                 <h4>The creators:</h4>
-		                 <p><a href="http://www.linkedin.com/profile/view?id=254182922&trk=tab_pro">Nicholas Beichley</a></p>
+		                 <p><a href="http://www.linkedin.com/pub/nicholas-beichley/71/160/722">Nicholas Beichley</a></p>
 		                 <p><a href="http://www.linkedin.com/pub/kyle-hiebert/6b/57/970">Kyle Hiebert</a></p>
-		                 <p>Beau Ritter</p>
+		                 <p><a href="http://www.linkedin.com/pub/beau-ritter/70/91b/582">Beau Ritter</a></p>
 		                 <p>Reilly Steele</p>
-		                 <p>Nick Tarter</p>
+		                 <p><a href="http://www.linkedin.com/in/nicktarter1">Nick Tarter</a></p>
 		                 <p>Special thanks to Professor James Hearne for advising through the process of the creation of this project and Professor Kendra Douglas for design suggestions.</p>
 		             </div>
 		         </div>
