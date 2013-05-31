@@ -71,7 +71,11 @@
 											// except for if the user is posting with errors
 											if ($searching || count($submitErrors) > 0) {
 												$isbn = ($searching ? str_replace('-','',$_GET['srchText']) : $_POST['isbn']);
-												displayBookList($dbc, $isbn, $submitErrors);
+												
+												if (isset($_GET['manual'])) {
+													displaySaleForm($dbc, $isbn, null, null, $submitErrors, true);
+												}
+												else displayBookList($dbc, $isbn, $submitErrors);
 											}
 											// Create a book listing
 											else if ($posting) {

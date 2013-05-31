@@ -61,7 +61,6 @@
 		}
 		$where .= ' AND b.RecordStatus <> 3 AND bl.RecordStatus <> 3 ORDER BY bl.PostDate DESC';
 	
-		//					--CONCAT(CONCAT(CONCAT(CONCAT('<a href=\"buysellview.php?postID=',bl.PostID),'\">'),b.Title),'</a>') \"Title\",
 		$qry = "SELECT
 					bl.PostID PostID,
 					b.Title Title,
@@ -87,10 +86,10 @@
 		if ($result->num_rows > 0) {
 			$dbc->queryToTable($qry,'bookListings',$headers, NULL, 'rowlink', 0);
 		}
-		else echo "No results found";
+		else echo "No results found.";
 	}
 	
-	function displaySaleForm($dbc,$isbn, $title, $submitErrors) {
+	function displaySaleForm($dbc,$isbn, $title, $authors, $submitErrors, $isManualEntry = false) {
 		// Check user input data
 		$invalidPrice = in_array('price',$submitErrors);
 		$invalidCourseNumber = in_array('courseNumber',$submitErrors);
@@ -110,65 +109,77 @@
 		ORDER BY RowOrder, Abbreviation
 		");
 
-		echo '<div class="bookForm">';
-		$bookForm = new Form;
-		echo $bookForm->init('','post',array('class'=>'form-horizontal','style'=>'margin-left: -80px; margin-top: 25px;','name'=>'bookAdd'))
-		->group('Condition',
-			new Select($bookConditions, (int)$selectedBookCondition, array('class'=>'input-large','name'=>'bookCondition'))
-		)
-		->group('Subject',
-			new Select($subjects, $selectedSubject, array('class'=>'input-large','name'=>'subject')),
-			new Validation($invalidSubject, 'Please choose a subject')
-		)
-		->group('Course',
-			new Text(array('class'=>'input-small','name'=>'courseNumber', 'placeholder'=>'Course #','value'=>$inputCourseNumber)),
-			new Validation($invalidCourseNumber, 'Please enter a valid course number')
-		)
-		->group('Price',
-			new Text(array('class'=>'input-small','name'=>'price','placeholder'=>'$','value'=>$inputPrice)),
-			new Validation($invalidPrice, 'Please enter a valid price')
-		)
-		->hidden(array('name'=>'isbn','value'=>$isbn))
-		->hidden(array('name'=>'title','value'=>$title))
-		->group('',
-			new Submit('Submit', array('class' => 'btn btn-primary'))
-		)
-		->render();
-		echo '</div>';
-	}
-	
-	function displayManualSaleForm() {
-		echo $bookForm->init('','post',array('class'=>'form-horizontal','style'=>'margin-left: -80px; margin-top: 25px;','name'=>'bookAddManual'))
-		->group('Title',
-			new Text(array('class'=>'input-large','name'=>'title'))
-		)
-		->group('Author(s)',
-			new Text(array('class'=>'input-large','name'=>'authors'))
-		)
-		->group('Condition',
-			new Select($dbc->queryPairs('SELECT BookConditionID, Description FROM BookCondition ORDER BY BookConditionID'),1, array('class'=>'input-large','name'=>'bookCondition'))
-		)
-		->group('Subject',
-			new Select($dbc->queryPairs('SELECT Abbreviation,Description FROM Department WHERE RowOrder=1 ORDER BY RowOrder, Abbreviation'), 1, array('class'=>'input-large','name'=>'subject'))
-		)
-		->group('Course',
-			new Text(array('class'=>'input-small','name'=>'courseNumber', 'placeholder'=>'Course #'))
-		)
-		->group('Price',
-			new Text(array('class'=>'input-small','name'=>'price','placeholder'=>'$'))
-		)
-		->hidden(array('name'=>'isbn','value'=>$isbn)
-		)
-		->group('',
-			new Submit('Submit', array('class' => 'btn btn-primary'))
-		)
-		->render();
+		if (!$isManualEntry) {
+			echo '<div class="bookForm">';
+			$bookForm = new Form;
+			echo $bookForm->init('','post',array('class'=>'form-horizontal','style'=>'margin-left: -80px; margin-top: 25px;','name'=>'bookAdd'))
+			->group('Condition',
+				new Select($bookConditions, (int)$selectedBookCondition, array('class'=>'input-large','name'=>'bookCondition'))
+			)
+			->group('Subject',
+				new Select($subjects, $selectedSubject, array('class'=>'input-large','name'=>'subject')),
+				new Validation($invalidSubject, 'Please choose a subject')
+			)
+			->group('Course',
+				new Text(array('class'=>'input-small','name'=>'courseNumber', 'placeholder'=>'Course #','value'=>$inputCourseNumber)),
+				new Validation($invalidCourseNumber, 'Please enter a valid course number')
+			)
+			->group('Price',
+				new Text(array('class'=>'input-small','name'=>'price','placeholder'=>'$','value'=>$inputPrice)),
+				new Validation($invalidPrice, 'Please enter a valid price')
+			)
+			->hidden(array('name'=>'isbn','value'=>$isbn))
+			->hidden(array('name'=>'title','value'=>$title))
+			->hidden(array('name'=>'authors','value'=>$authors))
+			->group('',
+				new Submit('Submit', array('class' => 'btn btn-primary'))
+			)
+			->render();
+			echo '</div>';
+		}
+		else {
+			$inputTitle = (isset($_POST['title']) && !$invalidTitle ? $_POST['title'] : '');
+			$inputAuthors = (isset($_POST['authors']) && !$invalidTitle ? $_POST['authors'] : '');
+			echo '<div class="bookForm">';
+			$bookForm = new Form;
+			echo $bookForm->init('','post',array('class'=>'form-horizontal','style'=>'margin-left: -80px; margin-top: 25px;','name'=>'bookAdd'))
+			->group('ISBN',
+				new Text(array('class'=>'input-large','name'=>'isbn','value'=>$isbn,'readonly'=>'readonly'))
+			)
+			->group('Title',
+				new Text(array('class'=>'input-large','name'=>'title','placeholder'=>'Enter Title','value'=>$inputTitle))
+			)
+			->group('Author(s)',
+				new Text(array('class'=>'input-large','name'=>'authors','placeholder'=>'Enter Author(s)','value'=>$inputAuthors))
+			)
+			->group('Condition',
+				new Select($bookConditions, (int)$selectedBookCondition, array('class'=>'input-large','name'=>'bookCondition'))
+			)
+			->group('Subject',
+				new Select($subjects, $selectedSubject, array('class'=>'input-large','name'=>'subject')),
+				new Validation($invalidSubject, 'Please choose a subject')
+			)
+			->group('Course',
+				new Text(array('class'=>'input-small','name'=>'courseNumber', 'placeholder'=>'Course #','value'=>$inputCourseNumber)),
+				new Validation($invalidCourseNumber, 'Please enter a valid course number')
+			)
+			->group('Price',
+				new Text(array('class'=>'input-small','name'=>'price','placeholder'=>'$','value'=>$inputPrice)),
+				new Validation($invalidPrice, 'Please enter a valid price')
+			)
+			->group('',
+				new Hidden(array('name'=>'manual','value'=>'true')),
+				new Submit('Submit', array('class' => 'btn btn-primary'))
+			)
+			->render();
+			echo '</div>';
+		}
 	}
 	
 	function postBookListing($dbc,$isbn = null,$title = null, $authors = null) {
 		$dbc = new dbw(DBSERVER,DBUSER,DBPASS,DBCATALOG);
 		$book = new book($dbc,$isbn,$title);
-		if (!$book->exists()) $book->createBook($isbn,$authors,$title,null,null);
+		if (!$book->exists()) $book->createBook($isbn,$authors,$title,null,null, $_SESSION['userID']);
 
 		// Insert book listing
 		$bookListed = createBookListing(
@@ -237,17 +248,27 @@
 			echo '</div>';
 			echo '</div>';
 
-			displaySaleForm($dbc, $isbn, $title, $submitErrors);
+			displaySaleForm($dbc, $isbn, $title, $creators, $submitErrors);
 			echo '</div>'; // End span12 div
 		}
 		else {
 			$book = new book($dbc,$isbn,$title);
 
 			// TODO Handle previous manual entries for books
-			if ($book->exists()) {
-
+			if (!$book->exists()) {
+				echo '<b>No results found. Click <a href="buyselladd.php?srchText=' .$isbn .'&manual=true">here</a> to create a manual book listing.</b>';
 			}
-			else	echo '<b>No results found</b>';
+			else {
+				echo '<div class="span12">';
+				echo '<div>';
+				echo '<br /><b>' .$book->getTitle() .'</b>';
+				echo '<br />Author(s): ' .$book->getAuthors();
+				echo '<br />';
+				echo 'ISBN: ' .$isbn .'<br />';
+				echo '</div>';
+				displaySaleForm($dbc, $isbn, $book->getTitle(), $book->getAuthors(), $submitErrors);
+				echo '</div>';
+			}
 		}
 	}
 	
