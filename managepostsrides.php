@@ -211,9 +211,7 @@
 									if (!isset($_POST['returnDate'])) {
 										$returnDate = date('m/d/Y', strtotime($row['ReturnDate']));
 										(string)$returnHour = GetHour($row['ReturnDate']);
-										(string)$returnMinute = GetMinute($row['ReturnDate']);
-										
-										echo $returnMinute;
+										(string)$returnMinute = GetMinute($row['ReturnDate']);																			
 										$returnAMPM = GetAMPM($row['ReturnDate']);
 									}								
 									if(!isset($_POST['departureLocation'])){

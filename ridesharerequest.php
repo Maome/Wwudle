@@ -1,6 +1,6 @@
 <?php
 	require_once('init.php');
-	require_once('smtp.php');
+	require_once('classes/smtp.php');
 ?>
 <!DOCTYPE HTML>
 <html lang-"en">
