@@ -194,11 +194,11 @@
 										}
 										$hours[$i] = $i;
 									}								
-									for($i=0; $i<=60; $i++){
+									for($i=0; $i<60; $i++){
 										if ($i < 10){
 											$i = '0' . (string)$i;
 										}									
-										$minutes[$i] = $i;
+										$minutes[$i] = (string)$i;
 									}		
 									$AMPM = array("AM"=>"AM", "PM"=>"PM");
 									// Get the default values to set
@@ -212,8 +212,8 @@
 										$returnDate = date('m/d/Y', strtotime($row['ReturnDate']));
 										(string)$returnHour = GetHour($row['ReturnDate']);
 										(string)$returnMinute = GetMinute($row['ReturnDate']);
+										
 										echo $returnMinute;
-echo $returnHour;
 										$returnAMPM = GetAMPM($row['ReturnDate']);
 									}								
 									if(!isset($_POST['departureLocation'])){
