@@ -25,7 +25,7 @@
 		                 <p><a href="http://www.linkedin.com/pub/nicholas-beichley/71/160/722">Nicholas Beichley</a></p>
 		                 <p><a href="http://www.linkedin.com/pub/kyle-hiebert/6b/57/970">Kyle Hiebert</a></p>
 		                 <p><a href="http://www.linkedin.com/pub/beau-ritter/70/91b/582">Beau Ritter</a></p>
-		                 <p>Reilly Steele</p>
+		                 <p><a href="http://github.com/maome">Reilly Steele</a></p>
 		                 <p><a href="http://www.linkedin.com/in/nicktarter1">Nick Tarter</a></p>
 		                 <p>Special thanks to Professor James Hearne for advising through the process of the creation of this project and Professor Kendra Douglas for design suggestions.</p>
 		             </div>

@@ -9,7 +9,7 @@
 			echo '
                 <ul class="nav nav-tabs">
 					<li class="active">
-						<a href="rideshare.php">Search</a>
+						<a href="rideshare.php">Search for a Ride</a>
 				    </li>
 				    <li>
 				    	<a href="rideshareadd.php">Add a Ride</a>
@@ -22,7 +22,7 @@
 			echo '
                 <ul class="nav nav-tabs">
 					<li>
-						<a href="rideshare.php">Search</a>
+						<a href="rideshare.php">Search for a Ride</a>
 				    </li>
 				    <li class="active">
 				    	<a href="rideshareadd.php">Add a Ride</a>
