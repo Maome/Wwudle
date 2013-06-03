@@ -142,7 +142,7 @@
 										}
 										else {
 											$ReviewForm=new Form;
-											echo $ReviewForm->init('reviewsadd.php','post',array('class'=>'form-horizontal', 'name'=>'reviewForm', 'id'=>'reviewForm'))
+											echo $ReviewForm->init('reviewsadd.php','post',array('class'=>'form-horizontal', 'name'=>'ReviewForm', 'id'=>'ReviewForm'))
 												->group('Course',
 													new Select($dbc->queryPairs('SELECT Abbreviation,Description FROM Department WHERE RowOrder=1 ORDER BY RowOrder,Abbreviation'), 1, array('class'=>'input-xlarge','name'=>'courseDept', 'id'=>'courseDept')),
 													new Text(array('class'=>'input-small','name'=>'courseNumber', 'id'=>'courseNumber', 'placeholder'=>'Course #')),
@@ -201,21 +201,21 @@
     	////hints=[very poor, poor, fair, good, very good]. Everything else in unchaged.
     	$('#lq').raty({
     		scoreName: 'lectureQuality', click: function(lectureQuality) {
-    			$.post('reviewsaddRCV.php', {lectureQuality: lectureQuality})
+    			$.post('reviewsadd.php', {lectureQuality: lectureQuality})
     	}});
     	$('#tr').raty({
     		scoreName: 'testRelevance', click: function(testRelevance) {
-    			$.post('reviewsaddRCV.php', {testRelevance: testRelevance})},
+    			$.post('reviewsadd.php', {testRelevance: testRelevance})},
     		hints: ['Very irrelevant to lecture/homework', 'Irrelevant to lecture/homework', 'Neutral', 'Relevant to lecture/homework', 'Very relevant to lecture/homework']
     	});
     	$('#rtp').raty({
     		scoreName: 'relevanceToProgram', click: function(relevanceToProgram) {
-    			$.post('reviewsaddRCV.php', {relevanceToProgram: relevanceToProgram})},
+    			$.post('reviewsadd.php', {relevanceToProgram: relevanceToProgram})},
     		hints: ['Very irrelevant', 'Irrelevant', 'Neutral', 'Relevant', 'Very relevant']
     	});
     	$('#enj').raty({
     		scoreName: 'enjoyable', click: function(enjoyable) {
-    			$.post('reviewsaddRCV.php', {enjoyable: enjoyable})},
+    			$.post('reviewsadd.php', {enjoyable: enjoyable})},
     		hints: ['Very unenjoyable', 'Unenjoyable', 'Neutral', 'Enjoyable', 'Very enjoyable']
     	});
     });

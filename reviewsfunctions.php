@@ -3,17 +3,10 @@
 	// CONTAINS THE PHP FUNCTIONS ASSOCIATED WITH THE REVIEWS PORTION OF WESTERN LIST
 	
 	// Function to show reviews posted 	
-	function ShowReviews($data, $courseNum, $isCourse)
+	function ShowReviews($qry, $isCourse, $isProf)
 	{
 		$dbc = new dbw(DBSERVER,DBUSER,DBPASS,DBCATALOG);
-		if (!$isCourse) {
-			$qry = "SELECT CourseDept, CourseNumber, Professor, Workload, LectureQuality, TestRelevance, RelevanceToProgram, Enjoyable, BookNecessity, Comments, Overall, PostID FROM Review WHERE Professor = '$data' ORDER BY PostID DESC;";	
-		}
-		else {
-			$qry = "SELECT CourseDept, CourseNumber, Professor, Workload, LectureQuality, TestRelevance, RelevanceToProgram, Enjoyable, BookNecessity, Comments, Overall, PostID FROM Review WHERE CourseDept = '$data' AND CourseNumber = '$courseNum' ORDER BY PostID DESC;";	
-		}
-		//$dbc->queryToTable($qry, 'profReviews');
-		
+
 		$result = $dbc->query($qry);		
 		$row = $result->fetch_row();  
 		
@@ -37,12 +30,12 @@
 					<tr>
 						<th>Professor <i class='icon-chevron-down'></i></th>
 						<th>Course <i class='icon-chevron-down'></i></th>
-						<th>Workload <i class='icon-chevron-down'></i></th>
+						<!--<th>Workload <i class='icon-chevron-down'></i></th>
 						<th>Lecture Quality <i class='icon-chevron-down'></i></th>
 						<th>Test Relevance <i class='icon-chevron-down'></i></th>
 						<th>Relevance To Program <i class='icon-chevron-down'></i></th>
 						<th>Enjoyable <i class='icon-chevron-down'></i></th>
-						<th>Book Necessity <i class='icon-chevron-down'></i></th>
+						<th>Book Necessity <i class='icon-chevron-down'></i></th>-->
 						<th>Overall <i class='icon-chevron-down'></i></th></tr>
 
 					</tr>
@@ -56,12 +49,12 @@
 					<tr id='$row[11]' class='rowlink'>
 						<td>$row[2]</td>
 						<td>$row[0] $row[1]</td>
-						<td>". $workload ."</td>
+						<!--<td>". $workload ."</td>
 						<td>$row[4]</td>
 						<td>$row[5]</td>
 						<td>$row[6]</td>
 						<td>$row[7]</td>
-						<td>". $booknec ."</td>
+						<td>". $booknec ."</td>-->
 						<td>$row[10]</td>
 
 					</tr>									
@@ -146,6 +139,57 @@
 					</tr>												
 				</tbody>
 			</table>";	
+	}
+	
+	function ManageReviewTable($dbc, $user){
+
+		// Populate a table with the reviews the user currently has posted
+		// **** THE SERVER CLOCK IS FAST BY 7 HOURS ****
+		$qry = "SELECT * FROM Review " .
+				"WHERE RecordStatus != '3' " .
+				"AND UserID='$user' " .
+				"ORDER BY PostID DESC;";
+		$result = $dbc->query($qry);
+		$row = $result->fetch_assoc();														
+
+		if ($result->num_rows > 0) {
+			$headers = array("Professor", "Course", "Edit");
+			echo "<table class='table table-striped'>";
+			// Display header
+			echo "<thead>";
+				foreach ($headers as $i) echo "<th>" .$i ."</th>";
+			echo "</thead><tbody>";
+	
+			// Display rows
+			while($row){			            																						
+				echo "<tr>
+					<td>" . $row['Professor'] . "</td>
+					<td>" . $row['CourseDept'] . ' ' . $row['CourseNumber'] . "</td>
+					<td>			
+						<form class='form-inline' action='managepostsreviews.php' method='POST'>
+							<input type='hidden' name='pid' id='pid' value='" . $row["PostID"] . "'>
+							<input type='hidden' name='delete' id='delete' value='true'>												
+							<a href='?edit=true&pid=" . $row['PostID'] . "' role='button' class='btn btn-primary' data-toggle='modal'>Edit</a>
+							<input class='btn btn-danger' type='submit' value='Delete' >
+						</form>	
+					</td>							
+				</tr>";		
+				$row = $result->fetch_assoc(); 
+				$count++;
+			}
+			echo "</tbody></table>";									
+		}
+		else {
+			echo "You currently have no reviews pending";			
+		}		
+	}
+	
+	function DeleteReviewPost($pid, $user, $dbc){
+		// Update the rideshare if the correct user is trying to remove the rideshare		
+		if (isset($pid)){
+			$qry = "UPDATE Review SET RecordStatus='3' WHERE PostID='$pid' AND UserID='$user';";
+			$dbc->query($qry);
+		}	
 	}
 	
 	//

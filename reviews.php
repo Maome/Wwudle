@@ -90,10 +90,19 @@
 				              <?php
 							
 									if (isset($_GET['searchProf'])) {
-										ShowReviews($_GET['searchProf'], NULL, false);
+										$prof = $_GET['searchProf'];
+										$qry = "SELECT CourseDept, CourseNumber, Professor, Workload, LectureQuality, TestRelevance, RelevanceToProgram, Enjoyable, BookNecessity, Comments, Overall, PostID FROM Review WHERE Professor = '$prof' ORDER BY PostID DESC;";	
+										ShowReviews($qry, false, true);
 									}
 									else if (isset($_GET['courseDept']) && isset($_GET['courseNumber'])) {
-										ShowReviews($_GET['courseDept'], $_GET['courseNumber'], true);
+										$courseDept = $_GET['courseDept'];
+										$courseNum = $_GET['courseNumber'];
+										$qry = "SELECT CourseDept, CourseNumber, Professor, Workload, LectureQuality, TestRelevance, RelevanceToProgram, Enjoyable, BookNecessity, Comments, Overall, PostID FROM Review WHERE CourseDept = '$courseDept' AND CourseNumber = '$courseNum' ORDER BY PostID DESC;";	
+										ShowReviews($qry, true, false);
+									}
+									else {
+										$qry = "SELECT CourseDept, CourseNumber, Professor, Workload, LectureQuality, TestRelevance, RelevanceToProgram, Enjoyable, BookNecessity, Comments, Overall, PostID FROM Review ORDER BY PostID DESC LIMIT 10 ;";	
+										ShowReviews($qry, true, false);
 									}
 								?>
 							</div>
