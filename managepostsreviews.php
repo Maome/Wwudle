@@ -90,9 +90,7 @@
 								$result = $dbc->query($qry);
 								$row = $result->fetch_assoc();														
 
-								/* 
-								 * Check to see if the user is deleting a post
-								 */
+								// Check to see if the user is deleting a post
 								if(isset($_POST['delete'])){
 									DeleteReviewPost($_POST['pid'], $UserID, $dbc);							
 								}
@@ -122,10 +120,9 @@
 											"BookNecessity=$BookNecessity, ".
 											"Overall=$Overall, ".
 											"Comments='$Comments' WHERE PostID=$PostID AND UserID=$UserID;";
-										//$dbc->setDebug(true);
 										$dbc->query($sql);
 							
-										echo "<h3>Your information has been submitted</h3>";
+										echo "<h3>Your information has been submitted<i class='icon-thumbs-up'></i></h3>";
 									}
 									else {
 										// Get the information about the review from the db
