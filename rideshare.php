@@ -93,13 +93,13 @@
 			                        	<table class='table tableAdvSearch'>
 			                        		<tbody>
 			                        		<tr>
-					                        	<td><label class="control-label" for="to">Departing </label></td>
+					                        	<td><label class="control-label" for="to">Departure Date </label></td>
 					                        	<td><input id="departingDate" name="departingDate" type="text" data-date-format="mm/dd/yyyy" class="datepicker input-medium" <?php if(isset($_GET['departingDate'])){echo "value='$departingDate'"; } else {echo "placeholder='Departing'";} ?>></td>
 					                        	<td><label class="control-label" for="from">Leaving From </label></td>
 												<td><input class="input-medium" type="text" name="from" id="from" <?php if(isset($_GET['from'])){echo "value='$source'"; } else {echo "placeholder='Leaving From'";} ?>></td>
 				                        	</tr>
 				                        	<tr>
-												<td><label class="control-label" for="to">Returning </label></td>
+												<td><label class="control-label" for="to">Return Date </label></td>
 												<td><input id="returningDate" name="returningDate" type="text"  data-date-format="mm/dd/yyyy" class="datepicker input-medium" <?php if(isset($_GET['returningDate'])){echo "value='$returningDate'"; } else {echo "placeholder='Returning'";} ?>></td>											
 												<td><label class="control-label" for="to">Going To </label></td>
 												<td><input class="input-medium" type="text" name="to" id="to" <?php if(isset($_GET['to'])){echo "value='$destination'"; } else {echo "placeholder='Going To'";} ?>></td>
