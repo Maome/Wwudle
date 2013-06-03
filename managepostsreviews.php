@@ -122,7 +122,7 @@
 											"Comments='$Comments' WHERE PostID=$PostID AND UserID=$UserID;";
 										$dbc->query($sql);
 							
-										echo "<h3>Your information has been submitted<i class='icon-thumbs-up'></i></h3>";
+										echo "<div><b>Your listing has been updated! <i class='icon-thumbs-up'></i></b></div><br />";
 									}
 									else {
 										// Get the information about the review from the db
