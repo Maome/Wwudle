@@ -124,7 +124,10 @@
 		echo "
 			<table id='table_id' class='table table-striped'>
 				<thead>
-					<th colspan='2'><h3>Ride Details: " . $row['ViewCount'] . " Views</h3></th>																	
+					<th>
+					    <h3>Ride Details: </h3></th>
+					    <th><h6><a href='reportpost.php?postID=$PostID&postType=RideShare'><p class='text-error'><i class='icon-flag'></i> Report this post</p></a></h6>
+					</th>																	
 				</thead>
 				<tbody>
 					<tr>
@@ -153,9 +156,9 @@
 					</tr>													
 				</tbody>
 			</table>						
-			<form class='form-inline' action='ridesharerequest.php' method='get'>
+			<form class='form-horizontal' action='ridesharerequest.php' method='get'>
 				<input type='hidden' name='PostID' value='$PostID'>
-				<button type='submit' class='btn btn-primary'>Request Ride</button>				
+				<button type='submit' class='btn btn-primary'>Request Ride</button>					
 			</form>		
 		";																										
 						
