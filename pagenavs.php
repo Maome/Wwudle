@@ -9,10 +9,10 @@
 			echo '
                 <ul class="nav nav-tabs">
 					<li class="active">
-						<a href="rideshare.php">Search</a>
+						<a href="rideshare.php"><b>Search for a Ride</b></a>
 				    </li>
 				    <li>
-				    	<a href="rideshareadd.php">Add a Ride</a>
+				    	<a href="rideshareadd.php"><b>Add a Ride</b></a>
 				    </li>
 				</ul>						
 			';
@@ -22,10 +22,10 @@
 			echo '
                 <ul class="nav nav-tabs">
 					<li>
-						<a href="rideshare.php">Search</a>
+						<a href="rideshare.php"><b>Search for a Ride</b></a>
 				    </li>
 				    <li class="active">
-				    	<a href="rideshareadd.php">Add a Ride</a>
+				    	<a href="rideshareadd.php"><b>Add a Ride</b></a>
 				    </li>
 				</ul>						
 			';		
@@ -40,10 +40,10 @@
 			echo '
                 <ul class="nav nav-tabs">
 					<li class="active">
-						<a href="courses.php">Search</a>
+						<a href="courses.php"><b>Search</b></a>
 				    </li>
 				    <li>
-				    	<a href="coursesadd.php">Review a Course</a>
+				    	<a href="coursesadd.php"><b>Review a Course</b></a>
 				    </li>
 				</ul>						
 			';
@@ -53,10 +53,10 @@
 			echo '
                 <ul class="nav nav-tabs">
 					<li>
-						<a href="courses.php">Search</a>
+						<a href="courses.php"><b>Search</b></a>
 				    </li>
 				    <li class="active">
-				    	<a href="coursesadd.php">Review a Course</a>
+				    	<a href="coursesadd.php"><b>Review a Course</b></a>
 				    </li>
 				</ul>						
 			';		
@@ -71,10 +71,10 @@
 			echo '
                 <ul class="nav nav-tabs">
 					<li class="active">
-						<a href="textbooks.php">Search</a>
+						<a href="textbooks.php"><b>Search</b></a>
 				    </li>
 				    <li>
-				    	<a href="textbooksadd.php">Review a Textbook</a>
+				    	<a href="textbooksadd.php"><b>Review a Textbook</b></a>
 				    </li>
 				</ul>						
 			';
@@ -84,10 +84,10 @@
 			echo '
                 <ul class="nav nav-tabs">
 					<li>
-						<a href="textbooks.php">Search</a>
+						<a href="textbooks.php"><b>Search</b></a>
 				    </li>
 				    <li class="active">
-				    	<a href="textbooksadd.php">Review a Textbook</a>
+				    	<a href="textbooksadd.php"><b>Review a Textbook</b></a>
 				    </li>
 				</ul>						
 			';		
@@ -102,10 +102,10 @@
 			echo '
                 <ul class="nav nav-tabs">
 					<li class="active">
-						<a href="professors.php">Search</a>
+						<a href="professors.php"><b>Search</b></a>
 				    </li>
 				    <li>
-				    	<a href="professorsadd.php">Review a Professor</a>
+				    	<a href="professorsadd.php"><b>Review a Professor</b></a>
 				    </li>
 				</ul>						
 			';
@@ -115,10 +115,10 @@
 			echo '
                 <ul class="nav nav-tabs">
 					<li>
-						<a href="professors.php">Search</a>
+						<a href="professors.php"><b>Search</b></a>
 				    </li>
 				    <li class="active">
-				    	<a href="professorsadd.php">Review a Professor</a>
+				    	<a href="professorsadd.php"><b>Review a Professor</b></a>
 				    </li>
 				</ul>						
 			';		
@@ -133,10 +133,10 @@
 			echo '
                 <ul class="nav nav-tabs">
 					<li class="active">
-						<a href="reviews.php">Search</a>
+						<a href="reviews.php"><b>Search</b></a>
 				    </li>
 				    <li>
-				    	<a href="reviewsadd.php">Review a Professor/Course</a>
+				    	<a href="reviewsadd.php"><b>Review a Professor/Course</b></a>
 				    </li>
 				</ul>						
 			';
@@ -146,10 +146,10 @@
 			echo '
                 <ul class="nav nav-tabs">
 					<li>
-						<a href="reviews.php">Search</a>
+						<a href="reviews.php"><b>Search</b></a>
 				    </li>
 				    <li class="active">
-				    	<a href="reviewsadd.php">Review a Professor/Course</a>
+				    	<a href="reviewsadd.php"><b>Review a Professor/Course</b></a>
 				    </li>
 				</ul>						
 			';		
@@ -164,10 +164,10 @@
 			echo '
                 <ul class="nav nav-tabs">
 					<li class="active">
-						<a href="buysell.php">Search</a>
+						<a href="buysell.php"><b>Search</b></a>
 				    </li>
 				    <li>
-				    	<a href="buyselladd.php">Sell a Book</a>
+				    	<a href="buyselladd.php"><b>Sell a Book</b></a>
 				    </li>
 				</ul>						
 			';
@@ -177,10 +177,10 @@
 			echo '
                 <ul class="nav nav-tabs">
 					<li>
-						<a href="buysell.php">Search</a>
+						<a href="buysell.php"><b>Search</b></a>
 				    </li>
 				    <li class="active">
-				    	<a href="buyselladd.php">Sell a Book</a>
+				    	<a href="buyselladd.php"><b>Sell a Book</b></a>
 				    </li>
 				</ul>						
 			';		
@@ -194,13 +194,13 @@
 			echo '
                 <ul class="nav nav-tabs">
 					<li class="active">
-						<a href="managepostsrides.php">Rideshare</a>
+						<a href="managepostsrides.php"><b>Rideshare</b></a>
 				    </li>
 				    <li>
-				    	<a href="managepostsbooks.php">Textbooks</a>
+				    	<a href="managepostsbooks.php"><b>Textbooks</b></a>
 				    </li>
 				    <li>
-				    	<a href="managepostsreviews.php">Reviews</a>
+				    	<a href="managepostsreviews.php"><b>Reviews</b></a>
 				    </li>
 				</ul>						
 			';
@@ -210,13 +210,13 @@
 			echo '
                 <ul class="nav nav-tabs">
 					<li>
-						<a href="managepostsrides.php">Rideshare</a>
+						<a href="managepostsrides.php"><b>Rideshare</b></a>
 				    </li>
 				    <li class="active">
-				    	<a href="managepostsbooks.php">Textbooks</a>
+				    	<a href="managepostsbooks.php"><b>Textbooks</b></a>
 				    </li>
 				    <li>
-				    	<a href="managepostsreviews.php">Reviews</a>
+				    	<a href="managepostsreviews.php"><b>Reviews</b></a>
 				    </li>
 				</ul>						
 			';		
@@ -226,13 +226,13 @@
 			echo '
                 <ul class="nav nav-tabs">
 					<li>
-						<a href="managepostsrides.php">Rideshare</a>
+						<a href="managepostsrides.php"><b>Rideshare</b></a>
 				    </li>
 				    <li>
-				    	<a href="managepostsbooks.php">Textbooks</a>
+				    	<a href="managepostsbooks.php"><b>Textbooks</b></a>
 				    </li>
 				    <li class="active">
-				    	<a href="managepostsreviews.php">Reviews</a>
+				    	<a href="managepostsreviews.php"><b>Reviews</b></a>
 				    </li>
 				</ul>						
 			';		

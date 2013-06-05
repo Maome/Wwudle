@@ -23,9 +23,10 @@ class Select extends FormInput   {
         foreach($Options as $key=>$val){
             $this->Code.='<option value="'.$key.'"';
 
-            if (in_array($key, $Selected, true))
+            if (in_array($key, $Selected, false)){
+		//wtf jazon kaz
                 $this->Code.=' selected';
-
+	    }
             $this->Code.='>'.$val.'</option>';
         }
 

@@ -90,9 +90,7 @@
 								$result = $dbc->query($qry);
 								$row = $result->fetch_assoc();														
 
-								/* 
-								 * Check to see if the user is deleting a post
-								 */
+								// Check to see if the user is deleting a post
 								if(isset($_POST['delete'])){
 									DeleteReviewPost($_POST['pid'], $UserID, $dbc);							
 								}
@@ -122,10 +120,9 @@
 											"BookNecessity=$BookNecessity, ".
 											"Overall=$Overall, ".
 											"Comments='$Comments' WHERE PostID=$PostID AND UserID=$UserID;";
-										//$dbc->setDebug(true);
 										$dbc->query($sql);
 							
-										echo "<h3>Your information has been submitted</h3>";
+										echo "<div><b>Your listing has been updated! <i class='icon-thumbs-up'></i></b></div><br />";
 									}
 									else {
 										// Get the information about the review from the db
@@ -197,7 +194,7 @@
 											)
 											->group('',
 												new Submit('Submit', array('class' => 'btn btn-primary')),
-												new Custom('<a href="managepostsrides.php" class="btn btn-danger">Cancel</a>')
+												new Custom('<a href="managepostsreviews.php" class="btn btn-danger">Cancel</a>')						
 											)
 											->group('', 
 												new Hidden(array('name'=>'PostID', 'id'=>'PostID', 'value'=>$pid))

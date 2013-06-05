@@ -116,8 +116,8 @@
 										)
 										->group('',
 											new Hidden(array('name'=>'edit','value'=>$id)),
-											new Submit('Cancel', array('class'=>'btn btn-danger','name'=>'submit')),
-											new Submit('Submit', array('class'=>'btn btn-primary','name'=>'submit'))
+											new Submit('Submit', array('class'=>'btn btn-primary','name'=>'submit')),
+											new Custom('<a href="managepostsbooks.php" class="btn btn-danger">Cancel</a>')											
 										)
 										->render();
 									}

@@ -67,7 +67,8 @@
 							 * Check to see if the user is deleting a post
 							 */
 							if(isset($_POST['delete'])){
-								DeleteRideSharePost($_POST['pid'], $UserID, $dbc);							
+								DeleteRideSharePost($_POST['pid'], $UserID, $dbc);
+								echo "<div><b>Your listing has been deleted! <i class='icon-thumbs-up'></i></b></div><br />";
 							}
 
 							/*
@@ -163,7 +164,7 @@
 									$returnDate = $returnDate . " " . $returnHour . ":" . $returnMinute . ":00" .  $returnAMPM;									
 									$departureDate = date('Y-m-d H:i:s', strtotime($departureDate));									
 									$returnDate = date('Y-m-d H:i:s', strtotime($returnDate));										
-  
+									echo "<div><b>Your listing has been updated! <i class='icon-thumbs-up'></i></b></div><br />";
 									// Update the information in the database		
 									$sql = "UPDATE RideShare " .
 											"SET RecordStatus='2', " .
@@ -174,8 +175,7 @@
 											"MaxSeats='$numSeats', " .
 											"SeatsRemaining='$seatsRemaining', " .
 											"Price='$price' WHERE PostID='$postID' AND UserID='$UserID';";
-									$dbc->query($sql);
-
+									$dbc->query($sql);									
 									// Display the table with the updated data
 									ManageRideShareTable($dbc, $UserID);
 								}
@@ -194,11 +194,11 @@
 										}
 										$hours[$i] = $i;
 									}								
-									for($i=0; $i<=60; $i++){
+									for($i=0; $i<60; $i++){
 										if ($i < 10){
 											$i = '0' . (string)$i;
 										}									
-										$minutes[$i] = $i;
+										$minutes[$i] = (string)$i;
 									}		
 									$AMPM = array("AM"=>"AM", "PM"=>"PM");
 									// Get the default values to set
@@ -211,9 +211,7 @@
 									if (!isset($_POST['returnDate'])) {
 										$returnDate = date('m/d/Y', strtotime($row['ReturnDate']));
 										(string)$returnHour = GetHour($row['ReturnDate']);
-										(string)$returnMinute = GetMinute($row['ReturnDate']);
-										echo $returnMinute;
-echo $returnHour;
+										(string)$returnMinute = GetMinute($row['ReturnDate']);																			
 										$returnAMPM = GetAMPM($row['ReturnDate']);
 									}								
 									if(!isset($_POST['departureLocation'])){

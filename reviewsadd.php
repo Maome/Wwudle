@@ -179,6 +179,7 @@
 													new Hidden(array('name'=>'postback', 'id'=>'postback', 'value'=>'true'))
 												)
 												->render();
+											echo 'Please note: every post you make is linked to your Western account, so don\'t be crude.';
 										}
 		                  	?>
 		                 </div>

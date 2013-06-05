@@ -53,7 +53,7 @@
 	// Create / update user record if user_record session variable is not set
 	function CheckCreateUser($reload = false) {
 		session_start();
-		$dbc = new dbw(DBSERVER,DBUSER,DBPASS,DBCATALOG,true);
+		$dbc = new dbw(DBSERVER,DBUSER,DBPASS,DBCATALOG);
 		
 		if (!isset($_SESSION['userID']) || $reload) {
 			$email = PHPCAS::GetUser() ."@" .$dbc->configValue('DefaultStudentEmailDomain');
