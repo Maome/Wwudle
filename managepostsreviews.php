@@ -125,7 +125,7 @@
 							
 										echo "<div><b>Your listing has been updated! <i class='icon-thumbs-up'></i></b></div><br />";
 										
-										$qry = "SELECT CourseDept, CourseNumber, Professor, Workload, LectureQuality, TestRelevance, RelevanceToProgram, Enjoyable, BookNecessity, Comments, Overall, PostID FROM Review WHERE UserID = $UserID ORDER BY PostID DESC;";
+										$qry = "SELECT CourseDept, CourseNumber, Professor, Workload, LectureQuality, TestRelevance, RelevanceToProgram, Enjoyable, BookNecessity, Comments, Overall, PostID FROM Review WHERE UserID = $UserIDAND RecordStatus <> 3  ORDER BY PostID DESC;";
 										ManageReviewTable($dbc, $UserID);
 									}
 									else {
@@ -210,7 +210,7 @@
 									}
 								}
 								else {
-									$qry = "SELECT CourseDept, CourseNumber, Professor, Workload, LectureQuality, TestRelevance, RelevanceToProgram, Enjoyable, BookNecessity, Comments, Overall, PostID FROM Review WHERE UserID = $UserID ORDER BY PostID DESC;";
+									$qry = "SELECT CourseDept, CourseNumber, Professor, Workload, LectureQuality, TestRelevance, RelevanceToProgram, Enjoyable, BookNecessity, Comments, Overall, PostID FROM Review WHERE UserID = $UserID AND RecordStatus <> 3 ORDER BY PostID DESC;";
 									ManageReviewTable($dbc, $UserID);
 								}
 							?>					

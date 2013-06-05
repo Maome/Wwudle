@@ -103,42 +103,47 @@
 		$sql = "SELECT CourseDept, CourseNumber, Professor, Workload, LectureQuality, TestRelevance, RelevanceToProgram, Enjoyable, BookNecessity, Comments, Overall, PostID FROM Review WHERE PostID = $PostID;";
 		$result = $dbc->query($sql);
 		$row = $result->fetch_row();
-		echo "<h4>Review Details</h4>";
-		echo "
-			<table id='table_id' class='table table-striped'>
+		echo "<h3>Review Details</h3>";
+		echo '
+			<table id="table_id" class="table table-striped">
 				<tbody>
 					<tr>
-						<td><b>Course</b></td><td>". $row[0] ." ". $row[1] ."</td>
+						<td><b>Course</b></td><td>'. $row[0] .' '. $row[1] .'</td>
 					</tr>
 					<tr>
-						<td><b>Professor</b></td><td>". $row[2] ."</td>
+						<td><b>Professor</b></td><td>'. $row[2] .'</td>
 					</tr>
 					<tr>
-						<td><b>Workload</b></td><td>"; if($row[3] == 0) echo "Light"; else if($row[3] == 1) echo "Moderate"; else echo "Heavy"; echo "</td>
+						<td><b>Workload</b></td><td>'; if($row[3] == 0) echo "Light"; else if($row[3] == 1) echo "Moderate"; else echo "Heavy"; echo '</td>
 					</tr>
 					<tr>
-						<td><b>Lecture Quality</b></td><td>". $row[4] ."</td>
+						<td><b>Lecture Quality</b></td><td>'. $row[4] .'</td>
 					</tr>
 					<tr>
-						<td><b>Test Relevance</b></td><td>". $row[5] ."</td>
+						<td><b>Test Relevance</b></td><td>'. $row[5] .'</td>
 					</tr>
 					<tr>
-						<td><b>Relevance To Program</b></td><td>". $row[6] ."</td>
+						<td><b>Relevance To Program</b></td><td>'. $row[6] .'</td>
 					</tr>
 					<tr>
-						<td><b>Enjoyable</b></td><td>". $row[7] ."</td>
+						<td><b>Enjoyable</b></td><td>'. $row[7] .'</td>
 					</tr>												
 					<tr>
-						<td><b>Book necessity</b></td><td>"; if($row[8] == 0) echo "Absolutely necessary"; else if($row[8] == 1) echo "Somewhat necessary"; else echo "Not necessary"; echo "</td>
+						<td><b>Book necessity</b></td><td>'; if($row[8] == 0) echo "Absolutely necessary"; else if($row[8] == 1) echo "Somewhat necessary"; else echo "Not necessary"; echo '</td>
 					</tr>
 					<tr>
-						<td><b>Overall</b></td><td>". $row[10] ."</td>
+						<td><b>Overall</b></td><td>'. $row[10] .'</td>
 					</tr>	
 					<tr>
-						<td><b>Comments</b></td><td>". $row[9] ."</td>
+						<td><b>Comments</b></td><td>'. $row[9] .'</td>
 					</tr>												
 				</tbody>
-			</table>";	
+			</table>
+			<div class="pull-right">
+				<a href="reportpost.php?postID=' .$PostID .'&postType=Review"><p class="text-error">
+					<i class="icon-flag"></i> Report this post</p>
+				</a>
+			</div>';
 	}
 	
 	function ManageReviewTable($dbc, $user){
