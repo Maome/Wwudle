@@ -92,7 +92,8 @@
 
 								// Check to see if the user is deleting a post
 								if(isset($_POST['delete'])){
-									DeleteReviewPost($_POST['pid'], $UserID, $dbc);							
+									DeleteReviewPost($_POST['pid'], $UserID, $dbc);
+									echo "<div><b>Your listing has been deleted! <i class='icon-thumbs-up'></i></b></div><br />";
 								}
 								
 								if(isset($_GET['edit']) && isset($_GET['pid'])) {
@@ -123,6 +124,9 @@
 										$dbc->query($sql);
 							
 										echo "<div><b>Your listing has been updated! <i class='icon-thumbs-up'></i></b></div><br />";
+										
+										$qry = "SELECT CourseDept, CourseNumber, Professor, Workload, LectureQuality, TestRelevance, RelevanceToProgram, Enjoyable, BookNecessity, Comments, Overall, PostID FROM Review WHERE UserID = $UserID ORDER BY PostID DESC;";
+										ManageReviewTable($dbc, $UserID);
 									}
 									else {
 										// Get the information about the review from the db
