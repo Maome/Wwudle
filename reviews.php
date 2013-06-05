@@ -91,17 +91,17 @@
 							
 									if (isset($_GET['searchProf'])) {
 										$prof = $_GET['searchProf'];
-										$qry = "SELECT CourseDept, CourseNumber, Professor, Workload, LectureQuality, TestRelevance, RelevanceToProgram, Enjoyable, BookNecessity, Comments, Overall, PostID FROM Review WHERE Professor = '$prof' ORDER BY PostID DESC;";	
+										$qry = "SELECT CourseDept, CourseNumber, Professor, Workload, LectureQuality, TestRelevance, RelevanceToProgram, Enjoyable, BookNecessity, Comments, Overall, PostID FROM Review WHERE Professor = '$prof' AND RecordStatus <> 3 ORDER BY PostID DESC;";	
 										ShowReviews($qry, false, true);
 									}
 									else if (isset($_GET['courseDept']) && isset($_GET['courseNumber'])) {
 										$courseDept = $_GET['courseDept'];
 										$courseNum = $_GET['courseNumber'];
-										$qry = "SELECT CourseDept, CourseNumber, Professor, Workload, LectureQuality, TestRelevance, RelevanceToProgram, Enjoyable, BookNecessity, Comments, Overall, PostID FROM Review WHERE CourseDept = '$courseDept' AND CourseNumber = '$courseNum' ORDER BY PostID DESC;";	
+										$qry = "SELECT CourseDept, CourseNumber, Professor, Workload, LectureQuality, TestRelevance, RelevanceToProgram, Enjoyable, BookNecessity, Comments, Overall, PostID FROM Review WHERE CourseDept = '$courseDept' AND CourseNumber = '$courseNum' AND RecordStatus <> 3 ORDER BY PostID DESC;";	
 										ShowReviews($qry, true, false);
 									}
 									else {
-										$qry = "SELECT CourseDept, CourseNumber, Professor, Workload, LectureQuality, TestRelevance, RelevanceToProgram, Enjoyable, BookNecessity, Comments, Overall, PostID FROM Review ORDER BY PostID DESC LIMIT 10 ;";	
+										$qry = "SELECT CourseDept, CourseNumber, Professor, Workload, LectureQuality, TestRelevance, RelevanceToProgram, Enjoyable, BookNecessity, Comments, Overall, PostID FROM Review WHERE RecordStatus <> 3 ORDER BY PostID DESC LIMIT 10 ;";	
 										ShowReviews($qry, true, false);
 									}
 								?>

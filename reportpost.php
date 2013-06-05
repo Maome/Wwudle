@@ -45,7 +45,7 @@
 		             <div class="span6">
 						<h2>Report Post to Site Admin</h2>
 						<?php
-							$dbc = new dbw(DBSERVER,DBUSER,DBPASS,DBCATALOG);
+							$dbc = new dbw(DBSERVER,DBUSER,DBPASS,DBCATALOG, true);
 							
 							if (isset($_GET['postType'])) {							
 								if ($_GET['postType'] == 'RideShare') $postDesc = 'ride share';
