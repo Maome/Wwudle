@@ -27,10 +27,10 @@
 		<link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
 		<link href="bootstrap/css/bootstrap-rowlink.css" rel="stylesheet">
 		<link href="bootstrap/css/footer.css" rel="stylesheet">
-		<link href="datatables/media/css/bootstrap-dt.css" rel="stylesheet">     
+		<!--<link href="datatables/media/css/bootstrap-dt.css" rel="stylesheet">     
 		<script type="text/javascript" language="javascript" src="datatables/media/js/jquery.js"></script>
 		<script type="text/javascript" language="javascript" src="datatables/media/js/jquery.dataTables.js"></script>
-		<script type="text/javascript" language="javascript" src="datatables/media/js/paging.js"></script>
+		<script type="text/javascript" language="javascript" src="datatables/media/js/paging.js"></script>-->
     </head>
     <body>
 		<div id="wrap">
@@ -62,7 +62,7 @@
 										WHERE bl.PostID = " .$_GET['postID'], 
 										true
 									);							
-									echo '<h4>' .$post['Title'] .'</h4>';	
+									echo '<h4>' .$post['Title'] .'</h4>';
 									echo '</div>';
 								
 									// Display book listing information
@@ -79,8 +79,14 @@
 										}
 									echo '</tbody>';
 									echo '</table>';
+									echo '<div class="pull-right">
+										<a href="reportpost.php?postID=' .$_GET['postID'] .'&postType=BookListing"><p class="text-error">
+											<i class="icon-flag"></i> Report this post</p>
+										</a>
+									</div>';
 									echo '</div>';
 								
+									echo "<h4>Email Book Seller</h4>";
 									// Display book request box
 									echo "																												
 									<form class='form-inline' action='buysellview.php' method='post'>
