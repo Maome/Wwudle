@@ -1,6 +1,6 @@
 <?php
 	// Redirect if required parameters not set or they are invalid
-	$validPostTypes = array('BookListing','Rideshare','Review');
+	$validPostTypes = array('BookListing','RideShare','Review');
 	if (!((isset($_GET['postID']) && isset($_GET['postType'])) || 
 		(isset($_POST['postID']) && isset($_POST['postType']))) ||
 		(isset($_GET['postType']) && !in_array($_GET['postType'], $validPostTypes)) ||
