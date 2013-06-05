@@ -84,7 +84,7 @@
 									);
 									
 									if (empty($submitErrors) && isset($_POST['edit'])) {
-                    $this->query($updateQuery);
+                    $dbc->query($updateQuery);
 										echo "<div><b>Your listing has been updated! <i class='icon-thumbs-up'></i></b></div><br />";
 									}
 									else {
@@ -116,8 +116,8 @@
 										)
 										->group('',
 											new Hidden(array('name'=>'edit','value'=>$id)),
-											new Submit('Cancel', array('class'=>'btn btn-danger','name'=>'submit')),
-											new Submit('Submit', array('class'=>'btn btn-primary','name'=>'submit'))
+											new Submit('Submit', array('class'=>'btn btn-primary','name'=>'submit')),
+											new Submit('Cancel', array('class'=>'btn btn-danger','name'=>'submit'))											
 										)
 										->render();
 									}
