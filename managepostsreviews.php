@@ -198,7 +198,7 @@
 											)
 											->group('',
 												new Submit('Submit', array('class' => 'btn btn-primary')),
-												new Custom('<a href="managepostsreviews.php" class="btn btn-danger">Cancel</a>')
+												new Custom('<a href="managepostsreviews.php" class="btn btn-danger">Cancel</a>')						
 											)
 											->group('', 
 												new Hidden(array('name'=>'PostID', 'id'=>'PostID', 'value'=>$pid))
