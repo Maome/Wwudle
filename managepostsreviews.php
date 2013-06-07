@@ -80,10 +80,11 @@
 								$email = phpcas::GetUser() . "@students.wwu.edu";
 							
 								// Display all of the current reviews that the user has posted 
-								$qry = "SELECT UserID FROM User WHERE Email='$email';";
+								$qry = "SELECT UserID, SecurityLevel FROM User WHERE Email='$email';";
 								$result = $dbc->query($qry);
 								$row = $result->fetch_assoc();
 								$UserID = $row['UserID'];
+								$SecurityLevel = $row['SecurityLevel'];
 
 								// Populate a table with the reviews the user currently has posted
 								$qry = "SELECT * FROM Review WHERE UserID='$UserID';";
@@ -107,22 +108,40 @@
 										//$getData = $result->fetch_row();									
 										//$UserID = $getData[0];
 										$PostID = $_POST['PostID'];
-											
-										$sql = "UPDATE Review " .
-											"SET RecordStatus=2, " .
-											"CourseDept='$CourseDept', " .
-											"CourseNumber=$CourseNumber, " .
-											"Professor='$Professor', " .
-											"Workload=$Workload, " .
-											"LectureQuality=$LectureQuality, " .
-											"TestRelevance=$TestRelevance, " .
-											"RelevanceToProgram=$RelevanceToProgram, ".
-											"Enjoyable=$Enjoyable, ".
-											"BookNecessity=$BookNecessity, ".
-											"Overall=$Overall, ".
-											"Comments='$Comments' WHERE PostID=$PostID AND UserID=$UserID;";
-										$dbc->query($sql);
-							
+										
+										if ($SecurityLevel != 0) {
+											$sql = "UPDATE Review " .
+												"SET RecordStatus=2, " .
+												"CourseDept='$CourseDept', " .
+												"CourseNumber=$CourseNumber, " .
+												"Professor='$Professor', " .
+												"Workload=$Workload, " .
+												"LectureQuality=$LectureQuality, " .
+												"TestRelevance=$TestRelevance, " .
+												"RelevanceToProgram=$RelevanceToProgram, ".
+												"Enjoyable=$Enjoyable, ".
+												"BookNecessity=$BookNecessity, ".
+												"Overall=$Overall, ".
+												"Comments='$Comments' WHERE PostID=$PostID AND UserID=$UserID;";
+											$dbc->query($sql);
+										}
+										else {
+											$sql = "UPDATE Review " .
+												"SET RecordStatus=2, " .
+												"CourseDept='$CourseDept', " .
+												"CourseNumber=$CourseNumber, " .
+												"Professor='$Professor', " .
+												"Workload=$Workload, " .
+												"LectureQuality=$LectureQuality, " .
+												"TestRelevance=$TestRelevance, " .
+												"RelevanceToProgram=$RelevanceToProgram, ".
+												"Enjoyable=$Enjoyable, ".
+												"BookNecessity=$BookNecessity, ".
+												"Overall=$Overall, ".
+												"Comments='$Comments' WHERE PostID=$PostID;";
+											$dbc->query($sql);
+										}
+								
 										echo "<div><b>Your listing has been updated! <i class='icon-thumbs-up'></i></b></div><br />";
 										
 										$qry = "SELECT CourseDept, CourseNumber, Professor, Workload, LectureQuality, TestRelevance, RelevanceToProgram, Enjoyable, BookNecessity, Comments, Overall, PostID FROM Review WHERE UserID = $UserIDAND RecordStatus <> 3  ORDER BY PostID DESC;";
