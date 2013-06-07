@@ -14,7 +14,7 @@
 	require_once('init.php');
 	
 	
-	$dbc = new dbw(DBSERVER,DBUSER,DBPASS,DBCATALOG);
+	//$dbc = new dbw(DBSERVER,DBUSER,DBPASS,DBCATALOG);
 	
 	
 	if( isset($_GET["delete"])){
