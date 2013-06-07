@@ -46,6 +46,10 @@
                                     <td>Manage User Posts</td><td>Search, edit, and delete posts from any user
                                         <a class="edit" href="adminposts.php"></a></td>
                                 </tr>
+                                <tr class="rowlink">
+                                    <td>Manage Flagged Posts</td><td>Search, edit, and delete flagged posts
+                                        <a class="edit" href="adminflaggedposts.php"></a></td>
+                                </tr>                                
                             </tbody>
                             </table>
 
