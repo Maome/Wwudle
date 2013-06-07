@@ -7,6 +7,7 @@
 	
 	function DisplayNavbar($filename) {
 		CheckCreateUser(false);
+		$numFlags = NumberOfReportedPosts();
 		echo '
 			<div class="navbar navbar-inverse navbar-fixed-top">
 				<div class="navbar-inner">
@@ -24,10 +25,12 @@
 								' .li_type($filename,"rideshare.php") .'<a href="rideshare.php">Rideshare</a></li>
 								' .li_type($filename,"buysell.php") .'<a href="buysell.php">Textbooks</a></li>
 								' .li_type($filename,"about.php") .'<a href="about.php">About</a></li>
+								' .(isset($_SESSION["isAdmin"]) ? li_type($filename,"adminflaggedposts.php") .'<a href="adminflaggedposts.php" style="color: rgb(255,0,0)">' .  $numFlags . " " . '<i class="icon-flag icon-white"></i></a></li>' : "").' 
 							</ul>
-							</div>
+							</div>					
+
 							<div class="pull-right">
-								<div class="btn-group">
+								<div class="btn-group">								
 								<a class="btn btn-primary" href="#"><i class="icon-user icon-white"></i>&nbsp;Logged in as ' .phpCAS::getUser() .'</a>
 								<a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
 								<ul class="dropdown-menu">
@@ -37,6 +40,8 @@
 								</ul>
 								</div>
 							</div>
+
+
 						</div><!--/.nav-collapse -->
 					</div>
 				</div>
@@ -71,5 +76,13 @@
 			
 			if ($user->isAdmin()) $_SESSION['isAdmin'] = 1;
 		}
+	}
+
+	// Gets the number of reported posts in the database
+	function NumberOfReportedPosts(){
+		$dbc = new dbw(DBSERVER,DBUSER,DBPASS,DBCATALOG);
+		$qry = "select * from Flag where RecordStatus='1';";
+		$result = $dbc->query($qry);
+		return $result->num_rows;
 	}
 ?>
