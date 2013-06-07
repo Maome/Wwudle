@@ -90,13 +90,13 @@
 								while ($row = $data->fetch_assoc()) {
 									// Get the url									
 									if(strcmp($row['TableName'], "RideShare") == 0){
-										$id = "rideinfo?PostID=" . $row['PostID'];
+										$id = "managepostsrides?edit=true&pid=" . $row['PostID'];
 									}
 									if(strcmp($row['TableName'], "BookListing") == 0){
-										$id = "buysellview.php?postID=" . $row['PostID'];										
+										$id = 'managepostsbooks.php?edit=' . $row['PostID'];
 									}
 									if(strcmp($row['TableName'], "Review") == 0){
-										$id = "reviewinfo?PostID=" . $row['PostID'];
+										$id = "managepostsreviews?edit=true&pid=" . $row['PostID'];
 									}
 									$cmt = FixComment($row['Comments']);
 									echo '
@@ -107,7 +107,8 @@
 										 <td>
 											<a href="' . $id .'" class="btn btn-primary">Edit Post</a>
 										    <a href="?delete=true&type=' . $row['TableName'] . '&pid='. $row['PostID'] .'" class="btn btn-danger">Delete Post</a>
-											<a href="?removeFlag=true&type=' . $row['TableName'] . '&pid='. $row['PostID'] .'" class="btn btn-warning">Remove Flag</a>										
+											<a href="?removeFlag=true&type=' . $row['TableName'] . '&pid='. $row['PostID'] .'" class="btn btn-warning">Remove Flag</a>		
+									    </td>								
 									</tr>';
 								}
 								

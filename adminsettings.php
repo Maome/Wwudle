@@ -12,6 +12,33 @@
 	  header("Location: home.php");
 	}
 	require_once('init.php');
+	
+	
+	//$dbc = new dbw(DBSERVER,DBUSER,DBPASS,DBCATALOG);
+	
+	
+	if( isset($_GET["delete"])){
+	    //delete teh post yo
+	    $deletequery = "DELETE FROM HyperLink WHERE HyperlinkID=" . $_GET["id"] . ";";
+	    $dbc->query($deletequery);
+	}
+	if( isset($_GET["update"])){
+	    // update the post yo
+	    $updatequery = "UPDATE HyperLink
+	                    SET LinkType=1, URL='" . $_GET["URL"] . "', Text='" . $_GET["Text"] . "' , Position=" . $_GET["Position"] . ", ChangeSource=1, RecordStatus=1, RecordStatusDate=1
+	                    WHERE HyperlinkID=" . $_GET["id"] . ";";
+	    $dbc->query($updatequery);
+	}
+	if( isset($_GET["new"])){
+	    //new!
+	    $newquery = "INSERT INTO HyperLink
+	                    (LinkType, URL, Text, Position, ChangeSource, RecordStatus, RecordStatusDate)
+	                    VALUES (1,'" . $_GET["URL"] . "' , '" . $_GET["Text"] . "' , '" . $_GET["Position"] . "' , 1, 1, 1);";
+	    $dbc->query($newquery);
+	}
+	
+	
+	
 ?>
 <!DOCTYPE HTML>
 <html lang-"en">
@@ -26,63 +53,11 @@
 		<script type="text/javascript" language="javascript" src="datatables/media/js/paging.js"></script>
 		<script>
 		
-			function editRow ( oTable, nRow )
-			{
-				var aData = oTable.fnGetData(nRow);
-				var jqTds = $('>td', nRow);
-				jqTds[0].innerHTML = '<input type="text" value="'+aData[0]+'">';
-				jqTds[1].innerHTML = '<input type="text" value="'+aData[1]+'">';
-				jqTds[2].innerHTML = '<a class="edit" href="">Save</a>';
-			}
-			
-			function saveRow ( oTable, nRow )
-			{
-				var jqInputs = $('input', nRow);
-				oTable.fnUpdate( jqInputs[0].value, nRow, 0, false );
-				oTable.fnUpdate( jqInputs[1].value, nRow, 1, false );
-				oTable.fnUpdate( '<a class="edit" href="">Edit</a>', nRow, 2, false );
-				oTable.fnDraw();
-			}
-			
+
 			$(document).ready(function() {
-				
-				/*$("#table_id tr").click(function(event) {
-					if ($(event.target.parentNode).hasClass('table_highlight'))
-						$(event.target.parentNode).removeClass('table_highlight');
-					else
-						$(event.target.parentNode).addClass('table_highlight');
-				});*/
-			
 				var oTable = $('#table_id').dataTable( {
 					"sPaginationType": "bootstrap",
 					"bSort": false
-				} );
-				
-				    var nEditing = null;
-     
-				$('#table_id a.edit').live('click', function (e) {
-					
-					e.preventDefault();
-					 
-					/* Get the row as a parent of the link that was clicked on */
-					var nRow = $(this).parents('tr')[0];
-					 
-					if ( nEditing !== null && nEditing != nRow ) {
-						/* A different row is being edited - the edit should be cancelled and this row edited */
-						restoreRow( oTable, nEditing );
-						editRow( oTable, nRow );
-						nEditing = nRow;
-					}
-					else if ( nEditing == nRow && this.innerHTML == "Save" ) {
-						/* This row is being edited and should be saved */
-						saveRow( oTable, nEditing );
-						nEditing = null;
-					}
-					else {
-						/* No row currently being edited */
-						editRow( oTable, nRow );
-						nEditing = nRow;
-					}
 				} );
 			} );
 		</script>
@@ -108,31 +83,35 @@
 		                 </div>
 		                 <div class="row-fluid">
 						<?php
-							/*echo '
-							<table id="table_id" class="table">
-							<thead>
-								<tr>
-									<th>Abbreviation</th>
-									<th>Description</th>
-									<!--<th>Edit</th>-->
-								</tr>
-							</thead>
-							<tbody>';
-								$dbc = new dbw(DBSERVER,DBUSER,DBPASS,DBCATALOG);
-								$data = $dbc->query('SELECT Abbreviation, Description FROM Department ORDER BY Description');
-								while ($row = $data->fetch_assoc()) {
-									echo '
-									<tr>
-										<td>' .$row['Abbreviation'] .'</td>
-										<td>' .$row['Description'] .'</td>';
-										//<td><a class="edit" href="">Edit</a></td>
-									echo '</tr>';
-								}
-						echo '
-							</tbody>
-						</table>';*/
-						$dbc = new dbw(DBSERVER,DBUSER,DBPASS,DBCATALOG);
-						$dbc->queryToTable('SELECT Abbreviation, Description FROM Department ORDER BY Description','table_id');
+						
+						$query = "SELECT * FROM HyperLink WHERE RecordStatus=1";
+						$data = $dbc->query($query);
+						
+						echo '<table id="table_id" class="table table-striped" data-provides="rowlink">';
+						
+						while ($row = $data->fetch_assoc()) {
+						    echo '  <tr>';
+						    echo '  <form>';
+						    echo '  <input type="hidden" value="true" name="update">';
+						    echo '  <input type="hidden" value="' . $row["HyperlinkID"] . '" name="id">';
+						    echo '  <td><input name="URL" value="' . $row["URL"] . '"></td>
+						            <td><input name="Text" value="' . $row["Text"] . '"></td>
+						            <td><input name="Position" value="'. $row["Position"] . '"></td>
+						            <td><input type="submit" value="Save" class="btn btn-submit">
+						            <a href="?delete=true&id=' . $row["HyperlinkID"] . '" class="btn btn-danger">Delete</a>';	
+						    echo '  </form>';
+						    echo '  </tr>';			
+						    }	 
+						    
+						echo '  <form>';
+						echo '  <input type="hidden" name="new" value="true">';
+						echo '  <td><input name="URL" value=""></td>
+						        <td><input name="Text" value=""></td>
+						        <td><input name="Position" value=""></td>
+						        <td><input type="submit" value="Add" class="btn btn-submit"></td>';
+						        
+						echo '</table>';      
+						//$dbc->queryToTable('SELECT Abbreviation, Description FROM Department ORDER BY Description','table_id');
 						?>
 						</div>
 					</div>
