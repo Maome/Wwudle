@@ -16,13 +16,7 @@
    <script>
 			$(document).ready(function() {
 				var oTable = $('#table_id').dataTable( {
-					"sPaginationType": "bootstrap",
-					 "fnDrawCallback": function() {				      
-						$("#table_id tbody tr").on('click',function() {   
-						    var id = $(this).attr('id');
-						    document.location.href = id;       
-						}); 
-				    }							
+					"sPaginationType": "bootstrap",							
 				});													
 			});
 			
@@ -42,18 +36,45 @@
 		                     <div class="span6"><h2>Flagged Posts</h2></div>
 		                 </div>
 		                 <div class="row-fluid">
-							<table id="table_id" class="table table-striped" data-provides="rowlink">
+							<table id="table_id" class="table table-striped">
 							<thead>
 								<tr class="rowlink">
 									<th>UserName</th>
 									<th>Table</th>
 									<th>Comments</th>
+									<th>Edit</th>
 								</tr>
 							</thead>
 							<tbody>
 							<?php
+								// Check if they are deleting a post
+								if(isset($_GET['delete'])){								
+									$dbc = new dbw(DBSERVER,DBUSER,DBPASS,DBCATALOG, true);
+									$qry = "UPDATE Flag " . 
+											"SET RecordStatus='3' " .
+											"WHERE TableName='" . $_GET['type'] . "'" .
+											"AND PostID='" . $_GET['pid'] . "';";
+									$dbc->query($qry);	
+
+									$qry = "DELETE FROM " . $_GET['type'] . " " .
+											"WHERE PostID='" . $_GET['pid'] . "';";
+									$dbc->query($qry);
+								}								
+								
+								
+								// Check if a flag is being removed
+								if(isset($_GET['removeFlag'])){								
+									$dbc = new dbw(DBSERVER,DBUSER,DBPASS,DBCATALOG, true);
+									$qry = "UPDATE Flag " . 
+											"SET RecordStatus='3' " .
+											"WHERE TableName='" . $_GET['type'] . "'" .
+											"AND PostID='" . $_GET['pid'] . "';";
+									$dbc->query($qry);									
+								}
+							
+							
 								$dbc = new dbw(DBSERVER,DBUSER,DBPASS,DBCATALOG);
-								$data = $dbc->query("select UserName, TableName, PostID, Comments from User inner join Flag On User.UserID=Flag.UserID where Flag.RecordStatus='1';");
+								$data = $dbc->query("select UserName, TableName, PostID, Comments from User inner join Flag On User.UserID=Flag.UserID where Flag.RecordStatus='1' OR Flag.RecordStatus='2';");
 								while ($row = $data->fetch_assoc()) {
 									// Get the url									
 									if(strcmp($row['TableName'], "RideShare") == 0){
@@ -65,12 +86,32 @@
 									if(strcmp($row['TableName'], "Review") == 0){
 										$id = "reviewinfo?PostID=" . $row['PostID'];
 									}
+									$cmt = FixComment($row['Comments']);
 									echo '
-									<tr id="' . $id . '" class="rowlink">
+									<tr>
 										 <td>' .$row['UserName'] .'</td>
 										 <td>' .$row['TableName'] .'</td>
-										 <td>' .$row['Comments'] .'</td>                                        
+										 <td>' . $cmt .'</td>
+										 <td>
+											<a href="' . $id .'" class="btn btn-primary">Edit Post</a>
+										    <a href="?delete=true&type=' . $row['TableName'] . '&pid='. $row['PostID'] .'" class="btn btn-danger">Delete Post</a>
+											<a href="?removeFlag=true&type=' . $row['TableName'] . '&pid='. $row['PostID'] .'" class="btn btn-warning">Remove Flag</a>										
 									</tr>';
+								}
+								
+								
+								// break up long comments every 20 words
+								function FixComment($comment){
+									$fixedComment = "";
+									$words = explode(" ", $comment);
+									for ($i=0; $i<sizeof($words); $i++){
+										if($i % 20 == 0 && $i!=0){
+											$fixedComment .= "</br>";
+										}
+										$fixedComment .= " " . $words[$i];
+										
+									}
+									return $fixedComment;
 								}
 							?>
 							</tbody>
