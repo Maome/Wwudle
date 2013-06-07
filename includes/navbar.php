@@ -1,6 +1,6 @@
  <?php
  	require_once('cassettings.php');
-	require_once("../../private_html/connect.php");
+	require_once("connect.php");
 	require_once('classes/dbw.php');
 	require_once('classes/user.php');
 	

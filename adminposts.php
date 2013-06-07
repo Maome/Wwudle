@@ -1,6 +1,6 @@
 <?php
 	require_once('cassettings.php');
-	require_once("../../private_html/connect.php");
+	require_once("connect.php");
 	require_once('classes/dbw.php');
 	// Check if the user is an admin
 	$dbc = new dbw(DBSERVER,DBUSER,DBPASS,DBCATALOG);

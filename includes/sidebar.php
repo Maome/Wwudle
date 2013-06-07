@@ -1,6 +1,6 @@
 <?php
 	function DisplaySidebar() {
-		require_once('../../private_html/connect.php');
+		require_once('connect.php');
 		require_once('classes/dbw.php');
 		echo '
 		<div class="span2">
