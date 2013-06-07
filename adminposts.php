@@ -1,5 +1,19 @@
 <?php
 	require_once('init.php');
+	
+	
+	if(isset($_GET['delete'])){								
+									$dbc = new dbw(DBSERVER,DBUSER,DBPASS,DBCATALOG);
+									$qry = "UPDATE Flag " . 
+											"SET RecordStatus='3' " .
+											"WHERE TableName='" . $_GET['type'] . "'" .
+											"AND PostID='" . $_GET['pid'] . "';";
+									$dbc->query($qry);	
+
+									$qry = "DELETE FROM " . $_GET['type'] . " " .
+											"WHERE PostID='" . $_GET['pid'] . "';";
+									$dbc->query($qry);
+								}	
 ?>
 <!DOCTYPE HTML>
 <html lang-"en">
@@ -51,13 +65,13 @@
 							<tbody>
 							<?php
 								$dbc = new dbw(DBSERVER,DBUSER,DBPASS,DBCATALOG);
-								$data = $dbc->query('SELECT u.Username, a.Type, a.UserID, a.PostID, a.ItemID FROM(
-		                                                 SELECT "BookListing" AS Type, PostID, UserID, BookID as ItemID FROM BookListing
+								$data = $dbc->query('SELECT u.Username, a.Type, a.UserID, a.PostID, a.ItemID, a.RecordStatus FROM(
+		                                                 SELECT "BookListing" AS Type, PostID, UserID, RecordStatus, BookID as ItemID FROM BookListing
 		                                                 UNION ALL
-		                                                 SELECT "ProfessorReview" AS Type, PostID, UserID, Professor as ItemID FROM Review
+		                                                 SELECT "Review" AS Type, PostID, UserID, RecordStatus, Professor as ItemID FROM Review
 		                                                 UNION ALL
-		                                                 SELECT "RideShare" AS Type, PostID, UserID, DestCity as ItemID FROM RideShare
-		                                              )a JOIN User u ON (u.userID = a.userID) ORDER BY UserID;');
+		                                                 SELECT "RideShare" AS Type, PostID, UserID, RecordStatus, DestCity as ItemID FROM RideShare
+		                                              )a JOIN User u ON (u.userID = a.userID) WHERE a.RecordStatus <> 3 ORDER BY UserID;');
 								while ($row = $data->fetch_assoc()) {
 									echo '
 									<tr class="rowlink">
@@ -65,13 +79,39 @@
 										 <td>' .$row['Type'] .'</td>
 										 <td>' .$row['UserID'] .'</td>
 										<td>' .$row['PostID'] .'</td>
-										<td>' .$row['ItemID'] .'</td>
-                                        <td><a class="edit" href="';
-                                    //Depending on type, change edit link
+										<td>' .$row['ItemID'] . '</td>';
+										
+										if(strcmp($row['Type'], "RideShare") == 0){
+										$id = "managepostsrides?edit=true&pid=" . $row['PostID'];
+									    }
+									    if(strcmp($row['Type'], "BookListing") == 0){
+										    $id = 'managepostsbooks.php?edit=' . $row['PostID'];
+									    }
+									    if(strcmp($row['Type'], "Review") == 0){
+										    $id = "managepostsreviews?edit=true&pid=" . $row['PostID'];
+									    }
+										
+										
+										echo '<td>';
+										echo '
+										<a class="edit" href="' . $id . '"></a>
+										<a href="' . $id .'" class="btn btn-primary">Edit Post</a>
+										<a href="?delete=true&type=' . $row['Type'] . '&pid='. $row['PostID'] .'" class="btn btn-danger">Delete Post</a>';
+										
+					                    /*
+										
+										echo '<a class="edit" href="';
+                                    
                                         if ($row['Type'] === "RideShare")
                                             echo 'managepostsrides.php?edit=true&pid=' . $row['PostID'];
+                                        if ($row['Type'] === "ProfessorReview")
+                                            echo 'managepostsreviews.php?edit=true&pid=' . $row['PostID'];
+                                        if ($row['Type'] === "BookListing")
+                                            echo 'managepostsbooks.php?edit=' . $row['PostID'];
                                         //add for prof and book listings when available
-                                        echo '">Edit</a></td>
+                                        echo '"></a></td>
+                                        */
+                                        echo '</td>
 									</tr>';
 								}
 							?>

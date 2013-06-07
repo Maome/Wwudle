@@ -95,7 +95,8 @@
 										 <td>
 											<a href="' . $id .'" class="btn btn-primary">Edit Post</a>
 										    <a href="?delete=true&type=' . $row['TableName'] . '&pid='. $row['PostID'] .'" class="btn btn-danger">Delete Post</a>
-											<a href="?removeFlag=true&type=' . $row['TableName'] . '&pid='. $row['PostID'] .'" class="btn btn-warning">Remove Flag</a>										
+											<a href="?removeFlag=true&type=' . $row['TableName'] . '&pid='. $row['PostID'] .'" class="btn btn-warning">Remove Flag</a>		
+									    </td>								
 									</tr>';
 								}
 								
