@@ -57,13 +57,13 @@
 								while ($row = $data->fetch_assoc()) {
 									// Get the url									
 									if(strcmp($row['TableName'], "RideShare") == 0){
-										$id = "rideinfo?PostID=" . $row['PostID'];
+										$id = "managepostsrides?edit=true&pid=" . $row['PostID'];
 									}
 									if(strcmp($row['TableName'], "BookListing") == 0){
-										$id = "buysellview.php?postID=" . $row['PostID'];										
+										$id = 'managepostsbooks.php?edit=' . $row['PostID'];
 									}
 									if(strcmp($row['TableName'], "Review") == 0){
-										$id = "reviewinfo?PostID=" . $row['PostID'];
+										$id = "managepostsreviews?edit=true&pid=" . $row['PostID'];
 									}
 									echo '
 									<tr id="' . $id . '" class="rowlink">
