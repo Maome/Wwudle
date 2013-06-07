@@ -1,4 +1,16 @@
 <?php
+	require_once('cassettings.php');
+	require_once("../../private_html/connect.php");
+	require_once('classes/dbw.php');
+	// Check if the user is an admin
+	$dbc = new dbw(DBSERVER,DBUSER,DBPASS,DBCATALOG);
+	$qry = "SELECT SecurityLevel from User where UserName='" . PHPCAS::GetUser() ."';";
+	$result = $dbc->query($qry);
+	$row = $result->fetch_assoc();
+	// if the user is not an admin redirect them to the home page
+	if($row['SecurityLevel'] != 0){
+	  header("Location: home.php");
+	}
 	require_once('init.php');
 	
 	
