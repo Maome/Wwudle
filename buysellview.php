@@ -27,10 +27,7 @@
 		<link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
 		<link href="bootstrap/css/bootstrap-rowlink.css" rel="stylesheet">
 		<link href="bootstrap/css/footer.css" rel="stylesheet">
-		<!--<link href="datatables/media/css/bootstrap-dt.css" rel="stylesheet">     
-		<script type="text/javascript" language="javascript" src="datatables/media/js/jquery.js"></script>
-		<script type="text/javascript" language="javascript" src="datatables/media/js/jquery.dataTables.js"></script>
-		<script type="text/javascript" language="javascript" src="datatables/media/js/paging.js"></script>-->
+
     </head>
     <body>
 		<div id="wrap">
