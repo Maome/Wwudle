@@ -49,7 +49,7 @@
 							<?php
 								// Check if they are deleting a post
 								if(isset($_GET['delete'])){								
-									$dbc = new dbw(DBSERVER,DBUSER,DBPASS,DBCATALOG, true);
+									$dbc = new dbw(DBSERVER,DBUSER,DBPASS,DBCATALOG);
 									$qry = "UPDATE Flag " . 
 											"SET RecordStatus='3' " .
 											"WHERE TableName='" . $_GET['type'] . "'" .
@@ -64,7 +64,7 @@
 								
 								// Check if a flag is being removed
 								if(isset($_GET['removeFlag'])){								
-									$dbc = new dbw(DBSERVER,DBUSER,DBPASS,DBCATALOG, true);
+									$dbc = new dbw(DBSERVER,DBUSER,DBPASS,DBCATALOG);
 									$qry = "UPDATE Flag " . 
 											"SET RecordStatus='3' " .
 											"WHERE TableName='" . $_GET['type'] . "'" .
