@@ -92,7 +92,8 @@
 											else {						
 												// Set the user id
 												$getData = $result->fetch_row();									
-												$UserID = $getData[0];									
+												$UserID = $getData[0];
+												$Comments = strip_tags($Comments);
 												// Get the post data
 													
 												$sql = "INSERT INTO Review (PostDate, UserID, CourseDept, CourseNumber, Professor, Workload, LectureQuality, TestRelevance, RelevanceToProgram, Enjoyable, BookNecessity, Overall, Comments, ViewCount, ChangeSource, RecordStatus, RecordStatusDate) VALUES (CURDATE(), $UserID, '$CourseDept', '$CourseNumber', '$Professor', $Workload, $LectureQuality, $TestRelevance, $RelevanceToProgram, $Enjoyable, $BookNecessity, $Overall, '$Comments', 0, 0, 1, CURDATE());"; 

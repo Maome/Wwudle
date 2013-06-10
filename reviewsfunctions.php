@@ -197,7 +197,6 @@
 		}	
 	}
 	
-	//
 	function getSubmitErrors() {
 		$courseNumber = $_POST['courseNumber'];
 		$errorResults = array();

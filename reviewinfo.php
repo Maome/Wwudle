@@ -30,7 +30,7 @@
     <body>
 		<div id="wrap">
 			<!-- Navbar -->
-			<?php DisplayNavbar(basename(__FILE__)); ?>
+			<?php DisplayNavbar("reviews.php"); ?>
 		     
 		     <div class="container">
 		         <div class="row-fluid">
@@ -42,8 +42,13 @@
 		                 </div>
 		                 <div class="span5">
 		                     <?php
-		                  		$PostID = $_GET['PostID'];
-		                  		ShowReviewInfo($PostID);
+		                     	if (isset($_GET['PostID'])) {
+		                  			$PostID = $_GET['PostID'];
+		                  			ShowReviewInfo($PostID);
+		                  		}
+		                  		else {
+		                  			echo 'You must select a review to view.';
+		                  		}
 									?>
 		                 </div>
 		             </div>
